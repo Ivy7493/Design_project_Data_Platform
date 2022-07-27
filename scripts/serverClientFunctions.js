@@ -6,8 +6,6 @@ function RemovedDisconnectedClients(_clients){
           return x
         }
       })
-      console.log('Updated list')
-      console.log(_clients)
 }
 
 

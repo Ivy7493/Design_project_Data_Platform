@@ -6,11 +6,3 @@ socket.on("Welcome", (data) => {
     socketID = data;
 });
 
-socket.on("disconnect", () => {
-    console.log(socketID); // undefined
-    socket.emit("removeClient",socketID)
-  });
-
-window.addEventListener('beforeunload', function(event) {
-    socket.emit("removeClient",socketID)
-});

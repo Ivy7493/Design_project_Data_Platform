@@ -37,9 +37,3 @@ io.on("connection", (socket) => {
     console.log("Client List: ")
     console.log(connectedClients)
 });
-
-
-
-    
-  
-
