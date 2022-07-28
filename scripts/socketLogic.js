@@ -1,4 +1,6 @@
 
+import { addPin } from "./mapFunctions.js";
+
 var socket = io();
 let socketID = ""
 socket.on("Welcome", (data) => {
@@ -17,6 +19,10 @@ socket.on('login',(data)=>{
     window.alert(data)
 })
 
+socket.on('getRouteData',(data)=>{
+    addPin(data)
+})
+
 
 let userField = document.getElementById("username");
 let passField = document.getElementById("password");
@@ -29,6 +35,7 @@ registerButton.addEventListener('click',function (){
     let temp = {
         username: userField.value,
         password: passField.value,
+        email: "Ivanblizz23@gmail.com",
         ID: socket.id
     }
     socket.emit('register', temp)
