@@ -5,6 +5,7 @@ const { Server } = require("socket.io");
 const {MongoClient} = require('mongodb');
 const bodyParser = require('body-parser')
 const mainRouter = require("./routes/mainRoute");
+const confirmationRouter = require("./routes/confirmationRoute")
 const clientFunctions = require('./scripts/serverClientFunctions')
 const databaseFunctions = require('./scripts/databaseFunctions')
 const websocket = require("./scripts/serverSocketHandler")
@@ -13,9 +14,10 @@ const port = process.env.PORT || 3000
 app.use(bodyParser.json({ limit: '100mb' }))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, '/scripts')))
-app.use(express.static(path.join(__dirname, '/css')))
+app.use(express.static(path.join(__dirname, '/styling')))
 app.set('view engine', 'html')
 app.use("/", mainRouter);
+app.use("/confirm", confirmationRouter);
 
 
 let server = http.createServer(app);

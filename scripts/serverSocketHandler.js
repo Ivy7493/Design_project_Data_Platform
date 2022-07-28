@@ -1,5 +1,6 @@
 var socketio = require('socket.io')
 let DB = require('./databaseFunctions')
+let AuthService = require('./AuthenticationFunctions')
 var io;
 function startSocket(app){
     io = new socketio.Server(app);
@@ -23,13 +24,14 @@ function startSocket(app){
                         });
 
                         socket.on('register',(data) =>{
-                            DB.registerNewUser(data.username,data.password).then( status =>{
+                          AuthService.registerNewUser(data).then(status=>{
                             if(status != -1){
-                                io.to(data.ID).emit("registration_Successful","Account successfully created")
-                               }else{
-                                io.to(data.ID).emit("registration_Failed","Account failed to created")
-                               }
-                           })
+                                    io.to(data.ID).emit("registration_Successful","Account successfully created")
+                                   }else{
+                                    io.to(data.ID).emit("registration_Failed","Account failed to created")
+                                   }
+                          })
+
                         })
 
                         socket.on('login',(data)=>{
@@ -42,6 +44,18 @@ function startSocket(app){
                                    }
                             })
                         })
+
+                        socket.on("getRouteData",(data) =>{
+                            console.log("We got here")
+                            let str = (Math.random() * (30 - 1) + 1)
+                            let num = parseFloat(str);
+                            let returnData = {
+                                long: 18.85,
+                                lat: num,
+                            }
+                            io.to(data.ID).emit("getRouteData",returnData)
+                        })
+                       
                 });
 }
 

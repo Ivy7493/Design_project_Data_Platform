@@ -1,5 +1,6 @@
 const e = require('express');
 const {MongoClient} = require('mongodb');
+const userModel = require("../scripts/models/userModel")
 let connectionString = "mongodb+srv://city-energy:city-energy@cluster0.utc0s.mongodb.net/?retryWrites=true&w=majority"
 let client = new MongoClient(connectionString);
 client.connect()
@@ -14,17 +15,31 @@ async function connectToDB(){
     }
   }
 
-  async function registerNewUser(username,password){
+  async function registerNewUser(user){
     try{
         client.db("AdminDB").collection('userLogins').insertOne({
-            username: username,
-            password: password
+           user
           })
     }catch(e){
         console.log("Registration failed")
         return -1
     }
     return 1
+  }
+
+  async function confirmNewUser(confirmationCode){
+    const query = {'user.confirmationCode': confirmationCode };
+    try{
+       let result = await client.db("AdminDB").collection('userLogins').findOneAndUpdate(query, { $set: { 'user.status': 'Active' }})
+       if(result.value != null){
+        return 1
+       }else if(result.value == null){
+        return -1
+       }
+  }catch(e){
+      console.log("account confirmation failed")
+      return -1
+  }
   }
 
   async function loginUser(username,password){
@@ -56,4 +71,4 @@ async function connectToDB(){
   }
 
 
-  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser};
+  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser};
