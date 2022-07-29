@@ -12,7 +12,6 @@ function initMap() {
     
 }
 
-
 export function addPin(coords){
     // Initialize and add the map
     const uluru = { lat: coords.lat, lng: coords.long };

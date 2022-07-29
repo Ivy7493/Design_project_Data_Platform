@@ -21,9 +21,19 @@ async function registerNewUser(userInfo){
         user.confirmationCode)
       return rep
     }catch(e){
+      console.log("YEEEE BUDDDY")
         return -1
     }
 
+}
+
+async function loginUser(userInfo){
+    let temp = {
+      username: userInfo.username,
+      password: userInfo.password
+    }
+    let res = await DB.loginUser(temp)
+    return res
 }
 
 
@@ -32,4 +42,4 @@ async function confirmNewUser(confirmationCode){
     return result
 }
 
-module.exports = {registerNewUser, confirmNewUser}
+module.exports = {registerNewUser, confirmNewUser, loginUser}

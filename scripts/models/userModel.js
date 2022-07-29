@@ -5,13 +5,17 @@ const User = mongoose.model(
   new mongoose.Schema({
     username: {
         type: String,
-        unqiue: true
+        unique: true
     },
     email: {
         type: String,
-        unqiue: true
+        unique: true,
+        requied: true
     },
-    password: String,
+    password: {
+      type: String,
+      required: true
+    },
     status: {
       type: String, 
       enum: ['Pending', 'Active'],

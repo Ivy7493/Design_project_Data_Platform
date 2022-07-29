@@ -26,9 +26,9 @@ function startSocket(app){
                         socket.on('register',(data) =>{
                           AuthService.registerNewUser(data).then(status=>{
                             if(status != -1){
-                                    io.to(data.ID).emit("registration_Successful","Account successfully created")
+                                    io.to(data.ID).emit("registration",1)
                                    }else{
-                                    io.to(data.ID).emit("registration_Failed","Account failed to created")
+                                    io.to(data.ID).emit("registration","A")
                                    }
                           })
 
@@ -36,12 +36,8 @@ function startSocket(app){
 
                         socket.on('login',(data)=>{
                             console.log('login req: ', data)
-                            DB.loginUser(data.username,data.password).then(status => {
-                                if(status != -1){
-                                    io.to(data.ID).emit("login","Login successful")
-                                   }else{
-                                    io.to(data.ID).emit("login","Login Failed")
-                                   }
+                            AuthService.loginUser(data).then((status)=>{
+                                    io.to(data.ID).emit("login",status)
                             })
                         })
 

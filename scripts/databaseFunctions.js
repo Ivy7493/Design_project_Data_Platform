@@ -1,9 +1,13 @@
 const e = require('express');
 const {MongoClient} = require('mongodb');
 const userModel = require("../scripts/models/userModel")
+var bcrypt = require("bcryptjs");
+
+
 let connectionString = "mongodb+srv://city-energy:city-energy@cluster0.utc0s.mongodb.net/?retryWrites=true&w=majority"
 let client = new MongoClient(connectionString);
 client.connect()
+
 async function connectToDB(){
     let client = new MongoClient(connectionString);
     try{
@@ -42,18 +46,18 @@ async function connectToDB(){
   }
   }
 
-  async function loginUser(username,password){
+  async function loginUser(user){
+    const query = {'user.username': user.username};
     try{
-        let result = await client.db("AdminDB").collection('userLogins').count({
-            username: username,
-            password: password
-          })
-        console.log("This is what we got from the request")
+        let result = await client.db("AdminDB").collection('userLogins').findOne(query)
         console.log("Accounts found: ",result)
-        if(result == 0){
-            return -1
-        }else{
+        console.log("Was this correct?: ", result.user.password)
+        const validPassword = await bcrypt.compare(user.password, result.user.password);
+        console.log("valid?". validPassword)
+        if(validPassword == true){
             return 1
+        }else{
+            return -1
         }
     }catch(e){
         console.log("login failed")
