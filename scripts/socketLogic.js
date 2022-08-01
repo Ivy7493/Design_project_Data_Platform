@@ -1,6 +1,6 @@
 
 import { addPin } from "./mapFunctions.js";
-import { ChangePage } from "./pageController.js";
+import { ChangePage, ToggleLogout } from "./pageController.js";
 
 var socket = io();
 let socketID = ""
@@ -18,11 +18,19 @@ socket.on('login',(data)=>{
     if(data == 1){
         console.log("Poggers")
         ChangePage(document,'MainPage')
+        ToggleLogout(document)
     }
 })
 
 socket.on('getRouteData',(data)=>{
     addPin(data)
+})
+
+
+socket.on('hasAdminAccess', (data)=>{
+    if(data == true){
+        ChangePage(document,'adminPage')
+    }
 })
 
 

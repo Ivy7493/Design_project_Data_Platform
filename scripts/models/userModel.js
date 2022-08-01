@@ -12,6 +12,12 @@ const User = mongoose.model(
         unique: true,
         requied: true
     },
+    level: {
+      type: String,
+      required: true,
+      enum: ['employee','admin'],
+      default: 'employee'
+    },
     password: {
       type: String,
       required: true

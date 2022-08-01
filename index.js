@@ -15,6 +15,7 @@ app.use(bodyParser.json({ limit: '100mb' }))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, '/scripts')))
 app.use(express.static(path.join(__dirname, '/styling')))
+app.use(express.static(path.join(__dirname, '/Misc')))
 app.set('view engine', 'html')
 app.use("/", mainRouter);
 app.use("/confirm", confirmationRouter);

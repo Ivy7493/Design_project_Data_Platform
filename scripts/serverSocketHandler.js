@@ -41,6 +41,16 @@ function startSocket(app){
                             })
                         })
 
+                        socket.on('hasAdminAccess',(data)=>{
+                                AuthService.hasAdminAccess(data.accountID).then(data =>{
+                                        if(data == 1){
+                                                io.to(data.ID).emit("hasAdminAccess",true)
+                                        }else{
+                                                io.to(data.ID).emit('hasAdminAccess',false)
+                                        }
+                                })
+                        })
+
                         socket.on("getRouteData",(data) =>{
                             console.log("We got here")
                             let str = (Math.random() * (30 - 1) + 1)

@@ -46,3 +46,9 @@ button:hover {
     background-color: #000000;
 	color: #ffffff;
   }
+
+
+.Page{
+    display: flex;
+    justify-content: center;
+}

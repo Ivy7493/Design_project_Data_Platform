@@ -1,4 +1,4 @@
-import { ChangePage, InitPages } from "./pageController.js";
+import { ChangePage, InitPages, ToggleLogout } from "./pageController.js";
 import { SendToServer, ReturnSocketID } from "./socketLogic.js"
 
 let userField = document.getElementById("username");
@@ -9,12 +9,20 @@ let ShowregisterButton = document.getElementById('ShowRegister');
 
 let loginButton = document.getElementById("login");
 let registerButton = document.getElementById("register")
+let logoutButton = document.getElementById('logoutButton')
 InitPages(document)
 
 
 
 ShowregisterButton.addEventListener('click',function (){
     ChangePage(document,'Register')
+})
+
+logoutButton.addEventListener('click',function (){
+    SendToServer('logout',"YAAAS")
+    ChangePage(document,'Login')
+    ToggleLogout(document)
+    
 })
 
 

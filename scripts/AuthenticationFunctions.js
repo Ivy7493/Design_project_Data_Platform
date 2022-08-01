@@ -27,6 +27,11 @@ async function registerNewUser(userInfo){
 
 }
 
+async function hasAdminAccess(ID){
+  let result = await DB.hasAdminAccess(ID);
+  return result
+}
+
 async function loginUser(userInfo){
     let temp = {
       username: userInfo.username,

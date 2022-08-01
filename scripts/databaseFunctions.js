@@ -50,11 +50,11 @@ async function connectToDB(){
     const query = {'user.username': user.username};
     try{
         let result = await client.db("AdminDB").collection('userLogins').findOne(query)
-        console.log("Accounts found: ",result)
+        console.log("Accounts found: ",result.user)
         console.log("Was this correct?: ", result.user.password)
         const validPassword = await bcrypt.compare(user.password, result.user.password);
         console.log("valid?". validPassword)
-        if(validPassword == true){
+        if(validPassword == true && result.user.status == 'Active'){
             return 1
         }else{
             return -1
@@ -63,6 +63,32 @@ async function connectToDB(){
         console.log("login failed")
         return -1
     }
+  }
+
+  async function retrieveAllAccounts(){
+    try{
+      let result = await client.db("AdminDB").collection('userLogins').find()
+      let fixedResult = result.map((x)=>{
+        console.log(x)
+      })
+    }catch(e){
+
+    }
+  }
+
+  async function hasAdminAccess(ID){
+    const query = {'user.confirmationCode': ID };
+    try{
+       let result = await client.db("AdminDB").collection('userLogins').findOne(query)
+       if(result.value != null){
+        return 1
+       }else if(result.value == null){
+        return -1
+       }
+  }catch(e){
+      console.log("account confirmation failed")
+      return -1
+  }
   }
 
 
@@ -75,4 +101,4 @@ async function connectToDB(){
   }
 
 
-  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser};
+  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess};
