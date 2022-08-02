@@ -1,15 +1,15 @@
-input[type=text] {
+/* input[type=text] {
     background-color: #f6f6f6;
     border: none;
     color: #0d0d0d;
-    padding: 15px 32px;
+    padding: .5rem 1rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     margin: 5px;
-    width: 85%;
-    border: 2px solid #f6f6f6;
+    width: 45%;
+    border: none;
     -webkit-transition: all 0.5s ease-in-out;
     -moz-transition: all 0.5s ease-in-out;
     -ms-transition: all 0.5s ease-in-out;
@@ -18,7 +18,6 @@ input[type=text] {
     -webkit-border-radius: 5px 5px 5px 5px;
     border-radius: 5px 5px 5px 5px;
 }
-
 
 button{
 	background-color: #FFFFFF;
@@ -65,10 +64,85 @@ label{
 button:hover {
     background-color: #000000;
 	color: #ffffff;
-  }
+} */
+
+input[type=text] {
+    background-color: #f6f6f6;
+    border: none;
+    padding: .5rem .3rem;
+    border-radius: .4rem;
+}
+
+.login-box {
+    width: 100%;
+}
+
+.login-box-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: fit-content;
+    border: 1px solid rgb(28,153,65);
+    padding: 5rem 4.5rem;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .3);
+}
+
+.login-box-btns {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.login-box-btns button {
+    border: none;
+    outline: none;
+    padding: .5rem .9rem;
+    color: #FFF;
+    border-radius: .4rem;
+    font-size: 1rem;
+    width: 5rem;
+    cursor: pointer;
+}
+
+.login-box-btns .login-btn {
+    background: linear-gradient(to right bottom,
+     rgba(28,153,65, 1),
+     rgba(28,153,65, .6),
+     rgba(28,153,65, .3));
+}
+
+.login-box-btns .register-btn {
+    background: linear-gradient(to right top,
+    rgba(45, 212, 191, .6),
+    rgba(45, 212, 191, .8),
+    rgba(45, 212, 191, 1));
+}
 
 
-.Page{
+
+.flex-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+}
+
+.input-struct {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+/* .Page{
     display: flex;
     justify-content: center;
+} */
+
+.ft-quick {
+    font-family: 'Quicksand';
+    font-weight: bold;
+}
+
+.ft-roboto-cd {
+    font-family: 'Roboto Condensed', sans-serif;
 }
