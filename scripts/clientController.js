@@ -17,6 +17,7 @@ let logoutButton = document.getElementById('logoutButton')
 let deleteButton = document.getElementById('deleteAccount')
 let setAdminButton = document.getElementById("setAdminButton")
 let adminButton = document.getElementById('adminButton')
+let regBackButton = document.getElementById('regBackButton')
 
 InitPages(document)
 
@@ -55,6 +56,10 @@ deleteButton.addEventListener('click',function(){
 
 ShowregisterButton.addEventListener('click',function (){
     ChangePage(document,'Register')
+})
+
+regBackButton.addEventListener('click',function (){
+    ChangePage(document,'Login')
 })
 
 logoutButton.addEventListener('click',function (){

@@ -9,9 +9,8 @@
 </head>
 <body>
 
-<div style="margin-bottom: 50px;" class="flex-center logo-heading">
-    <h1>City-Energy</h1>
-    <img src="../Logo.png" alt="City power logo" width="100" height="100">
+<div style="margin-bottom: 30px; margin-top: 20px;" class="flex-center">
+    <img src="../Logo.png" alt="City power logo" width="200" height="200">
     <button type="button" id="logoutButton">Logout</button> 
 </div>
 
@@ -38,24 +37,36 @@
     </div>
 </div>
 
-<div class="Page" id="registrationPage">
-    <label for="username">Enter Username:</label>
-    <input type="text" id="Regusername" name="username"><br><br>
-    <label for="password">Enter Password: </label>
-    <input type="text" id="Regpassword" name="password"><br><br>
-    <label for="email">Enter Email</label>
-    <input type="text" id="Regemail" name="email"><br><br>
-    <button type="button" id="register">Register</button> 
+<div  id="registrationPage">
+    <div class="flex-center login-box">
+         <div class="login-box-child">
+             <div class="input-struct">
+                <label class="ft-quick" for="username">Enter Username:</label>
+                <input type="text" id="Regusername" name="username"><br>
+                <label class="ft-quick" for="password">Enter Password: </label>
+                <input type="text" id="Regpassword" name="password"><br>
+                <label class="ft-quick" for="email">Enter Email</label>
+                <input type="text" id="Regemail" name="email">
+            </div>
+            
+            <div class="login-box-btns">
+                <button class="back-btn ft-roboto-cd" type="button" id="regBackButton">Back</button>
+                <button class="register-btn ft-roboto-cd" type="button" id="register">Register</button>
+            </div>
+            
+        </div> 
+    </div>
+
 </div>
 
 
-<div class="Page" id="mainPage">
+<div  id="mainPage">
 <button type="button" id="adminButton">Set Admin Access</button> 
 <div id="map" style="width:100%;height:400px;"></div>
 </div>
 
 
-<div class="Page" id="adminPage">
+<div  id="adminPage">
     <div id="myGrid" style="height: 200px; width:500px;" class="ag-theme-alpine"></div>
     <button type="button" id="deleteAccount">Delete Account</button> 
     <button type="button" id="setAdminButton">Set Admin Access</button> 
