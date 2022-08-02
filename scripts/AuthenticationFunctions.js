@@ -1,9 +1,11 @@
 let DB = require('./databaseFunctions')
+
 const userModel = require("../scripts/models/userModel")
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 let config = require('./configs/authConfig')
-let Mailer = require("./configs/mailerConfig")
+let Mailer = require("./configs/mailerConfig");
+const { user } = require('./configs/authConfig');
 
 
 async function registerNewUser(userInfo){
@@ -32,7 +34,8 @@ async function hasAdminAccess(ID){
 }
 
 async function loginUser(userInfo){
-    let temp = {
+  await DB.returnSpeedData()  
+  let temp = {
       username: userInfo.username,
       password: userInfo.password
     }
