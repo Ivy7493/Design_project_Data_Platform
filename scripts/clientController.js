@@ -1,18 +1,57 @@
 import { ChangePage, InitPages, ToggleLogout } from "./pageController.js";
 import { SendToServer, ReturnSocketID } from "./socketLogic.js"
+import { getCurrentTableSelection } from "./tableFunctions.js"
 
-let userField = document.getElementById("username");
-let passField = document.getElementById("password");
-let emailField = document.getElementById("email")
+let ReguserField = document.getElementById("Regusername");
+let RegpassField = document.getElementById("Regpassword");
+let RegemailField = document.getElementById("Regemail")
+
+let userField = document.getElementById('username')
+let passField = document.getElementById("password")
 
 let ShowregisterButton = document.getElementById('ShowRegister');
 
 let loginButton = document.getElementById("login");
 let registerButton = document.getElementById("register")
 let logoutButton = document.getElementById('logoutButton')
+let deleteButton = document.getElementById('deleteAccount')
+let setAdminButton = document.getElementById("setAdminButton")
+let adminButton = document.getElementById('adminButton')
+
 InitPages(document)
 
 
+adminButton.addEventListener('click',function(){
+    let temp2 = {
+        token: sessionStorage.getItem("Token"),
+        ID: ReturnSocketID()
+    }
+    SendToServer('hasAdminAccess',temp2)
+})
+
+setAdminButton.addEventListener('click',function(){
+    let temp = getCurrentTableSelection()
+    let id = ReturnSocketID()
+    let entry = {
+        username: temp[0].username,
+        ID: id,
+        email: temp[0].email,
+        access: temp[0].access
+    }
+    SendToServer("makeAdmin",entry)
+})
+
+deleteButton.addEventListener('click',function(){
+    let temp = getCurrentTableSelection()
+    let id = ReturnSocketID()
+    let entry = {
+        username: temp[0].username,
+        ID: id,
+        email: temp[0].email,
+        access: temp[0].access
+    }
+    SendToServer("deleteUser",entry)
+})
 
 ShowregisterButton.addEventListener('click',function (){
     ChangePage(document,'Register')
@@ -22,15 +61,14 @@ logoutButton.addEventListener('click',function (){
     SendToServer('logout',"YAAAS")
     ChangePage(document,'Login')
     ToggleLogout(document)
-    
 })
 
 
 registerButton.addEventListener('click',function(){
     let account = {
-        username: userField.value,
-        password: passField.value,
-        email: emailField.value,
+        username: ReguserField.value,
+        password: RegpassField.value,
+        email: RegemailField.value,
         ID: ReturnSocketID()
     }
     try{
@@ -49,6 +87,9 @@ loginButton.addEventListener('click',function (){
         password: passField.value,
         ID: ReturnSocketID()
     }
-    //socket.emit('login', temp)
     SendToServer('login',temp)
 })
+
+
+
+

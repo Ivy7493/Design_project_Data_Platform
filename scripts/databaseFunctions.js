@@ -55,7 +55,7 @@ async function connectToDB(){
         const validPassword = await bcrypt.compare(user.password, result.user.password);
         console.log("valid?". validPassword)
         if(validPassword == true && result.user.status == 'Active'){
-            return 1
+            return result.user.confirmationCode
         }else{
             return -1
         }
@@ -68,9 +68,8 @@ async function connectToDB(){
   async function retrieveAllAccounts(){
     try{
       let result = await client.db("AdminDB").collection('userLogins').find()
-      let fixedResult = result.map((x)=>{
-        console.log(x)
-      })
+      let temp  = result.toArray()
+      return temp
     }catch(e){
 
     }
@@ -80,15 +79,33 @@ async function connectToDB(){
     const query = {'user.confirmationCode': ID };
     try{
        let result = await client.db("AdminDB").collection('userLogins').findOne(query)
-       if(result.value != null){
-        return 1
-       }else if(result.value == null){
-        return -1
+       console.log("Huh? ", result.user)
+       if(result.user.level == 'admin'){
+        return true
+       }else{
+        return false
        }
   }catch(e){
-      console.log("account confirmation failed")
-      return -1
+      console.log("account access failed")
+      return false
   }
+  }
+
+  async function deleteUserAccount(ID){
+    const query = {'user.email': ID };
+    let result = await client.db("AdminDB").collection("userLogins").deleteOne(query)
+    return result
+  }
+
+
+  async function makeUserAdmin(ID){
+    const query = {'user.username': ID };
+    let result = await client.db("AdminDB").collection('userLogins').findOneAndUpdate(query, { $set: { 'user.level': 'admin' }})
+    if(result){
+      return true
+    }else{
+      return false
+    }
   }
 
 
@@ -101,4 +118,4 @@ async function connectToDB(){
   }
 
 
-  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess};
+  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin};

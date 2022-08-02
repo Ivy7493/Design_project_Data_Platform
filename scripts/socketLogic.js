@@ -1,6 +1,6 @@
-
 import { addPin } from "./mapFunctions.js";
 import { ChangePage, ToggleLogout } from "./pageController.js";
+import { setAdminTable, RemoveAdminEntry } from "./tableFunctions.js";
 
 var socket = io();
 let socketID = ""
@@ -14,12 +14,15 @@ socket.on("registration",(data)=>{
 })
 
 socket.on('login',(data)=>{
-    window.alert(data)
-    if(data == 1){
-        console.log("Poggers")
+    if(data != -1){
+        sessionStorage.setItem("Token", data);
         ChangePage(document,'MainPage')
         ToggleLogout(document)
     }
+})
+
+socket.on("getAdminData", (data)=>{
+    setAdminTable(document,data)
 })
 
 socket.on('getRouteData',(data)=>{
@@ -28,9 +31,31 @@ socket.on('getRouteData',(data)=>{
 
 
 socket.on('hasAdminAccess', (data)=>{
+    console.log("HELLO WE HERE")
+    console.log(data)
     if(data == true){
         ChangePage(document,'adminPage')
+        let temp2 = {
+            token: sessionStorage.getItem("Token"),
+            ID: ReturnSocketID()
+        }
+        SendToServer('getAdminData',temp2)
+    }else{
+        window.alert("You do not have admin access!")
     }
+})
+
+socket.on('deleteUser',(data)=>{
+    console.log(data)
+    RemoveAdminEntry()
+})
+
+socket.on('makeAdmin', (data)=>{
+    let temp2 = {
+        token: sessionStorage.getItem("Token"),
+        ID: ReturnSocketID()
+    }
+    SendToServer('getAdminData',temp2)
 })
 
 

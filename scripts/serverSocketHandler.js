@@ -1,6 +1,7 @@
 var socketio = require('socket.io')
 let DB = require('./databaseFunctions')
-let AuthService = require('./AuthenticationFunctions')
+let AuthService = require('./AuthenticationFunctions');
+const authConfig = require('./configs/authConfig');
 var io;
 function startSocket(app){
     io = new socketio.Server(app);
@@ -42,8 +43,9 @@ function startSocket(app){
                         })
 
                         socket.on('hasAdminAccess',(data)=>{
-                                AuthService.hasAdminAccess(data.accountID).then(data =>{
-                                        if(data == 1){
+                                console.log("WE did get here which is cool")
+                                AuthService.hasAdminAccess(data.token).then(status =>{
+                                        if(status == true){
                                                 io.to(data.ID).emit("hasAdminAccess",true)
                                         }else{
                                                 io.to(data.ID).emit('hasAdminAccess',false)
@@ -60,6 +62,24 @@ function startSocket(app){
                                 lat: num,
                             }
                             io.to(data.ID).emit("getRouteData",returnData)
+                        })
+
+                        socket.on("getAdminData",(data)=>{
+                                AuthService.getAllUsers(data.token).then(status=>{
+                                        io.to(data.ID).emit('getAdminData',status)
+                                })
+                        })
+
+                        socket.on("deleteUser",(data)=>{
+                                AuthService.DeleteUser(data).then(status=>{
+                                        io.to(data.ID).emit("deleteUser",status)
+                                })
+                        })
+
+                        socket.on('makeAdmin',(data)=>{
+                                AuthService.makeUserAdmin(data).then((status)=>{
+                                        io.to(data.ID).emit('makeAdmin',status)
+                                })
                         })
                        
                 });

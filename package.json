@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Ivy7493/Design_project_Data_Platform#readme",
   "dependencies": {
+    "ag-grid-community": "^28.0.2",
     "bcryptjs": "^2.4.3",
     "express": "^4.18.1",
     "install": "^0.13.0",

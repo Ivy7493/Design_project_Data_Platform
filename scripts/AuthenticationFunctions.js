@@ -21,7 +21,6 @@ async function registerNewUser(userInfo){
         user.confirmationCode)
       return rep
     }catch(e){
-      console.log("YEEEE BUDDDY")
         return -1
     }
 
@@ -47,4 +46,21 @@ async function confirmNewUser(confirmationCode){
     return result
 }
 
-module.exports = {registerNewUser, confirmNewUser, loginUser}
+async function getAllUsers(confirmationCode){
+  let result = await hasAdminAccess(confirmationCode)
+  if(result == true){
+    let res = await DB.retrieveAllAccounts()
+    return res
+  }
+}
+
+async function DeleteUser(user){
+  let result = await DB.deleteUserAccount(user.email)
+}
+
+async function makeUserAdmin(user){
+  let result = await DB.makeUserAdmin(user.username)
+  return result
+}
+
+module.exports = {registerNewUser, confirmNewUser, loginUser, hasAdminAccess, getAllUsers, DeleteUser, makeUserAdmin}
