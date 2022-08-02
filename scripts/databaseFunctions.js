@@ -17,7 +17,7 @@ async function connectToDB(){
       console.log("Failed to connect to DB")
     }
   }
-  async function returnSpeedData(){
+async function returnSpeedData(){
     try{
         let result = await client.db("AdminDB").collection('testData').find()
         result=await result.toArray()
@@ -131,8 +131,4 @@ async function connectToDB(){
   }
 
 
-<<<<<<< Updated upstream
-  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin};
-=======
-  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, returnSpeedData};
->>>>>>> Stashed changes
+  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData};
