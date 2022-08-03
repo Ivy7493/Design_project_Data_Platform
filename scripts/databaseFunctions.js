@@ -7,7 +7,6 @@ var bcrypt = require("bcryptjs");
 let connectionString = "mongodb+srv://city-energy:city-energy@cluster0.utc0s.mongodb.net/?retryWrites=true&w=majority"
 let client = new MongoClient(connectionString);
 client.connect()
-
 async function connectToDB(){
     let client = new MongoClient(connectionString);
     try{
@@ -18,7 +17,21 @@ async function connectToDB(){
       console.log("Failed to connect to DB")
     }
   }
-
+async function returnSpeedData(){
+    try{
+        let result = await client.db("AdminDB").collection('testData').find()
+        result=await result.toArray()
+        let speedData=[]
+        result.map(x=>{
+          speedData.push(x.Speed)
+        })
+        console.log(speedData)
+        return speedData
+    }catch(e){
+        console.log("Data retrieval failed")
+        return -1
+    }
+  }
   async function registerNewUser(user){
     try{
         client.db("AdminDB").collection('userLogins').insertOne({
@@ -118,4 +131,4 @@ async function connectToDB(){
   }
 
 
-  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin};
+  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData};
