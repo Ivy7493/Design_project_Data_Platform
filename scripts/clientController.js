@@ -93,6 +93,7 @@ loginButton.addEventListener('click',function (){
         ID: ReturnSocketID()
     }
     SendToServer('login',temp)
+    //SendToServer('getRouteData',temp)
 })
 
 

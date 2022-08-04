@@ -1,5 +1,6 @@
 // Initialize and add the map
 let map;
+let dirRenderer;
 
 function initMap() {
     // The location of Uluru
@@ -21,6 +22,34 @@ export function addPin(coords){
     });
     const trafficLayer = new google.maps.TrafficLayer();
     trafficLayer.setMap(map);
+  }
+
+  export function addRoute(coords){
+    if(coords.length < 2){
+        return
+    }
+    let dirService = new google.maps.DirectionsService();
+    dirRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
+    dirRenderer.setMap(map);
+    let temp = [] 
+    coords.map(x=>{
+          let y = {location: x}
+          temp.push(y)
+    })
+    temp = temp.slice(0,24)
+    console.log('Ayyo',temp)
+    // highlight a street
+    let request = {
+        origin: coords[0],
+        destination: coords[coords.length -1 ],
+        waypoints: temp,
+        travelMode: google.maps.TravelMode.DRIVING
+    };
+    dirService.route(request, function(result, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            dirRenderer.setDirections(result);
+        }
+    });
   }
   
   

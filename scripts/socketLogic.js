@@ -1,4 +1,4 @@
-import { addPin } from "./mapFunctions.js";
+import { addPin, addRoute } from "./mapFunctions.js";
 import { ChangePage, ToggleLogout } from "./pageController.js";
 import { setAdminTable, RemoveAdminEntry } from "./tableFunctions.js";
 
@@ -18,6 +18,7 @@ socket.on('login',(data)=>{
         sessionStorage.setItem("Token", data);
         ChangePage(document,'MainPage')
         ToggleLogout(document)
+        //addRoute(data)
     }
 })
 
@@ -26,7 +27,9 @@ socket.on("getAdminData", (data)=>{
 })
 
 socket.on('getRouteData',(data)=>{
-    addPin(data)
+    //addPin(data)
+    //addPin(data)
+    addRoute(data)
 })
 
 

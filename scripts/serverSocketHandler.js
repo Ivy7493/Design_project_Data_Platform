@@ -55,13 +55,10 @@ function startSocket(app){
 
                         socket.on("getRouteData",(data) =>{
                             console.log("We got here")
-                            let str = (Math.random() * (30 - 1) + 1)
-                            let num = parseFloat(str);
-                            let returnData = {
-                                long: 18.85,
-                                lat: num,
-                            }
-                            io.to(data.ID).emit("getRouteData",returnData)
+                                DB.returnCoordinateData().then(status =>{
+                                        io.to(data.ID).emit("getRouteData",status)
+                                });
+                            
                         })
 
                         socket.on("getAdminData",(data)=>{
