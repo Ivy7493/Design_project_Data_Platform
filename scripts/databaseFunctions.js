@@ -33,6 +33,23 @@ async function returnSpeedData(){
     }
   }
 
+
+  async function returnTimeData(){
+    try{
+        let result = await client.db("AdminDB").collection('testData').find()
+        result=await result.toArray()
+        let timeData=[]
+        result.map(x=>{
+          timeData.push(x.Time)
+        })
+        console.log(timeData)
+        return timeData
+    }catch(e){
+        console.log("Data retrieval failed")
+        return -1
+    }
+  }
+
   async function returnCoordinateData(){
     try{
       let result = await client.db("AdminDB").collection('testData').find()
@@ -148,4 +165,4 @@ async function returnSpeedData(){
   }
 
 
-  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData};
+  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData};

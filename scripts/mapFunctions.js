@@ -37,7 +37,6 @@ export function addPin(coords){
           temp.push(y)
     })
     temp = temp.slice(0,24)
-    console.log('Ayyo',temp)
     // highlight a street
     let request = {
         origin: coords[0],

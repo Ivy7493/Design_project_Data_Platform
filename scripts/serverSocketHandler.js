@@ -1,6 +1,7 @@
 var socketio = require('socket.io')
 let DB = require('./databaseFunctions')
 let AuthService = require('./AuthenticationFunctions');
+let CalcService = require('./calculationFunctions')
 const authConfig = require('./configs/authConfig');
 var io;
 function startSocket(app){
@@ -76,6 +77,18 @@ function startSocket(app){
                         socket.on('makeAdmin',(data)=>{
                                 AuthService.makeUserAdmin(data).then((status)=>{
                                         io.to(data.ID).emit('makeAdmin',status)
+                                })
+                        })
+
+                        socket.on("getSpeedData",(data)=>{
+                                CalcService.returnSpeedForRoute().then(status=>{
+                                        io.to(data.ID).emit('getSpeedData',status)
+                                })
+                        })
+
+                        socket.on("getGraphData",(data)=>{
+                                CalcService.ReturnSpeedTimeForRoute().then(status=>{
+                                        io.to(data.ID).emit('getGraphData',status)
                                 })
                         })
                        
