@@ -66,4 +66,5 @@ async function makeUserAdmin(user){
   return result
 }
 
+
 module.exports = {registerNewUser, confirmNewUser, loginUser, hasAdminAccess, getAllUsers, DeleteUser, makeUserAdmin}

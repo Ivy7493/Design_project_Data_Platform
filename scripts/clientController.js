@@ -22,6 +22,8 @@ let regBackButton = document.getElementById('regBackButton')
 InitPages(document)
 
 
+
+
 adminButton.addEventListener('click',function(){
     let temp2 = {
         token: sessionStorage.getItem("Token"),
@@ -93,6 +95,9 @@ loginButton.addEventListener('click',function (){
         ID: ReturnSocketID()
     }
     SendToServer('login',temp)
+    //SendToServer('getRouteData',temp)
+    //SendToServer("getAverageSpeed",temp)
+    SendToServer('getGraphData',temp)
 })
 
 
