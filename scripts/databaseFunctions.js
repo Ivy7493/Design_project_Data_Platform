@@ -49,6 +49,21 @@ async function returnSpeedData(){
         return -1
     }
   }
+  async function returnAltitude(){
+    try{
+        let result = await client.db("AdminDB").collection('testData').find()
+        result=await result.toArray()
+        let altitudeData=[]
+        result.map(x=>{
+          altitudeData.push(x.Altitude)
+        })
+        console.log(altitudeData)
+        return altitudeData
+    }catch(e){
+        console.log("Data retrieval of Altitude failed")
+        return -1
+    }
+  }
 
   async function returnCoordinateData(){
     try{
@@ -165,4 +180,4 @@ async function returnSpeedData(){
   }
 
 
-  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData};
+  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, returnAltitude};

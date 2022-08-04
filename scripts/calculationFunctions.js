@@ -36,4 +36,5 @@ async function ReturnSpeedTimeForRoute(){
     return temp
 }
 
+
 module.exports={calculateSpeedAverage, returnSpeedForRoute, returnTimeForRoute, ReturnSpeedTimeForRoute};
