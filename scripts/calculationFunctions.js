@@ -126,14 +126,15 @@ async function calculateSlopeAndDistance(){
         }
         offtakeEnergy= powerOfftake* timeDiff
         energyPerTrip += (propEnergy + offtakeEnergy)/3.6 * 10**6
-         if(resultLat[i]===startLat&& resultLong[i]===startLong&& timeCount>300){
+         if(resultLat[i]===startLat&& resultLong[i]===startLong&& timeCount>300){ // Assume the duration of the trips is longer than 5 minutes and a bus doesn’t stop for longer than 5 minutes. Therefore after 5 minutes if a bus stop at the same location. a trip was completed. 
             totalEnergy[j]=energyPerTrip 
-            durationTrip=timeCount
-            j+=1
+            durationTrip=timeCount // duration in seconds
+            j++
             energyPerTrip=0
             timeCount=0
          }
-        timeCount++
+        console.log(durationTrip) // will be incorrect now because the data does not contain a full trip
+        timeCount+= timeDiff
         propEnergy=0
         totalForce=0;
         dSpeed=0;
@@ -142,7 +143,7 @@ async function calculateSlopeAndDistance(){
         
     }
  console.log('j',j)
- console.log('total Energy final',totalEnergy)
+ console.log('total Energy final',totalEnergy) // will be incorrect now because the data does not contain a full trip
  return totalEnergy   
        
 }
