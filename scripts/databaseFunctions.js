@@ -2,7 +2,7 @@ const e = require('express');
 const {MongoClient} = require('mongodb');
 const userModel = require("../scripts/models/userModel")
 var bcrypt = require("bcryptjs");
-
+//const { returnTimeForRoute, calculateSlopeAndDistance } = require('./calculationFunctions');
 
 let connectionString = "mongodb+srv://city-energy:city-energy@cluster0.utc0s.mongodb.net/?retryWrites=true&w=majority"
 let client = new MongoClient(connectionString);
@@ -33,7 +33,6 @@ async function returnSpeedData(){
     }
   }
 
-
   async function returnTimeData(){
     try{
         let result = await client.db("AdminDB").collection('testData').find()
@@ -52,7 +51,7 @@ async function returnSpeedData(){
   async function returnAltitude(){
     try{
         let result = await client.db("AdminDB").collection('testData').find()
-        result=await result.toArray()
+        result = await result.toArray()
         let altitudeData=[]
         result.map(x=>{
           altitudeData.push(x.Altitude)
@@ -65,6 +64,36 @@ async function returnSpeedData(){
     }
   }
 
+  async function returnLongitude(){
+    try{
+      let result = await client.db("AdminDB").collection('testData').find()
+      result=await result.toArray()
+      let speedData=[]
+      result.map(x=>{
+        speedData.push(x.Longitude)
+      })
+      console.log(speedData)
+      return speedData
+  }catch(e){
+      console.log("Data retrieval failed")
+      return -1
+  }
+  }
+  async function returnLatitude(){ 
+    try{
+      let result = await client.db("AdminDB").collection('testData').find()
+      result=await result.toArray()
+      let speedData=[]
+      result.map(x=>{
+        speedData.push(x.Latitude)
+      })
+      console.log(speedData)
+      return speedData
+  }catch(e){
+      console.log("Data retrieval failed")
+      return -1
+  }
+  }
   async function returnCoordinateData(){
     try{
       let result = await client.db("AdminDB").collection('testData').find()
@@ -180,4 +209,4 @@ async function returnSpeedData(){
   }
 
 
-  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, returnAltitude};
+  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, returnAltitude, returnLatitude,returnLongitude};
