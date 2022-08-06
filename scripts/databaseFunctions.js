@@ -94,6 +94,7 @@ async function returnSpeedData(){
       return -1
   }
   }
+
   async function returnCoordinateData(){
     try{
       let result = await client.db("AdminDB").collection('testData').find()

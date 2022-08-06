@@ -22,6 +22,7 @@ async function returnSpeedForRoute(){
 
 async function returnTimeForRoute(){
     let result = await DB.returnTimeData()
+    console.log('time',result)
     return result;
 }
 
@@ -32,6 +33,7 @@ async function ReturnSpeedTimeForRoute(){
         speed: sped,
         time: _time
     }
+    console.log(temp)
     return temp
 }
 async function calculateSlopeAndDistance(){
@@ -40,13 +42,18 @@ async function calculateSlopeAndDistance(){
     let resultLat = await DB.returnLatitude() 
     let resultLong = await DB.returnLongitude()
     let velocity=await DB.returnSpeedData()
+    let coordinates=DB.returnCoordinateData()
+    // save start position
+    let startLong=resultLong[0] 
+    let startLat=resultLat[0] 
+    console.log('start',startLong, startLat)
     //initialise variables
     let totalDistance=[]
     let slope=[]
     let totalForce=0
     let expectDspeed=0
     let vehicleForce=0
-    let mass = 3900 //kg
+    let mass = 17327.138 //kg. Weight of Mercedes buses that Rea Vaya use 
     let coeffRr = 0.02 // an estimate
     let coeffAdf=0.36 //an estimate
     let area = 4 //m^2
@@ -56,7 +63,11 @@ async function calculateSlopeAndDistance(){
     let propEnergy = 0;
     let offtakeEnergy=0
     let powerOfftake=100 //W (why? = 100)
-    let totalEnergy = 0
+    let totalEnergy = []
+    energyPerTrip=0
+    let j = 0
+    let timeCount = 0
+    let durationTrip = 0
     // convert data from strings to floats
     let finalLat = resultLat.map(x=>{
         return parseFloat(x)
@@ -70,6 +81,8 @@ async function calculateSlopeAndDistance(){
     // calculations:
     let radius = 6371; // km
     for(let i=0;i<final.length-1;i++){
+        // determine if new trip has started: Check if current location is  = to starting position of trip
+        
         // compute change in elevation
         changeInElev = final[i+1] - final[i];
         if (Math.abs(changeInElev) < 0.2){
@@ -112,14 +125,23 @@ async function calculateSlopeAndDistance(){
           propEnergy=brakingEfficiency * vehicleForce * velocity[i] * timeDiff  
         }
         offtakeEnergy= powerOfftake* timeDiff
-        totalEnergy += (propEnergy + offtakeEnergy)/3.6 * 10**6
-        console.log('total Energy',totalEnergy)
+        energyPerTrip += (propEnergy + offtakeEnergy)/3.6 * 10**6
+         if(resultLat[i]===startLat&& resultLong[i]===startLong&& timeCount>300){
+            totalEnergy[j]=energyPerTrip 
+            durationTrip=timeCount
+            j+=1
+            energyPerTrip=0
+            timeCount=0
+         }
+        timeCount++
         propEnergy=0
         totalForce=0;
         dSpeed=0;
         expectDspeed=0;
         vehicleForce=0
+        
     }
+ console.log('j',j)
  console.log('total Energy final',totalEnergy)
  return totalEnergy   
        
