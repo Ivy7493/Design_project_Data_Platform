@@ -1,6 +1,6 @@
 import { addPin, addRoute } from "./mapFunctions.js";
 import { ChangePage, ToggleLogout } from "./pageController.js";
-import { setAdminTable, RemoveAdminEntry } from "./tableFunctions.js";
+import { setAdminTable, RemoveAdminEntry, setDriverTable, setCarTable } from "./tableFunctions.js";
 import { displaySpeedForTrip } from "./graphFunctions.js";
 
 var socket = io();
@@ -27,6 +27,38 @@ socket.on("getAdminData", (data)=>{
     setAdminTable(document,data)
 })
 
+socket.on("getAllDrivers",(data)=>{
+    setDriverTable(data)
+})
+
+socket.on("deleteDriver", (data)=>{
+    window.alert("Driver Deleted: ", data)
+})
+
+socket.on('createNewDriver',(data)=>{
+    window.alert("Driver: ", data)
+})
+
+//Car management Section
+socket.on('getAllCars',(data)=>{
+    let selectElement = document.getElementById('driverCar')
+    let i, L = selectElement.options.length - 1;
+   for(i = L; i >= 0; i--) {
+      selectElement.remove(i);
+   }
+   console.log("YEEEEE")
+   console.log(data)
+   data.map(x=>{
+        let option = document.createElement("OPTION");
+        //Set Customer Name in Text part.
+        option.innerHTML = x.name
+        //Set CustomerId in Value part.
+        option.value = x.carID;
+        selectElement.options.add(option);
+   })
+    setCarTable(data)
+})
+
 socket.on('getRouteData',(data)=>{
     //addPin(data)
     //addPin(data)
@@ -47,15 +79,16 @@ socket.on('getGraphData',(data)=>{
 
 
 socket.on('hasAdminAccess', (data)=>{
-    console.log("HELLO WE HERE")
-    console.log(data)
     if(data == true){
         ChangePage(document,'adminPage')
         let temp2 = {
             token: sessionStorage.getItem("Token"),
             ID: ReturnSocketID()
         }
+        //Gets access
         SendToServer('getAdminData',temp2)
+        SendToServer('getAllDrivers',temp2)
+        SendToServer('getAllCars',temp2)
     }else{
         window.alert("You do not have admin access!")
     }

@@ -1,8 +1,11 @@
 var socketio = require('socket.io')
 let DB = require('./databaseFunctions')
 let AuthService = require('./AuthenticationFunctions');
-let CalcService = require('./calculationFunctions')
+let CalcService = require('./calculationFunctions');
+let DriverService = require('./driverFunctions')
+let CarService = require('./carFunctions')
 const authConfig = require('./configs/authConfig');
+const Car = require('./models/carModel');
 var io;
 function startSocket(app){
     io = new socketio.Server(app);
@@ -10,7 +13,7 @@ function startSocket(app){
                         console.log("new connection: " + socket.id);
                         socket.join(socket.id)
                         socket.emit("Welcome")
-
+                        CarService.getAllCars();
                         socket.on('disconnect', function () {
                                 console.log("device disconnected");
 
@@ -89,6 +92,58 @@ function startSocket(app){
                         socket.on("getGraphData",(data)=>{
                                 CalcService.ReturnSpeedTimeForRoute().then(status=>{
                                         io.to(data.ID).emit('getGraphData',status)
+                                })
+                        })
+
+                        socket.on("getAllDrivers",(data)=>{
+                                DriverService.getAllDrivers().then(status=>{
+                                        io.to(data.ID).emit('getAllDrivers',status)
+                                })
+
+                        })
+
+                        socket.on("createNewDriver",(data)=>{
+                                DriverService.addNewDriver(data).then(status=>{
+                                        io.to(data.ID).emit('createNewDriver',status)
+                                        DriverService.getAllDrivers().then(status2=>{
+                                                console.log("Checkies", status2)
+                                                io.to(data.ID).emit('getAllDrivers',status2)
+                                        })
+                                })
+                        })
+
+                        socket.on("deleteDriver",(data)=>{
+                                DriverService.deleteDriver(data.driverID).then(status=>{
+                                        io.to(data.ID).emit('deleteDriver',status)
+                                        DriverService.getAllDrivers().then(status2=>{
+                                                io.to(data.ID).emit('getAllDrivers',status2)
+                                        })
+                                })
+                        })
+
+                        ///////CAR SECTION
+
+                        socket.on("getAllCars",(data)=>{
+                                CarService.getAllCars().then(status=>{
+                                        io.to(data.ID).emit("getAllCars",status)
+                                })
+                        })
+
+                        socket.on("createNewCar",(data)=>{
+                                CarService.addNewCar(data).then(status=>{
+                                        io.to(data.ID).emit("createNewCar",status)
+                                        CarService.getAllCars().then(status2=>{
+                                                io.to(data.ID).emit("getAllCars",status2)
+                                        })
+                                })
+                        })
+
+                        socket.on("deleteCar",(data)=>{
+                                CarService.deleteCar(data.carID).then(status=>{
+                                        io.to(data.ID).emit("deleteCar",status)
+                                        CarService.getAllCars().then(status2=>{
+                                                io.to(data.ID).emit("getAllCars",status2)
+                                        })
                                 })
                         })
                        
