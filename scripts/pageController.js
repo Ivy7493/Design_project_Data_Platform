@@ -16,6 +16,7 @@ export function InitPages(document){
     document.getElementById(logoutButton).style.display = "none";
     document.getElementById(adminButton).style.display = "none"
     document.getElementById(LoginRef).style.display = "initial";
+    initAdminPage()
 }
 
 export function ChangePage(document,page){
@@ -66,4 +67,69 @@ export function ToggleLogout(document){
             document.getElementById(logoutButton).style.display = 'none'
             break;
     }
+}
+
+
+
+////////////////////////////////////////////////////////////////////ADMIN CONTROL SECTION///////////////////////////////////////////////
+
+const accountRef = "accountTab"
+const driverRef = "driverTab"
+const addDriverRef = 'addDriverTab'
+const carRef = "carTab"
+const addCarRef = 'addCarTab'
+
+
+function initAdminPage(){
+    document.getElementById(accountRef).style.display = "none"
+    document.getElementById(driverRef).style.display = "none"
+    document.getElementById(addDriverRef).style.display = "none"
+    document.getElementById(carRef).style.display = "none"
+    document.getElementById(addCarRef).style.display = "none"
+
+}
+
+
+export function ChangeAdminPage(page){
+    switch(page){
+        case "account":
+            document.getElementById(accountRef).style.display = "initial"
+            document.getElementById(driverRef).style.display = "none"
+            document.getElementById(addDriverRef).style.display = "none"
+            document.getElementById(carRef).style.display = "none"
+            document.getElementById(addCarRef).style.display = "none"
+            break;
+        case "driver":
+            document.getElementById(accountRef).style.display = "none"
+            document.getElementById(addDriverRef).style.display = "none"
+            document.getElementById(carRef).style.display = "none"
+            document.getElementById(addCarRef).style.display = "none"
+            document.getElementById(driverRef).style.display = "initial"
+            break;
+        case "addDriver":
+            document.getElementById(accountRef).style.display = "none"
+            document.getElementById(driverRef).style.display = "none"
+            document.getElementById(carRef).style.display = "none"
+            document.getElementById(addCarRef).style.display = "none"
+            document.getElementById(addDriverRef).style.display = "initial"
+            break;
+        case 'car':
+            document.getElementById(accountRef).style.display = "none"
+            document.getElementById(driverRef).style.display = "none"
+            document.getElementById(addDriverRef).style.display = "none"
+            document.getElementById(addCarRef).style.display = "none"
+            document.getElementById(carRef).style.display = "initial"
+            break;
+        case "addCar":
+            document.getElementById(accountRef).style.display = "none"
+            document.getElementById(driverRef).style.display = "none"
+            document.getElementById(addDriverRef).style.display = "none"
+            document.getElementById(carRef).style.display = "none"
+            document.getElementById(addCarRef).style.display = "initial"
+            break;
+
+
+
+    }
+
 }

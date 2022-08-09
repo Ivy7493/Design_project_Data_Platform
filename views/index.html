@@ -61,7 +61,7 @@
 
 
 <div  id="mainPage">
-<button type="button" id="adminButton">Set Admin Access</button> 
+<button type="button" id="adminButton">Admin Dashboard</button> 
 <div id="map" style="width:50%;height:400px;"></div>
 <div id="chart">
     <canvas id="myChart" style="width:50%;height:400px;"></canvas>
@@ -70,9 +70,49 @@
 
 
 <div  id="adminPage">
-    <div id="myGrid" style="height: 200px; width:500px;" class="ag-theme-alpine"></div>
-    <button type="button" id="deleteAccount">Delete Account</button> 
-    <button type="button" id="setAdminButton">Set Admin Access</button> 
+    
+    <button type="button" id="accountButton">Account Management</button> 
+    <button type="button" id="driverButton">Driver Management</button>
+    <button type="button" id="carButton">Car Management</button> 
+
+    <div id="accountTab">
+        <div id="myGrid" style="height: 200px; width:500px;" class="ag-theme-alpine"></div>
+        <button type="button" id="deleteAccount">Delete Account</button> 
+        <button type="button" id="setAdminButton">Set Admin Access</button> 
+    </div>
+
+    <div id ="driverTab">
+        <div id="driverTable" style="height: 200px; width:500px;" class="ag-theme-alpine"></div>
+        <button type="button" id="deleteDriverButton">Fire Driver</button>
+        <button type="button" id="addDriverButton">Add Driver</button> 
+
+    </div>
+
+    <div id="addDriverTab">
+        <label class="ft-quick" for="driverName">Enter Driver Name:</label>
+        <input type="text" id="driverName" name="driverName"><br>
+        <label class="ft-quick" for="driverCar">Enter Driver Car: </label>
+        <select id="driverCar" name="driverCar"></select>
+        <button type="button" id="createDriverButton">Create Driver</button> 
+    </div>
+
+    <div id="carTab">
+        <div id="carTable" style="height: 200px; width:500px;" class="ag-theme-alpine"></div>
+        <button type="button" id="deleteCarButton">Retire Car</button>
+        <button type="button" id="addCarButton">Add Car</button>
+
+    </div>
+
+    <div id="addCarTab">
+        <label class="ft-quick" for="carName">Enter Car Name:</label>
+        <input type="text" id="carName" name="carName"><br>
+        <label class="ft-quick" for="massCar">Enter Car Mass: </label>
+        <input type="text" id="massCar" name="massCar"><br>
+        <label class="ft-quick" for="areaCar">Enter Car SurfaceArea: </label>
+        <input type="text" id="areaCar" name="areaCar"><br>
+        <button type="button" id="createCarButton">Create Car</button> 
+    </div>
+    
 </div>
 
 
