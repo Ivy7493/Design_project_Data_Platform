@@ -2,11 +2,13 @@ const e = require('express');
 const {MongoClient} = require('mongodb');
 const userModel = require("../scripts/models/userModel")
 var bcrypt = require("bcryptjs");
+const { request } = require('express');
 
 
 let connectionString = "mongodb+srv://city-energy:city-energy@cluster0.utc0s.mongodb.net/?retryWrites=true&w=majority"
 let client = new MongoClient(connectionString);
 client.connect()
+
 async function connectToDB(){
     let client = new MongoClient(connectionString);
     try{
@@ -97,10 +99,7 @@ async function returnSpeedData(){
     const query = {'user.username': user.username};
     try{
         let result = await client.db("AdminDB").collection('userLogins').findOne(query)
-        console.log("Accounts found: ",result.user)
-        console.log("Was this correct?: ", result.user.password)
         const validPassword = await bcrypt.compare(user.password, result.user.password);
-        console.log("valid?". validPassword)
         if(validPassword == true && result.user.status == 'Active'){
             return result.user.confirmationCode
         }else{
@@ -126,7 +125,6 @@ async function returnSpeedData(){
     const query = {'user.confirmationCode': ID };
     try{
        let result = await client.db("AdminDB").collection('userLogins').findOne(query)
-       console.log("Huh? ", result.user)
        if(result.user.level == 'admin'){
         return true
        }else{
@@ -156,6 +154,94 @@ async function returnSpeedData(){
   }
 
 
+  async function getallDrivers(){
+    try{
+      let result = await client.db("Driver").collection("Drivers").find()
+      let temp = await result.toArray()
+      let namesOnly = []
+      temp.map(x=>{
+          console.log(x.driver)
+          namesOnly.push(x.driver)
+      })
+      return namesOnly
+    }catch(e){
+      console.log("Eish Error")
+      console.log(e)
+      return -1 
+    }
+    
+  }
+
+
+  async function deleteDriver(ID){
+    try{
+      const query = {'driver.driverID':  ID};
+      let result = await client.db("Driver").collection("Drivers").findOneAndUpdate(query, { $set: { 'driver.employement': 'fired' }})
+      return result.lastErrorObject.updatedExisting
+    }catch(e){
+      console.log("Error deleting driver: ", e)
+      return -1 
+    }
+    
+  }
+
+  async function addDriver(driver){
+    try{
+      await client.db("Driver").collection('Drivers').insertOne({
+         driver
+        })
+  }catch(e){
+      console.log("Driver creation failed")
+      return -1
+  }
+  return 1
+  }
+
+  //Car section
+
+  async function getAllCars(){
+    try{
+      let result = await client.db("Car").collection("Cars").find()
+      let temp = await result.toArray()
+      let namesOnly = []
+      temp.map(x=>{
+          namesOnly.push(x.Car)
+      })
+      return namesOnly
+    }catch(e){
+      console.log("Eish Error")
+      console.log(e)
+      return -1 
+    }
+
+  }
+
+  async function addCar(Car){
+    try{
+      let result = await client.db("Car").collection('Cars').insertOne({
+         Car
+        })
+        return result
+  }catch(e){
+      console.log("Car creation failed")
+      return -1
+  }
+    
+  }
+
+  async function deleteCar(ID){
+    try{
+      const query = {'Car.carID':  ID};
+      let result = await client.db("Car").collection("Cars").findOneAndUpdate(query, { $set: { 'Car.operation': 'Retired' }})
+      console.log("Anyy poggers? ", result.lastErrorObject.updatedExisting)
+      return result.lastErrorObject.updatedExisting
+    }catch(e){
+      console.log("Error deleting driver: ", e)
+      return -1 
+    }
+  }
+
+
   async function closeConnection(db){
     try{
         await db.close()
@@ -165,4 +251,5 @@ async function returnSpeedData(){
   }
 
 
-  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData};
+  module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
+  , addCar, getAllCars, deleteCar};
