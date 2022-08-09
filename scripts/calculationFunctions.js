@@ -2,6 +2,7 @@ let DB = require('./databaseFunctions')
 
 async function calculateSpeedAverage(){
     let result=await DB.returnSpeedData()
+    let driver="DriverA"
     let sum = 0;
     result.forEach(x=>{
         sum += parseFloat(x);
@@ -9,7 +10,12 @@ async function calculateSpeedAverage(){
     console.log("Sum before Divide", sum)
     sum = sum / result.length;
     console.log(sum)
-    return sum;
+    let temp = {
+        AveSpeed: sum,
+        Driver: driver
+
+    }
+    return temp
 }
 
 async function returnSpeedForRoute(){

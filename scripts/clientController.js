@@ -21,17 +21,14 @@ let regBackButton = document.getElementById('regBackButton')
 ///Admin page control
 
 //Account binds
-let adminButton = document.getElementById('adminButton')
+
 let deleteButton = document.getElementById('deleteAccount')
 let setAdminButton = document.getElementById("setAdminButton")
-let accountButton = document.getElementById("accountButton")
+let adminButton = document.getElementById('adminButton')
+let DisplayBarGButton = document.getElementById('DisplayBarGButton')
+let DisplayLineGButton = document.getElementById('DisplayLineGButton')
 
-//driver binds
-let driverButton = document.getElementById("driverButton")
-let deleteDriver = document.getElementById("deleteDriverButton")
-let addDriverButton = document.getElementById('addDriverButton')
-let createDriverButton = document.getElementById('createDriverButton')
-
+let backButton = document.getElementById('backButton')
 
 InitPages(document)
 //Car binds
@@ -80,6 +77,26 @@ adminButton.addEventListener('click',function(){
         ID: ReturnSocketID()
     }
     SendToServer('hasAdminAccess',temp2)
+})
+
+DisplayBarGButton.addEventListener('click',function(){
+    let temp = {
+        username: userField.value,
+        password: passField.value,
+        ID: ReturnSocketID()
+    }
+    SendToServer('login',temp)
+    SendToServer('getBarGraphData',temp)
+})
+
+DisplayLineGButton.addEventListener('click',function(){
+    let temp = {
+        username: userField.value,
+        password: passField.value,
+        ID: ReturnSocketID()
+    }
+    SendToServer('login',temp)
+    SendToServer('getGraphData',temp)
 })
 
 setAdminButton.addEventListener('click',function(){
@@ -196,9 +213,7 @@ loginButton.addEventListener('click',function (){
     SendToServer('login',temp)
     //SendToServer('getRouteData',temp)
     //SendToServer("getAverageSpeed",temp)
-    SendToServer('getGraphData',temp)
 })
-
 
 
 

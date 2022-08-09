@@ -2,6 +2,7 @@ import { addPin, addRoute } from "./mapFunctions.js";
 import { ChangePage, ToggleLogout } from "./pageController.js";
 import { setAdminTable, RemoveAdminEntry, setDriverTable, setCarTable } from "./tableFunctions.js";
 import { displaySpeedForTrip } from "./graphFunctions.js";
+import { displayAveSpeedForTrip } from "./graphFunctions.js";
 
 var socket = io();
 let socketID = ""
@@ -77,6 +78,11 @@ socket.on('getGraphData',(data)=>{
     displaySpeedForTrip(data,document.getElementById('myChart'))
 })
 
+socket.on('getBarGraphData',(data)=>{
+    console.log("AverageSpeed: ")
+    console.log(data)
+    displayAveSpeedForTrip(data,document.getElementById('myChart2'))
+})
 
 socket.on('hasAdminAccess', (data)=>{
     if(data == true){
@@ -115,3 +121,4 @@ export function SendToServer(event,data){
 export function ReturnSocketID(){
     return socket.id
 }
+
