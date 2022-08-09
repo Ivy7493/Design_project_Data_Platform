@@ -91,7 +91,14 @@ function startSocket(app){
                                         io.to(data.ID).emit('getGraphData',status)
                                 })
                         })
-                       
+
+                        socket.on("getBarGraphData",(data)=>{
+                                CalcService.calculateSpeedAverage().then(status=>{
+                                        io.to(data.ID).emit('getBarGraphData',status)
+                                })
+                        })
+
+                        
                 });
 }
 

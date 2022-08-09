@@ -17,12 +17,12 @@ let logoutButton = document.getElementById('logoutButton')
 let deleteButton = document.getElementById('deleteAccount')
 let setAdminButton = document.getElementById("setAdminButton")
 let adminButton = document.getElementById('adminButton')
+let DisplayBarGButton = document.getElementById('DisplayBarGButton')
+let DisplayLineGButton = document.getElementById('DisplayLineGButton')
 let regBackButton = document.getElementById('regBackButton')
+let backButton = document.getElementById('backButton')
 
 InitPages(document)
-
-
-
 
 adminButton.addEventListener('click',function(){
     let temp2 = {
@@ -30,6 +30,26 @@ adminButton.addEventListener('click',function(){
         ID: ReturnSocketID()
     }
     SendToServer('hasAdminAccess',temp2)
+})
+
+DisplayBarGButton.addEventListener('click',function(){
+    let temp = {
+        username: userField.value,
+        password: passField.value,
+        ID: ReturnSocketID()
+    }
+    SendToServer('login',temp)
+    SendToServer('getBarGraphData',temp)
+})
+
+DisplayLineGButton.addEventListener('click',function(){
+    let temp = {
+        username: userField.value,
+        password: passField.value,
+        ID: ReturnSocketID()
+    }
+    SendToServer('login',temp)
+    SendToServer('getGraphData',temp)
 })
 
 setAdminButton.addEventListener('click',function(){
@@ -54,6 +74,12 @@ deleteButton.addEventListener('click',function(){
         access: temp[0].access
     }
     SendToServer("deleteUser",entry)
+})
+
+backButton.addEventListener('click',function(){
+    console.log("HELLO WE HERE2")
+    ChangePage(document,'mainPage')
+
 })
 
 ShowregisterButton.addEventListener('click',function (){
@@ -97,7 +123,6 @@ loginButton.addEventListener('click',function (){
     SendToServer('login',temp)
     //SendToServer('getRouteData',temp)
     //SendToServer("getAverageSpeed",temp)
-    SendToServer('getGraphData',temp)
 })
 
 
