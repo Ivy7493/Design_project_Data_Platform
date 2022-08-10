@@ -1,70 +1,13 @@
-/* input[type=text] {
-    background-color: #f6f6f6;
-    border: none;
-    color: #0d0d0d;
-    padding: .5rem 1rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 5px;
-    width: 45%;
-    border: none;
-    -webkit-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -ms-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
+.login-box-btns {
+    display: flex;
+    justify-content: space-evenly;
 }
 
-button{
-	background-color: #FFFFFF;
-	border: 1px solid rgb(209,213,219);
-	border-radius: .5rem;
-	box-sizing: border-box;
-    display: inline-block;
-	color: #111827;
-	font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: .875rem;
-	font-weight: 600;
-	line-height: 1.25rem;
-	padding: .75rem 1rem;
-	text-align: center;
-	text-decoration: none #D1D5DB solid;
-	text-decoration-thickness: auto;
-	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-	cursor: pointer;
-	user-select: none;
-	-webkit-user-select: none;
-	touch-action: manipulation;
-}
-
-label{
-    background-color: #FFFFFF;
-	border: 1px solid rgb(209,213,219);
-	border-radius: .5rem;
-	box-sizing: border-box;
-    display: inline-block;
-	color: #111827;
-	font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: .875rem;
-	font-weight: 600;
-	line-height: 1.25rem;
-	padding: .75rem 1rem;
-	text-align: center;
-	text-decoration: none #D1D5DB solid;
-	text-decoration-thickness: auto;
-	user-select: none;
-	-webkit-user-select: none;
-	touch-action: manipulation;
-}
-
-button:hover {
+.login-box-btns button:hover {
     background-color: #000000;
-	color: #ffffff;
-} */
+	 transition: 0.7s;
+} 
+
 
 input[type=text] {
     background-color: #f3f0f0;
@@ -88,16 +31,12 @@ input[type=text] {
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .3);
 }
 
-.login-box-btns {
-    display: flex;
-    justify-content: space-evenly;
-}
 
 .login-box-btns button {
     border: none;
     outline: none;
     padding: .5rem .9rem;
-    color: #FFF;
+    color: rgb(5, 0, 0);
     border-radius: .4rem;
     font-size: 1rem;
     width: 5rem;
@@ -120,9 +59,9 @@ input[type=text] {
 
 .login-box-btns .back-btn {
     background: linear-gradient(to right bottom,
-    rgba(223, 22, 15, 0.6),
-    rgba(223, 22, 15, 0.8),
-    rgba(223, 22, 15, 1));
+    rgba(28,153,65, 1),
+     rgba(28,153,65, .6),
+     rgba(28,153,65, .3));
 }
 
 
