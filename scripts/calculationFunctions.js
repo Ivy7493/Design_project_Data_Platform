@@ -119,6 +119,13 @@ async function calcEnergyUsageKinModel(){
         else {
             slope[i]=0
         }
+        if (velocity[i]<0.3){
+            velocity[i] = 0
+        }
+        if (velocity[i+1]<0.3){
+            velocity[i+1] = 0
+        }
+
         if (velocity[i]!==0){
         fR=rollingResistanceFriction(mass, coeffRr,slope[i],velocity[i]/3.6)
         fA=AerodynamicDragForce(coeffAdf,area,velocity[i]/3.6)
@@ -158,7 +165,7 @@ async function calcEnergyUsageKinModel(){
             console.log('energyPertrip',temp2)
             console.log("deltaVelocity", deltaVelocity)
         }
-        console.log('energyPer second',temp2)
+        //console.log('energyPer second',temp2)
         //if(resultLat[i]===startLat&& resultLong[i]===startLong&& timeCount>300){ // Assume the duration of the trips is longer than 5 minutes and a bus doesn’t stop for longer than 5 minutes. Therefore after 5 minutes if a bus stop at the same location. a trip was completed. 
         totalEnergy[j]=energyPerTrip 
         j++
