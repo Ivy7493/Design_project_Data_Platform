@@ -35,7 +35,6 @@ async function returnSpeedData(){
     }
   }
 
-
   async function returnTimeData(){
     try{
         let result = await client.db("AdminDB").collection('testData').find()
@@ -50,6 +49,52 @@ async function returnSpeedData(){
         console.log("Data retrieval failed")
         return -1
     }
+  }
+  async function returnAltitude(){
+    try{
+        let result = await client.db("AdminDB").collection('testData').find()
+        result = await result.toArray()
+        let altitudeData=[]
+        result.map(x=>{
+          altitudeData.push(x.Altitude)
+        })
+        console.log(altitudeData)
+        return altitudeData
+    }catch(e){
+        console.log("Data retrieval of Altitude failed")
+        return -1
+    }
+  }
+
+  async function returnLongitude(){
+    try{
+      let result = await client.db("AdminDB").collection('testData').find()
+      result=await result.toArray()
+      let speedData=[]
+      result.map(x=>{
+        speedData.push(x.Longitude)
+      })
+      console.log(speedData)
+      return speedData
+  }catch(e){
+      console.log("Data retrieval failed")
+      return -1
+  }
+  }
+  async function returnLatitude(){ 
+    try{
+      let result = await client.db("AdminDB").collection('testData').find()
+      result=await result.toArray()
+      let speedData=[]
+      result.map(x=>{
+        speedData.push(x.Latitude)
+      })
+      console.log(speedData)
+      return speedData
+  }catch(e){
+      console.log("Data retrieval failed")
+      return -1
+  }
   }
 
   async function returnCoordinateData(){
@@ -252,4 +297,4 @@ async function returnSpeedData(){
 
 
   module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
-  , addCar, getAllCars, deleteCar};
+  , addCar, getAllCars, deleteCar,returnAltitude, returnLatitude,returnLongitude};
