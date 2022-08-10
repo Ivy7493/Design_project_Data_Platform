@@ -95,6 +95,12 @@ function startSocket(app){
                                 })
                         })
 
+                        socket.on("getBarGraphData",(data)=>{
+                                CalcService.calculateSpeedAverage().then(status=>{
+                                        io.to(data.ID).emit('getBarGraphData',status)
+                                })
+                        })
+
                         socket.on("getAllDrivers",(data)=>{
                                 DriverService.getAllDrivers().then(status=>{
                                         io.to(data.ID).emit('getAllDrivers',status)

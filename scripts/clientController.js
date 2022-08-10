@@ -196,9 +196,30 @@ loginButton.addEventListener('click',function (){
     SendToServer('login',temp)
     //SendToServer('getRouteData',temp)
     //SendToServer("getAverageSpeed",temp)
-    SendToServer('getGraphData',temp)
+    
 })
 
 
+///////Data Section//////
+let DisplayBarGButton = document.getElementById('DisplayBarGButton')
+let DisplayLineGButton = document.getElementById('DisplayLineGButton')
 
+DisplayBarGButton.addEventListener('click',function(){
+    let temp = {
+        username: userField.value,
+        password: passField.value,
+        ID: ReturnSocketID()
+    }
+    SendToServer('login',temp)
+    SendToServer('getBarGraphData',temp)
+})
 
+DisplayLineGButton.addEventListener('click',function(){
+    let temp = {
+        username: userField.value,
+        password: passField.value,
+        ID: ReturnSocketID()
+    }
+    SendToServer('login',temp)
+    SendToServer('getGraphData',temp)
+})
