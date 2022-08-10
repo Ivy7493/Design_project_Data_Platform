@@ -19,7 +19,7 @@ socket.on("registration",(data)=>{
 socket.on('login',(data)=>{
     if(data != -1){
         sessionStorage.setItem("Token", data);
-        ChangePage(document,'MainPage')
+        ChangePage('MainPage')
         ToggleLogout(document)
         //addRoute(data)
     }
@@ -49,7 +49,7 @@ socket.on('getAllCars',(data)=>{
       selectElement.remove(i);
    }
    console.log("YEEEEE")
-   console.log(data)
+   console.log(data)   
    data.map(x=>{
         let option = document.createElement("OPTION");
         //Set Customer Name in Text part.
@@ -67,7 +67,11 @@ socket.on('getRouteData',(data)=>{
     addRoute(data)
 })
 
-
+socket.on('getSpeedData',(data)=>{
+    console.log("speed: ")
+    console.log(data)
+    displaySpeedForTrip(data,document.getElementById("myChart"))
+})
 
 socket.on('getGraphData',(data)=>{
     console.log("speedTime: ")
@@ -83,7 +87,7 @@ socket.on('getBarGraphData',(data)=>{
 
 socket.on('hasAdminAccess', (data)=>{
     if(data == true){
-        ChangePage(document,'adminPage')
+        ChangePage('adminPage')
         let temp2 = {
             token: sessionStorage.getItem("Token"),
             ID: ReturnSocketID()
