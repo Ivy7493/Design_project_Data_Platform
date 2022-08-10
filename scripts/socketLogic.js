@@ -1,7 +1,9 @@
 import { addPin, addRoute } from "./mapFunctions.js";
 import { ChangePage, ToggleLogout } from "./pageController.js";
 import { setAdminTable, RemoveAdminEntry, setDriverTable, setCarTable } from "./tableFunctions.js";
-import { displaySpeedForTrip } from "./graphFunctions.js";
+import { displayEnergyForTrip } from "./graphFunctions.js";
+import { displayTotalEnergyForTrip } from "./graphFunctions.js";
+
 
 var socket = io();
 let socketID = ""
@@ -17,7 +19,7 @@ socket.on("registration",(data)=>{
 socket.on('login',(data)=>{
     if(data != -1){
         sessionStorage.setItem("Token", data);
-        ChangePage(document,'MainPage')
+        ChangePage('MainPage')
         ToggleLogout(document)
         //addRoute(data)
     }
@@ -47,7 +49,7 @@ socket.on('getAllCars',(data)=>{
       selectElement.remove(i);
    }
    console.log("YEEEEE")
-   console.log(data)
+   console.log(data)   
    data.map(x=>{
         let option = document.createElement("OPTION");
         //Set Customer Name in Text part.
@@ -74,13 +76,18 @@ socket.on('getSpeedData',(data)=>{
 socket.on('getGraphData',(data)=>{
     console.log("speedTime: ")
     console.log(data)
-    displaySpeedForTrip(data,document.getElementById('myChart'))
+    displayEnergyForTrip(data,document.getElementById('myChart'))
 })
 
+socket.on('getBarGraphData',(data)=>{
+    console.log("AverageSpeed: ")
+    console.log(data)
+    displayTotalEnergyForTrip(data,document.getElementById('myChart2'))
+})
 
 socket.on('hasAdminAccess', (data)=>{
     if(data == true){
-        ChangePage(document,'adminPage')
+        ChangePage('adminPage')
         let temp2 = {
             token: sessionStorage.getItem("Token"),
             ID: ReturnSocketID()

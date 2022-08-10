@@ -1,4 +1,4 @@
-import { ChangePage, InitPages, ToggleLogout, ChangeAdminPage } from "./pageController.js";
+import { ChangePage, InitPages, ToggleLogout, ChangeAdminPage, ChangeDataPage } from "./pageController.js";
 import { SendToServer, ReturnSocketID } from "./socketLogic.js"
 import { getCurrentTableSelection } from "./tableFunctions.js"
 
@@ -19,6 +19,9 @@ let regBackButton = document.getElementById('regBackButton')
 
 
 ///Admin page control
+
+//Back Binds
+let adminBackButton = document.getElementById("adminBackButton")
 
 //Account binds
 let adminButton = document.getElementById('adminButton')
@@ -153,19 +156,23 @@ createDriverButton.addEventListener('click',function(){
     ChangeAdminPage('driver')
 })
 
+adminBackButton.addEventListener('click',function(){
+    ChangePage("MainPage")
+})
+
 ///////END OF ADMIN SECTION//////////////////////
 
 ShowregisterButton.addEventListener('click',function (){
-    ChangePage(document,'Register')
+    ChangePage('Register')
 })
 
 regBackButton.addEventListener('click',function (){
-    ChangePage(document,'Login')
+    ChangePage('Login')
 })
 
 logoutButton.addEventListener('click',function (){
     SendToServer('logout',"YAAAS")
-    ChangePage(document,'Login')
+    ChangePage('Login')
     ToggleLogout(document)
 })
 
@@ -180,7 +187,7 @@ registerButton.addEventListener('click',function(){
     try{
         SendToServer('register',account)
         window.alert("Confirmation Email sent")
-        ChangePage(document,'Login')
+        ChangePage('Login')
     }catch(e){
         window.alert("Registration failed ", e)
     }
@@ -196,9 +203,32 @@ loginButton.addEventListener('click',function (){
     SendToServer('login',temp)
     //SendToServer('getRouteData',temp)
     //SendToServer("getAverageSpeed",temp)
-    SendToServer('getGraphData',temp)
+    
 })
 
 
+///////Data Section//////
+let DisplayBarGButton = document.getElementById('DisplayBarGButton')
+let DisplayLineGButton = document.getElementById('DisplayLineGButton')
 
+DisplayBarGButton.addEventListener('click',function(){
+    let temp = {
+        username: userField.value,
+        password: passField.value,
+        ID: ReturnSocketID()
+    }
+    SendToServer('login',temp)
+    SendToServer('getBarGraphData',temp)
+    ChangeDataPage("totalEnergy")
+})
 
+DisplayLineGButton.addEventListener('click',function(){
+    let temp = {
+        username: userField.value,
+        password: passField.value,
+        ID: ReturnSocketID()
+    }
+    SendToServer('login',temp)
+    SendToServer('getGraphData',temp)
+    ChangeDataPage("perSecondEnergy")
+})
