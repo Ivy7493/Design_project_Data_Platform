@@ -87,7 +87,7 @@ async function calcEnergyUsageKinModel(){
     for(let i=0;i<result.length-1;i++){ //final.length-1;i++){
         // compute change in elevation
         changeInElev = (final[i+1] - final[i]);
-        if (Math.abs(changeInElev) < 0.2){
+        if ((Math.abs(changeInElev)) < 0.2){
             changeInElev = 0
         }
         // compute geodesic distance
@@ -98,7 +98,7 @@ async function calcEnergyUsageKinModel(){
         let temp = Math.sin(latDifference/2) * Math.sin(latDifference/2) + Math.sin(longDifferene/2) * Math.sin(longDifferene/2) *
         Math.cos(lat1Rad) * Math.cos(lat2Rad);
 
-        let lateralDistance = radius * 2 * Math.atan2(Math.sqrt(temp), Math.sqrt(1-temp));
+        let lateralDistance = radius * 2 * Math.atan2(Math.sqrt(temp), Math.sqrt(1-temp))*10**3;
         let hypotDistance = Math.hypot(lateralDistance, changeInElev)
         if (i===0){
             totalDistance[i]=0
@@ -113,10 +113,10 @@ async function calcEnergyUsageKinModel(){
             slope[i]=0
         }
         // if velocity is below 0.3 equal to 0, small velocities are considered negligible
-        if (velocity[i]<0.3){
+        if (velocity[i]<0.5){
             velocity[i] = 0
         }
-        if (velocity[i+1]<0.3){
+        if (velocity[i+1]<0.5){
             velocity[i+1] = 0
         }
 
@@ -144,25 +144,28 @@ async function calcEnergyUsageKinModel(){
         let temp2 = (propEnergy + offtakeEnergy+brakingEnergy)/(3.6 * 10**6)
         totalEnergy += temp2 //(propEnergy + offtakeEnergy)/3.6 * 10**6
         // just to check all info of specific entries -  for testing purposes
-        if(i===6){
-            console.log('totalforce',totalForce)
-            console.log('slope',slope[i])
-            console.log('vel',velocity[i]/3.6)
-            console.log('hypotdistance',hypotDistance)
-            console.log('propenergy',propEnergy)
-            console.log('brakingenergy',brakingEnergy)
-            console.log('offtake energy',offtakeEnergy)
-            console.log('fR',fR)
-            console.log('fA',fA)
-            console.log('fS',fS)
-            console.log('vf',vehicleForce)
-            console.log('dspeeddiff',dspeedDiff)
-            console.log('energy per second',temp2)
-            console.log("deltaVelocity", deltaVelocity)
-        }
-        console.log('Energy per second',temp2)
+        // if(i===40){
+        //     console.log('totalforce',totalForce)
+        //     console.log('slope',slope[i])
+        //     console.log('vel',velocity[i]/3.6)
+        //     console.log('hypotdistance',hypotDistance)
+        //     console.log('propenergy',propEnergy)
+        //     console.log('brakingenergy',brakingEnergy)
+        //     console.log('offtake energy',offtakeEnergy)
+        //     console.log('fR',fR)
+        //     console.log('fA',fA)
+        //     console.log('fS',fS)
+        //     console.log('vf',vehicleForce)
+        //     console.log('dspeeddiff',dspeedDiff)
+        //     console.log('energy per second',temp2)
+        //     console.log("deltaVelocity", deltaVelocity)
+        //     console.log('changelev',changeInElev)
+        //     console.log('lateralDistance',lateralDistance)
+        // }
+        //console.log('Energy per second',temp2)
         allEnergyPerSecondData[j] = temp2 
         j++
+        lateralDistance=0
         //set vars to 0
         propEnergy = 0
         brakingEnergy = 0
