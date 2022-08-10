@@ -62,8 +62,8 @@ async function calcEnergyUsageKinModel(){
     let propEnergy = 0;
     let offtakeEnergy=0
     let powerOfftake=100 //W (why? = 100)
-    let totalEnergy = []
-    energyPerTrip=0
+    let totalEnergy = 0
+    let allEnergyPerSecondData=[]
     let j = 0
     let timeCount = 0
     let durationTrip = 0
@@ -142,7 +142,7 @@ async function calcEnergyUsageKinModel(){
         offtakeEnergy= powerOfftake* timeDiff
         
         let temp2 = (propEnergy + offtakeEnergy+brakingEnergy)/(3.6 * 10**6)
-        energyPerTrip += temp2 //(propEnergy + offtakeEnergy)/3.6 * 10**6
+        totalEnergy += temp2 //(propEnergy + offtakeEnergy)/3.6 * 10**6
         // just to check all info of specific entries -  for testing purposes
         if(i===6){
             console.log('totalforce',totalForce)
@@ -157,20 +157,18 @@ async function calcEnergyUsageKinModel(){
             console.log('fS',fS)
             console.log('vf',vehicleForce)
             console.log('dspeeddiff',dspeedDiff)
-            console.log('energyPertrip',temp2)
+            console.log('energy per second',temp2)
             console.log("deltaVelocity", deltaVelocity)
         }
-        console.log('energyPer second',temp2)
-        totalEnergy[j]=energyPerTrip 
+        console.log('Energy per second',temp2)
+        allEnergyPerSecondData[j] = temp2 
         j++
-        energyPerTrip=0
-
-        // set vars to 0
-        propEnergy=0
-        brakingEnergy=0
-        timeCount+= timeDiff
-        propEnergy=0
-        deltaVelocity=0
+        //set vars to 0
+        propEnergy = 0
+        brakingEnergy = 0
+        timeCount += timeDiff
+        propEnergy = 0
+        deltaVelocity = 0
         temp2=0
         totalForce=0;
         dSpeed=0;
@@ -182,8 +180,8 @@ async function calcEnergyUsageKinModel(){
         
     }
 
- console.log('total Energy final',totalEnergy, totalEnergy.length) // will be incorrect now because the data does not contain a full trip
- return totalEnergy   
+ console.log('total Energy final',totalEnergy) // will be incorrect now because the data does not contain a full trip
+ return totalEnergy, allEnergyPerSecondData
        
 }
 //Functions that calculate three environmental forces acting on the vehicle in (N)
