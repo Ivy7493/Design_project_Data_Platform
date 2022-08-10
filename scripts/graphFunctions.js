@@ -1,15 +1,15 @@
 
-export async function displaySpeedForTrip(input,element){
+export async function displayEnergyForTrip(input,element){
     element.innerHTML=""
     let ctx = element.getContext('2d');
     console.log("Hello? ",input)
     const myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: input.time,
+        labels: input.Time,
         datasets: [{
             label: 'Speed',
-            data: input.speed,
+            data: input.EnergyPerSecond,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -39,7 +39,7 @@ export async function displaySpeedForTrip(input,element){
 })
 };
 
-export async function displayAveSpeedForTrip(input,element){
+export async function displayTotalEnergyForTrip(input,element){
     element.innerHTML=""
     let ctx = element.getContext('2d');
     console.log("Hello? ")
@@ -49,7 +49,7 @@ export async function displayAveSpeedForTrip(input,element){
         labels: [input.Driver],
         datasets: [{
             label: 'AveSpeed',
-            data: [input.AveSpeed],
+            data: [input.TotalEnergy],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

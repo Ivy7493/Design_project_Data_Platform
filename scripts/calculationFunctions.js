@@ -118,10 +118,10 @@ async function calcEnergyUsageKinModel(){
             slope[i]=0
         }
         // if velocity is below 0.3 equal to 0, small velocities are considered negligible
-        if (velocity[i]<0.3){
+        if (velocity[i]<0.5){
             velocity[i] = 0
         }
-        if (velocity[i+1]<0.3){
+        if (velocity[i+1]<0.5){
             velocity[i+1] = 0
         }
 
@@ -186,7 +186,17 @@ async function calcEnergyUsageKinModel(){
     }
 
  console.log('total Energy final',totalEnergy) // will be incorrect now because the data does not contain a full trip
- return totalEnergy, allEnergyPerSecondData
+
+ let driver="DriverA"
+ let _time = await returnTimeForRoute()
+ let temp = {
+    EnergyPerSecond: allEnergyPerSecondData,
+    TotalEnergy: totalEnergy,
+    Time: _time,
+    Driver: driver
+}
+return temp
+ 
        
 }
 //Functions that calculate three environmental forces acting on the vehicle in (N)
