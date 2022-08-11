@@ -43,6 +43,14 @@ input[type=text] {
     cursor: pointer;
 }
 
+.login-box-btns .Admin-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 0.8rem;
+    width: 6rem;
+}
+
 .login-box-btns .login-btn {
     background: linear-gradient(to right bottom,
      rgba(28,153,65, 1),
