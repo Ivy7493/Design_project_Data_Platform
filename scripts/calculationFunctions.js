@@ -41,6 +41,18 @@ async function ReturnSpeedTimeForRoute(){
     console.log(temp)
     return temp
 }
+async function calcresultEnergy(){
+    let result=await DB.returnResultData()
+    let sum = 0;
+    // result.forEach(x=>{
+    //     sum += parseFloat (x);
+    // })
+    for(let i=0;i<result.length -2;i++){
+        sum += parseFloat (result[i]);
+    }
+    console.log('sum',sum)
+    return sum
+}
 async function calcEnergyUsageKinModel(){
     // import data from databaseFunctions
     let result = await DB.returnAltitude()
@@ -57,7 +69,7 @@ async function calcEnergyUsageKinModel(){
     let totalForce=0
     let expectDspeed=0
     let vehicleForce=0
-    let mass = 3900//17327.138 //kg. Average weight of Mercedes buses that Rea Vaya use 
+    let mass = 3900//17  327.138 //kg. Average weight of Mercedes buses that Rea Vaya use 
     let coeffRr = 0.02 // an estimate
     let coeffAdf=0.36 //an estimate
     let area = 4 //m^2
@@ -168,6 +180,7 @@ async function calcEnergyUsageKinModel(){
         //     console.log('lateralDistance',lateralDistance)
         // }
         //console.log('Energy per second',temp2)
+        console.log('Hypotdistance',hypotDistance)
         allEnergyPerSecondData[j] = temp2 
         j++
         lateralDistance=0
@@ -229,4 +242,4 @@ function convertToRad(a){
 return a*Math.PI /180;
 }
 
-module.exports={calculateSpeedAverage, returnSpeedForRoute, returnTimeForRoute, ReturnSpeedTimeForRoute,calcEnergyUsageKinModel};
+module.exports={calculateSpeedAverage, returnSpeedForRoute, returnTimeForRoute, ReturnSpeedTimeForRoute,calcEnergyUsageKinModel, calcresultEnergy};

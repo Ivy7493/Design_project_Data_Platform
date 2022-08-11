@@ -34,6 +34,22 @@ async function returnSpeedData(){
         return -1
     }
   }
+  returnResultData()
+  async function returnResultData(){
+    try{
+        let result = await client.db("AdminDB").collection('resultData').find()
+        result=await result.toArray()
+        let resultDataPoints=[]
+        result.map(x=>{
+          resultDataPoints.push(x.Energy) //Energy Consumption //(kWh)
+        })
+        console.log('hi',resultDataPoints)
+        return resultDataPoints
+    }catch(e){
+        console.log("Data retrieval failed")
+        return -1
+    }
+  }
 
   async function returnTimeData(){
     try{
@@ -297,4 +313,4 @@ async function returnSpeedData(){
 
 
   module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
-  , addCar, getAllCars, deleteCar,returnAltitude, returnLatitude,returnLongitude};
+  , addCar, getAllCars, deleteCar,returnAltitude, returnLatitude,returnLongitude, returnResultData};
