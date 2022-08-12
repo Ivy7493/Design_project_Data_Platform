@@ -17,9 +17,10 @@ export function InitPages(document){
     document.getElementById(adminButton).style.display = "none"
     document.getElementById(LoginRef).style.display = "initial";
     initAdminPage()
+    initDataPage()
 }
 
-export function ChangePage(document,page){
+export function ChangePage(page){
     switch(page){
         case "Register":
             document.getElementById(RegisterRef).style.display = "initial";
@@ -79,7 +80,6 @@ const addDriverRef = 'addDriverTab'
 const carRef = "carTab"
 const addCarRef = 'addCarTab'
 
-
 function initAdminPage(){
     document.getElementById(accountRef).style.display = "none"
     document.getElementById(driverRef).style.display = "none"
@@ -130,6 +130,37 @@ export function ChangeAdminPage(page){
 
 
 
+    }
+
+}
+
+
+adminBackButton.addEventListener("click",function(){
+    ChangePage("")
+})
+
+//////////DATA CONTROL SECTION
+
+const totalEnergyRef = "totalEnergyTab"
+const perSecondEnergyRef = "energyPerSecondTab"
+
+function initDataPage(){
+    document.getElementById(totalEnergyRef).style.display = "none"
+    document.getElementById(perSecondEnergyRef).style.display = "none"
+}
+
+
+export function ChangeDataPage(page){
+    switch(page){
+        case "totalEnergy":
+            document.getElementById(totalEnergyRef).style.display = "initial"
+            document.getElementById(perSecondEnergyRef).style.display = "none"
+            break;
+
+        case "perSecondEnergy":
+            document.getElementById(totalEnergyRef).style.display = "none"
+            document.getElementById(perSecondEnergyRef).style.display = "initial"
+            break;
     }
 
 }

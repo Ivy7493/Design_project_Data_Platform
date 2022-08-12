@@ -90,8 +90,14 @@ function startSocket(app){
                         })
 
                         socket.on("getGraphData",(data)=>{
-                                CalcService.ReturnSpeedTimeForRoute().then(status=>{
+                                CalcService.calcEnergyUsageKinModel().then(status=>{
                                         io.to(data.ID).emit('getGraphData',status)
+                                })
+                        })
+
+                        socket.on("getBarGraphData",(data)=>{
+                                CalcService.calcEnergyUsageKinModel().then(status=>{
+                                        io.to(data.ID).emit('getBarGraphData',status)
                                 })
                         })
 
