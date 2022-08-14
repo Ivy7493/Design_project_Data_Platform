@@ -53,7 +53,65 @@ async function calcresultEnergy(){
     console.log('sum',sum)
     return sum
 }
+// calculate energy usage using fuel consumption
+// async function calcIceEnergy(){
+//     let resultMaf=await DB.returnMafData()
+//     let resultAlt = await DB.returnAltitude()
+//     let resultLat = await DB.returnLatitude() 
+//     let resultLong = await DB.returnLongitude()
+//     let velocity=await DB.returnSpeedData()
+//     let fuelType=await DB.returnFuelTypedData()
+//     // convert data from strings to floats
+//     let finalLat = resultLat.map(x=>{
+//         return parseFloat(x)
+//     })
+//     let finalLong = resultLong.map(x=>{
+//         return parseFloat(x)
+//     })
+//     let finalAlt = resultAlt.map(x=>{
+//         return parseFloat(x)
+//     })
+//        // convert data from strings to floats
+//        let finalMaf = resultMaf.map(x=>{
+//         return parseFloat(x)
+//     })
+//     //initialise vars
+//     let Afr=0
+//     let fd=0
+//     let fuelConsump=0
+//     let energyConv=0
+//     let fuelEfficiency = 0 // how much converted into kinetic energy
+//     let energyUsagePerKm = 0
+//     let energyUsagePerSec = []
+//     totalEnergy=0
 
+//     //check which fuel car use: assigne constants
+//     if(fuelType===1){ //gasoline
+//         Afr = 14.7
+//         fd=820 //g/dm3
+//         energyConv =  9.61 //1 l: 9.6 kwh
+//         fuelEfficiency = 0.25
+//      }
+//      if(fuelType===4){ //diesel
+//        Afr=14.5
+//        fd= 750 //g/dm3
+//        energyConv = 10.96 //1 l:10.96 kwh
+//        fuelEfficiency = 0.3
+
+//        }
+//     for(let i=0;i<result.length-1;i++){ 
+       
+//         fuelFlow=finalMaf*3600 / Afr*fd // l/hr
+//         fuelConsump=fuelFlow/velocity[i] //l/km
+//         energyUsagePerKm=fuelConsump * energyConv * fuelEfficiency //kwh/km
+//         let changeInElev=calcElevchange(finalAlt,i)
+//         energyUsagePerSec[i]=energyUsagePerKm * displacement(finalLat,finalLong,changeInElev)
+//         totalEnergy +=energyUsagePerSec[i]  
+
+//     }
+//     return totalEnergy, energyUsagePerSec
+   
+// }
 async function calcEnergyUsageKinModel(){
     // import data from databaseFunctions
     let result = await DB.returnAltitude()
