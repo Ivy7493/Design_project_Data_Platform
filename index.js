@@ -6,6 +6,7 @@ const {MongoClient} = require('mongodb');
 const bodyParser = require('body-parser')
 const mainRouter = require("./routes/mainRoute");
 const confirmationRouter = require("./routes/confirmationRoute")
+const dataRouter = require("./routes/dataRoute")
 const clientFunctions = require('./scripts/serverClientFunctions')
 const databaseFunctions = require('./scripts/databaseFunctions')
 const websocket = require("./scripts/serverSocketHandler")
@@ -19,7 +20,7 @@ app.use(express.static(path.join(__dirname, '/Misc')))
 app.set('view engine', 'html')
 app.use("/", mainRouter);
 app.use("/confirm", confirmationRouter);
-
+app.use("/data", dataRouter);
 
 let server = http.createServer(app);
 server.listen(port, () => {
