@@ -45,7 +45,14 @@ const options = {
   allowHTTP1: true
 }
 
-let server = http2.createSecureServer(options,app);
+let server;
+if(port == process.env.port){
+  server = http.createServer(app);
+
+}else if(port == 3000){
+  server = http2.createSecureServer(options,app);
+}
+
 server.listen(port, () => {
   console.log(`listening on http://localhost:${port}`);
 });
