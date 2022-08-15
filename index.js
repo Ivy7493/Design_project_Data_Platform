@@ -29,10 +29,19 @@ app.use("/", mainRouter);
 app.use("/confirm", confirmationRouter);
 app.use("/data", dataRouter);
 
+let tempKey
+let tempCert
+if(port == process.env.port){
+  tempKey = readFileSync('Certs/heroku/heroku.key')
+  tempCert = readFileSync('Certs/heroku/heroku.crt')
+}else if(port == 3000){
+  tempKey = readFileSync('Certs/Local/domainDecrypt.key')
+  tempCert = readFileSync('Certs/Local/domain.crt')
+}
 
 const options = {
-  key: readFileSync('Certs/domainDecrypt.key'),
-  cert: readFileSync('Certs/domain.crt'),
+  key: tempKey,
+  cert: tempCert,
   allowHTTP1: true
 }
 
