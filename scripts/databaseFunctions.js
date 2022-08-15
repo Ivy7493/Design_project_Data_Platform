@@ -336,7 +336,21 @@ async function returnSpeedData(){
   }
 
 
-  async function closeConnection(db){
+async function addData(data) {
+  try {
+    let result = await client.db("data").collection('CollectionData').insertOne({
+      data
+    })
+    return result
+  } catch (e) {
+    console.log("Data creation failed")
+    return -1
+  }
+
+}
+
+
+async function closeConnection(db) {
     try{
         await db.close()
     }catch(e){
@@ -345,5 +359,6 @@ async function returnSpeedData(){
   }
 
 
+
   module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
-  , addCar, getAllCars, deleteCar,returnAltitude, returnLatitude,returnLongitude, returnResultData, returnCarsMass, returnCarsArea};
+  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea};
