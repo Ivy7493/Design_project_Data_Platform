@@ -16,9 +16,13 @@ const clientFunctions = require('./scripts/serverClientFunctions')
 const databaseFunctions = require('./scripts/databaseFunctions')
 const websocket = require("./scripts/serverSocketHandler")
 
-const app = http2Express(express)
-const port = process.env.PORT || 3000
 
+const port = process.env.PORT || 3000
+let app = http2Express(express)
+
+if(port == process.env.port){
+  app = express()
+}
 app.use(bodyParser.json({ limit: '100mb' }))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(autopush(path.join(__dirname, '/scripts')))
