@@ -41,12 +41,85 @@ async function ReturnSpeedTimeForRoute(){
     console.log(temp)
     return temp
 }
+async function calcresultEnergy(){
+    let result=await DB.returnResultData()
+    let sum = 0;
+    // result.forEach(x=>{
+    //     sum += parseFloat (x);
+    // })
+    for(let i=0;i<result.length -2;i++){
+        sum += parseFloat (result[i]);
+    }
+    console.log('sum',sum)
+    return sum
+}
+// calculate energy usage using fuel consumption
+// async function calcIceEnergy(){
+//     let resultMaf=await DB.returnMafData()
+//     let resultAlt = await DB.returnAltitude()
+//     let resultLat = await DB.returnLatitude() 
+//     let resultLong = await DB.returnLongitude()
+//     let velocity=await DB.returnSpeedData()
+//     let fuelType=await DB.returnFuelTypedData()
+//     // convert data from strings to floats
+//     let finalLat = resultLat.map(x=>{
+//         return parseFloat(x)
+//     })
+//     let finalLong = resultLong.map(x=>{
+//         return parseFloat(x)
+//     })
+//     let finalAlt = resultAlt.map(x=>{
+//         return parseFloat(x)
+//     })
+//        // convert data from strings to floats
+//        let finalMaf = resultMaf.map(x=>{
+//         return parseFloat(x)
+//     })
+//     //initialise vars
+//     let Afr=0
+//     let fd=0
+//     let fuelConsump=0
+//     let energyConv=0
+//     let fuelEfficiency = 0 // how much converted into kinetic energy
+//     let energyUsagePerKm = 0
+//     let energyUsagePerSec = []
+//     totalEnergy=0
+
+//     //check which fuel car use: assigne constants
+//     if(fuelType===1){ //gasoline
+//         Afr = 14.7
+//         fd=820 //g/dm3
+//         energyConv =  9.61 //1 l: 9.6 kwh
+//         fuelEfficiency = 0.25
+//      }
+//      if(fuelType===4){ //diesel
+//        Afr=14.5
+//        fd= 750 //g/dm3
+//        energyConv = 10.96 //1 l:10.96 kwh
+//        fuelEfficiency = 0.3
+
+//        }
+//     for(let i=0;i<result.length-1;i++){ 
+       
+//         fuelFlow=finalMaf*3600 / Afr*fd // l/hr
+//         fuelConsump=fuelFlow/velocity[i] //l/km
+//         energyUsagePerKm=fuelConsump * energyConv * fuelEfficiency //kwh/km
+//         let changeInElev=calcElevchange(finalAlt,i)
+//         energyUsagePerSec[i]=energyUsagePerKm * displacement(finalLat,finalLong,changeInElev)
+//         totalEnergy +=energyUsagePerSec[i]  
+
+//     }
+//     return totalEnergy, energyUsagePerSec
+   
+// }
 async function calcEnergyUsageKinModel(){
     // import data from databaseFunctions
     let result = await DB.returnAltitude()
     let resultLat = await DB.returnLatitude() 
     let resultLong = await DB.returnLongitude()
     let velocity=await DB.returnSpeedData()
+    let mass = await DB.returnCarsMass()
+    let area = await DB.returnCarsArea()
     // save start position
     let startLong=resultLong[0] 
     let startLat=resultLat[0] 
@@ -57,10 +130,9 @@ async function calcEnergyUsageKinModel(){
     let totalForce=0
     let expectDspeed=0
     let vehicleForce=0
-    let mass = 3900//17327.138 //kg. Average weight of Mercedes buses that Rea Vaya use 
     let coeffRr = 0.02 // an estimate
     let coeffAdf=0.36 //an estimate
-    let area = 4 //m^2
+    
     let timeDiff = 1  //Estimation of what tarnsmission frequency is designed to be(in s)
     let efficiency=0.9
     let brakingEfficiency=0.65
@@ -68,8 +140,7 @@ async function calcEnergyUsageKinModel(){
     let offtakeEnergy=0
     let powerOfftake=100 //W (why? = 100)
     let totalEnergy = 0
-    let allEnergyPerSecondData=[]
-    let j = 0
+    let allEnergyPerSecondData=[[]]
     let timeCount = 0
     let durationTrip = 0
     let brakingEnergy=0
@@ -77,6 +148,7 @@ async function calcEnergyUsageKinModel(){
     let fR=0
     let fS=0
     let fA=0
+    let totalEnergyAllCars=0
     // convert data from strings to floats
     let finalLat = resultLat.map(x=>{
         return parseFloat(x)
@@ -89,22 +161,14 @@ async function calcEnergyUsageKinModel(){
     })
     // calculations:
     let radius = 6371; // km
+    for (let k=0; k<mass.length-1;k++){   
     for(let i=0;i<result.length-1;i++){ //final.length-1;i++){
         // compute change in elevation
-        changeInElev = (final[i+1] - final[i]);
-        if (Math.abs(changeInElev) < 0.2){
-            changeInElev = 0
-        }
+        changeInElev = calcElevchange(final,i);
+        
         // compute geodesic distance
-        let latDifference = convertToRad(finalLat[i+1]-finalLat[i]);
-        let longDifferene = convertToRad(finalLong[i+1]-finalLong[i]);
-        let lat1Rad = convertToRad(finalLat[i]);
-        let lat2Rad = convertToRad(finalLat[i+1]);
-        let temp = Math.sin(latDifference/2) * Math.sin(latDifference/2) + Math.sin(longDifferene/2) * Math.sin(longDifferene/2) *
-        Math.cos(lat1Rad) * Math.cos(lat2Rad);
-
-        let lateralDistance = radius * 2 * Math.atan2(Math.sqrt(temp), Math.sqrt(1-temp));
-        let hypotDistance = Math.hypot(lateralDistance, changeInElev)
+        
+        let hypotDistance = displacement(finalLat,finalLong, changeInElev,radius,i)
         if (i===0){
             totalDistance[i]=0
         }
@@ -118,24 +182,24 @@ async function calcEnergyUsageKinModel(){
             slope[i]=0
         }
         // if velocity is below 0.3 equal to 0, small velocities are considered negligible
-        if (velocity[i]<0.5){
+        if (velocity[i]<0.3){
             velocity[i] = 0
         }
-        if (velocity[i+1]<0.5){
+        if (velocity[i+1]<0.3){
             velocity[i+1] = 0
         }
 
         if (velocity[i]!==0){
-        fR=rollingResistanceFriction(mass, coeffRr,slope[i],velocity[i]/3.6)
-        fA=AerodynamicDragForce(coeffAdf,area,velocity[i]/3.6)
-        fS=RoadSlopeDrag(mass,slope[i])
+        fR=rollingResistanceFriction(mass[k], coeffRr,slope[i],velocity[i]/3.6)
+        fA=AerodynamicDragForce(coeffAdf,area[k],velocity[i]/3.6)
+        fS=RoadSlopeDrag(mass[k],slope[i])
         }
 
         deltaVelocity=(velocity[i+1]/3.6) - (velocity[i]/3.6)
         totalForce= fR + fA + fS
-        expectDspeed=(totalForce * timeDiff) / mass
+        expectDspeed=(totalForce * timeDiff) / mass[k]
         dspeedDiff = deltaVelocity - expectDspeed
-        vehicleForce = mass * dspeedDiff / timeDiff
+        vehicleForce = mass[k] * dspeedDiff / timeDiff
         let temp3=vehicleForce * (velocity[i]/3.6) * timeDiff
         if (temp3>0){
 
@@ -149,44 +213,51 @@ async function calcEnergyUsageKinModel(){
         let temp2 = (propEnergy + offtakeEnergy+brakingEnergy)/(3.6 * 10**6)
         totalEnergy += temp2 //(propEnergy + offtakeEnergy)/3.6 * 10**6
         // just to check all info of specific entries -  for testing purposes
-        if(i===6){
-            console.log('totalforce',totalForce)
-            console.log('slope',slope[i])
-            console.log('vel',velocity[i]/3.6)
-            console.log('hypotdistance',hypotDistance)
-            console.log('propenergy',propEnergy)
-            console.log('brakingenergy',brakingEnergy)
-            console.log('offtake energy',offtakeEnergy)
-            console.log('fR',fR)
-            console.log('fA',fA)
-            console.log('fS',fS)
-            console.log('vf',vehicleForce)
-            console.log('dspeeddiff',dspeedDiff)
-            console.log('energy per second',temp2)
-            console.log("deltaVelocity", deltaVelocity)
-        }
-        console.log('Energy per second',temp2)
-        allEnergyPerSecondData[j] = temp2 
-        j++
+        // if(i===40){
+        //     console.log('totalforce',totalForce)
+        //     console.log('slope',slope[i])
+        //     console.log('vel',velocity[i]/3.6)
+        //     console.log('hypotdistance',hypotDistance)
+        //     console.log('propenergy',propEnergy)
+        //     console.log('brakingenergy',brakingEnergy)
+        //     console.log('offtake energy',offtakeEnergy)
+        //     console.log('fR',fR)
+        //     console.log('fA',fA)
+        //     console.log('fS',fS)
+        //     console.log('vf',vehicleForce)
+        //     console.log('dspeeddiff',dspeedDiff)
+        //     console.log('energy per second',temp2)
+        //     console.log("deltaVelocity", deltaVelocity)
+        //     console.log('changelev',changeInElev)
+        //     console.log('lateralDistance',lateralDistance)
+        // }
+        //console.log('Energy per second',temp2)
+        //console.log('Hypotdistance',hypotDistance)
+        allEnergyPerSecondData[k,i] = temp2 
+        lateralDistance=0
         //set vars to 0
         propEnergy = 0
         brakingEnergy = 0
-        timeCount += timeDiff
-        propEnergy = 0
-        deltaVelocity = 0
-        temp2=0
-        totalForce=0;
-        dSpeed=0;
-        expectDspeed=0;
-        vehicleForce=0
-        fA=0
-        fR=0
-        fS=0
+        // timeCount += timeDiff
+        // propEnergy = 0
+        // deltaVelocity = 0
+        // temp2=0
+        // totalForce=0;
+        // dSpeed=0;
+        // expectDspeed=0;
+        // vehicleForce=0
+        // fA=0
+        // fR=0
+        // fS=0
         
+ 
     }
+   
+    console.log('total Energy final',k,totalEnergy) // will be incorrect now because the data does not contain a full trip
+    totalEnergyAllCars[k]=totalEnergy
+    totalEnergy=0
 
- console.log('total Energy final',totalEnergy) // will be incorrect now because the data does not contain a full trip
-
+}
  let driver="DriverA"
  let _time = await returnTimeForRoute()
  let temp = {
@@ -199,6 +270,27 @@ return temp
  
        
 }
+//calculate elevation change
+function calcElevchange(final,i){
+    changeInElev = (final[i+1] - final[i]);
+    if ((Math.abs(changeInElev)) < 0.2){
+        changeInElev = 0
+    }
+    return changeInElev
+}
+// calculate displacement
+function displacement(finalLat,finalLong,changeInElev,radius,i){
+    let latDifference = convertToRad(finalLat[i+1]-finalLat[i]);
+    let longDifferene = convertToRad(finalLong[i+1]-finalLong[i]);
+    let lat1Rad = convertToRad(finalLat[i]);
+    let lat2Rad = convertToRad(finalLat[i+1]);
+    let temp = Math.sin(latDifference/2) * Math.sin(latDifference/2) + Math.sin(longDifferene/2) * Math.sin(longDifferene/2) *
+    Math.cos(lat1Rad) * Math.cos(lat2Rad);
+    let lateralDistance = radius * 2 * Math.atan2(Math.sqrt(temp), Math.sqrt(1-temp))*10**3;
+    let hypotDistance = Math.hypot(lateralDistance, changeInElev)
+    return hypotDistance
+}
+
 //Functions that calculate three environmental forces acting on the vehicle in (N)
 
 //Rolling Resistance (road friction) (N)
@@ -226,4 +318,4 @@ function convertToRad(a){
 return a*Math.PI /180;
 }
 
-module.exports={calculateSpeedAverage, returnSpeedForRoute, returnTimeForRoute, ReturnSpeedTimeForRoute,calcEnergyUsageKinModel};
+module.exports={calculateSpeedAverage, returnSpeedForRoute, returnTimeForRoute, ReturnSpeedTimeForRoute,calcEnergyUsageKinModel, calcresultEnergy};

@@ -34,6 +34,22 @@ async function returnSpeedData(){
         return -1
     }
   }
+  returnResultData()
+  async function returnResultData(){
+    try{
+        let result = await client.db("AdminDB").collection('resultData').find()
+        result=await result.toArray()
+        let resultDataPoints=[]
+        result.map(x=>{
+          resultDataPoints.push(x.Energy) //Energy Consumption //(kWh)
+        })
+        console.log('hi',resultDataPoints)
+        return resultDataPoints
+    }catch(e){
+        console.log("Data retrieval failed")
+        return -1
+    }
+  }
 
   async function returnTimeData(){
     try{
@@ -243,7 +259,6 @@ async function returnSpeedData(){
   }
 
   //Car section
-
   async function getAllCars(){
     try{
       let result = await client.db("Car").collection("Cars").find()
@@ -252,6 +267,7 @@ async function returnSpeedData(){
       temp.map(x=>{
           namesOnly.push(x.Car)
       })
+      console.log(namesOnly,'jiiii')
       return namesOnly
     }catch(e){
       console.log("Eish Error")
@@ -260,7 +276,40 @@ async function returnSpeedData(){
     }
 
   }
+  async function returnCarsMass(){
+    try{
+      let result = await client.db("Car").collection("Cars").find()
+      let temp = await result.toArray()
+      let massArray = []
+      temp.map(x=>{
+          massArray.push(x.Car.mass)
+      })
+      console.log('kii',massArray)
+      return massArray
+    }catch(e){
+      console.log("Eish Error")
+      console.log(e)
+      return -1 
+    }
 
+  }
+  async function returnCarsArea(){
+    try{
+      let result = await client.db("Car").collection("Cars").find()
+      let temp = await result.toArray()
+      let areaArray = []
+      temp.map(x=>{
+          areaArray.push(x.Car.area)
+      })
+      console.log('kii area',areaArray)
+      return areaArray
+    }catch(e){
+      console.log("Eish Error")
+      console.log(e)
+      return -1 
+    }
+
+  }
   async function addCar(Car){
     try{
       let result = await client.db("Car").collection('Cars').insertOne({
@@ -312,4 +361,4 @@ async function closeConnection(db) {
 
 
   module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
-  , addCar, getAllCars, deleteCar,returnAltitude, returnLatitude,returnLongitude,addData};
+  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea};

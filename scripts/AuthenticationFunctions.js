@@ -8,6 +8,7 @@ const { user } = require('./configs/authConfig');
 let calc=require('./calculationFunctions')
 
 calc.calcEnergyUsageKinModel() // remove later, just for testing purposes
+//calc.calcresultEnergy()
 async function registerNewUser(userInfo){
     const token = jwt.sign({email: userInfo.email}, config.secret)
     let user = new userModel({
