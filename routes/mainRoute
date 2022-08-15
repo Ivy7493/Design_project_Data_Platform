@@ -1,10 +1,17 @@
 const express = require("express");
 const path = require("path");
 const { join } = require("path");
+const fs = require('fs')
+const {promisify} = require("util");
+const { ReturnDocument } = require("mongodb");
 const mainRouter = express.Router();
 
-mainRouter.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "../views/index.html"));
+const readFile = promisify(fs.readFile)
+
+mainRouter.get("/", async function (req, res) {
+  //res.sendFile(path.join(__dirname, "../views/index.html"));
+  res.end(await readFile(path.join(__dirname, "../views/index.html")))
 });
 
 module.exports = mainRouter;
+
