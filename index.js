@@ -20,7 +20,7 @@ const websocket = require("./scripts/serverSocketHandler")
 const port = process.env.PORT || 3000
 let app = http2Express(express)
 
-if(port == process.env.port){
+if(port == process.env.PORT){
   app = express()
 }
 app.use(bodyParser.json({ limit: '100mb' }))
@@ -49,7 +49,7 @@ const options = {
   allowHTTP1: true
 }
 
-if(port == process.env.port){
+if(port == process.env.PORT){
   let server = http.createServer(app);
   server.listen(port, () => {
     console.log(`listening on http://localhost:${port}`);
