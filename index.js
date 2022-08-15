@@ -45,20 +45,24 @@ const options = {
   allowHTTP1: true
 }
 
-let server;
 if(port == process.env.port){
-  server = http.createServer(app);
-
+  let server = http.createServer(app);
+  server.listen(port, () => {
+    console.log(`listening on http://localhost:${port}`);
+  });
+  websocket.startSocket(server)
 }else if(port == 3000){
-  server = http2.createSecureServer(options,app);
+  let server = http2.createSecureServer(options,app);
+  server.listen(port, () => {
+    console.log(`listening on http://localhost:${port}`);
+  });
+  websocket.startSocket(server)
 }
 
-server.listen(port, () => {
-  console.log(`listening on http://localhost:${port}`);
-});
 
 
-websocket.startSocket(server)
+
+//websocket.startSocket(server)
 //setInterval(clientFunctions.RemovedDisconnectedClients,1000,connectedClients)
 //needed something
 
