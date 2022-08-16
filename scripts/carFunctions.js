@@ -9,7 +9,8 @@ async function addNewCar(data){
         carID: data.name + "-" + test.length,
         name: data.name,
         mass: data.mass,
-        area: data.area
+        area: data.area,
+        fuelType: data.fuelType
 
     })
     let result = await DB.addCar(car)
@@ -31,9 +32,7 @@ async function getAllCars(){
 }
 
 async function deleteCar(data){
-    console.log("What we got in!, ", data)
     let result = await DB.deleteCar(data)
-    console.log("What we got out!, ", result)
     return result
 }
 

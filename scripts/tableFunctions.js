@@ -84,6 +84,7 @@ export function setCarTable(data){
         { field: "name" },
         { field: "mass" },
         { field: 'area'},
+        {field: 'fuelType'},
         { field: "operation" }
       ];
       console.log("WE here and we winning!")
@@ -93,7 +94,7 @@ export function setCarTable(data){
       data.map(x => {
         console.log(x)
         let temp = {
-            CarID: x.carID , name: x.name, mass: x.mass, area: x.area, operation: x.operation
+            CarID: x.carID , name: x.name, mass: x.mass, area: x.area, fuelType: x.fuelType,  operation: x.operation
         }
         rowData.push(temp)
       })

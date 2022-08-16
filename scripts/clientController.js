@@ -47,11 +47,13 @@ createCarButton.addEventListener('click',function(){
     let tempName = document.getElementById("carName").value
     let tempMass = document.getElementById("massCar").value
     let tempArea = document.getElementById('areaCar').value
+    let tempType = document.getElementById('carType').options[document.getElementById('carType').selectedIndex].value
     let tempID = ReturnSocketID()
     let temp = {
         name: tempName,
         mass: tempMass,
         area: tempArea,
+        fuelType: tempType,
         ID: tempID
     }
     SendToServer("createNewCar",temp)
