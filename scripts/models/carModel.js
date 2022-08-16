@@ -20,6 +20,10 @@ const Car = mongoose.model(
       required: true
       
     },
+    fuelType: {
+      type: Number,
+      required: true
+    },
     operation: {
         type: String,
         required: true,
