@@ -30,7 +30,25 @@ socket.on("getAdminData", (data)=>{
 })
 
 socket.on("getAllDrivers",(data)=>{
-    setDriverTable(data)
+    
+        let selectElement = document.getElementById('driver')
+        let i, L = selectElement.options.length - 1;
+       for(i = L; i >= 0; i--) {
+          selectElement.remove(i);
+        }
+       console.log("eyyyyyyyyyyyy")
+       console.log(data)   
+       data.map(x=>{
+            let option = document.createElement("OPTION");
+            //Set Customer Name in Text part.
+            option.innerHTML = x.name
+            //Set CustomerId in Value part.
+            option.value = x.carID;
+            selectElement.options.add(option);
+       })
+       setDriverTable(data)
+
+        
 })
 
 socket.on("deleteDriver", (data)=>{

@@ -2,6 +2,7 @@ import { ChangePage, InitPages, ToggleLogout, ChangeAdminPage, ChangeDataPage } 
 import { SendToServer, ReturnSocketID } from "./socketLogic.js"
 import { getCurrentTableSelection } from "./tableFunctions.js"
 
+
 let ReguserField = document.getElementById("Regusername");
 let RegpassField = document.getElementById("Regpassword");
 let RegemailField = document.getElementById("Regemail")
@@ -212,25 +213,38 @@ loginButton.addEventListener('click',function (){
 ///////Data Section//////
 let DisplayBarGButton = document.getElementById('DisplayBarGButton')
 let DisplayLineGButton = document.getElementById('DisplayLineGButton')
+let getGraphButton = document.getElementById('getGraph')
 
 DisplayBarGButton.addEventListener('click',function(){
+    
     let temp = {
         username: userField.value,
         password: passField.value,
         ID: ReturnSocketID()
     }
-    SendToServer('login',temp)
+
     SendToServer('getBarGraphData',temp)
     ChangeDataPage("totalEnergy")
 })
 
 DisplayLineGButton.addEventListener('click',function(){
+    
+    let temp2 = {
+        ID: ReturnSocketID()
+    }
+    SendToServer("getAllDrivers",temp2)
+
+    ChangeDataPage("InitializeGraphRef")
+})
+
+
+getGraphButton.addEventListener('click',function(){
     let temp = {
         username: userField.value,
         password: passField.value,
         ID: ReturnSocketID()
     }
-    SendToServer('login',temp)
+    
     SendToServer('getGraphData',temp)
     ChangeDataPage("perSecondEnergy")
 })

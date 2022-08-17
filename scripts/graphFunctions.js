@@ -1,6 +1,6 @@
 
 export async function displayEnergyForTrip(input,element){
-    element.innerHTML=""
+    
     let ctx = element.getContext('2d');
     console.log("Hello? ",input)
     const myChart = new Chart(ctx, {
@@ -40,7 +40,7 @@ export async function displayEnergyForTrip(input,element){
 };
 
 export async function displayTotalEnergyForTrip(input,element){
-    element.innerHTML=""
+    
     let ctx = element.getContext('2d');
     console.log("Hello? ")
     const myChart2 = new Chart(ctx, {

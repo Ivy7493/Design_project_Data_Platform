@@ -9,6 +9,9 @@ async function getAllDrivers(){
             return x
         }
     })
+    for(i=0; i<result.length; i++){
+            console.log("RESULT HERE!" + result[i]);
+        }
     return result;
 }
 
