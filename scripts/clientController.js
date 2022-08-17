@@ -30,13 +30,6 @@ let deleteButton = document.getElementById('deleteAccount')
 let setAdminButton = document.getElementById("setAdminButton")
 let accountButton = document.getElementById("accountButton")
 
-//driver binds
-let driverButton = document.getElementById("driverButton")
-let deleteDriver = document.getElementById("deleteDriverButton")
-let addDriverButton = document.getElementById('addDriverButton')
-let createDriverButton = document.getElementById('createDriverButton')
-
-
 InitPages(document)
 //Car binds
 let carButton = document.getElementById('carButton')
@@ -119,6 +112,15 @@ accountButton.addEventListener('click', function (){
     ChangeAdminPage('account')
 })
 
+
+///DRIVER SECTION
+
+let driverButton = document.getElementById("driverButton")
+let deleteDriver = document.getElementById("deleteDriverButton")
+let addDriverButton = document.getElementById('addDriverButton')
+let createDriverButton = document.getElementById('createDriverButton')
+let editDriverButton = document.getElementById('editDriverButton')
+
 driverButton.addEventListener('click',function(){
     let temp2 = {
         ID: ReturnSocketID()
@@ -148,15 +150,31 @@ addDriverButton.addEventListener('click',function(){
 createDriverButton.addEventListener('click',function(){
     let tempName = document.getElementById('driverName').value
     let holder = document.getElementById('driverCar')
+    let tempDeviceID = document.getElementById('deviceID').value
     let tempCar = holder.options[holder.selectedIndex].value
     let tempID = ReturnSocketID()
     let temp = {
         name: tempName,
         car: tempCar,
-        ID: tempID
+        ID: tempID,
+        deviceID: tempDeviceID
     }
     SendToServer('createNewDriver',temp)
     ChangeAdminPage('driver')
+})
+
+editDriverButton.addEventListener('click',function(){
+    let id = ""
+    while(id.length < 3){
+        id = prompt("Please enter the new device ID: ","")
+    }
+    let temp = getCurrentTableSelection()
+    let temp2 = {
+        ID: ReturnSocketID(),
+        driverID: temp[0].DriverID,
+        deviceID: id
+    }
+    SendToServer("changeDriverDevice",temp2)
 })
 
 adminBackButton.addEventListener('click',function(){

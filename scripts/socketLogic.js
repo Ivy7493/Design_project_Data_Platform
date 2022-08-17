@@ -59,6 +59,10 @@ socket.on('createNewDriver',(data)=>{
     window.alert("Driver: ", data)
 })
 
+socket.on("changeDriverDevice",(data)=>{
+    window.alert("Driver ID Changed: ",data)
+})
+
 //Car management Section
 socket.on('getAllCars',(data)=>{
     let selectElement = document.getElementById('driverCar')

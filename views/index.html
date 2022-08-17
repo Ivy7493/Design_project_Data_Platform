@@ -137,17 +137,21 @@
             <div id ="driverTab">
                 <div id="driverTable" style="height: 300px; width:600px;" class="ag-theme-alpine"></div>
                 <button type="button" id="deleteDriverButton">Fire Driver</button>
-                <button type="button" id="addDriverButton">Add Driver</button> 
+                <button type="button" id="addDriverButton">Add Driver</button>
+                <button type="button" id="editDriverButton">Change Driver Device</button> 
 
             </div>
 
-            <div id="addDriverTab">
-                <label class="ft-quick" for="driverName">Enter Driver Name:</label>
-                <input type="text" id="driverName" name="driverName"><br>
-                <label class="ft-quick" for="driverCar">Enter Driver Car: </label>
-                <select id="driverCar" name="driverCar"></select>
-                <button type="button" id="createDriverButton">Create Driver</button> 
-            </div>
+
+    <div id="addDriverTab">
+        <label class="ft-quick" for="driverName">Enter Driver Name:</label>
+        <input type="text" id="driverName" name="driverName"><br>
+        <label class="ft-quick" for="driverCar">Enter Driver Car: </label>
+        <select id="driverCar" name="driverCar"></select>
+        <label class="ft-quick" for="deviceID">Enter Driver's device ID:</label>
+        <input type="text" id="deviceID" name="driverName"><br>
+        <button type="button" id="createDriverButton">Create Driver</button> 
+    </div>
 
             <div id="carTab">
                 <div id="carTable" style="height: 300px; width:600px;" class="ag-theme-alpine"></div>

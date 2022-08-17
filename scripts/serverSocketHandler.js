@@ -100,6 +100,7 @@ function startSocket(app){
                                         io.to(data.ID).emit('getBarGraphData',status)
                                 })
                         })
+                        ///////Driver section
 
                         socket.on("getAllDrivers",(data)=>{
                                 DriverService.getAllDrivers().then(status=>{
@@ -121,6 +122,15 @@ function startSocket(app){
                         socket.on("deleteDriver",(data)=>{
                                 DriverService.deleteDriver(data.driverID).then(status=>{
                                         io.to(data.ID).emit('deleteDriver',status)
+                                        DriverService.getAllDrivers().then(status2=>{
+                                                io.to(data.ID).emit('getAllDrivers',status2)
+                                        })
+                                })
+                        })
+
+                        socket.on('changeDriverDevice', (data)=>{
+                                DriverService.changeDriverDevice(data).then(status=>{
+                                        io.to(data.ID).emit('changeDriverDevice',status)
                                         DriverService.getAllDrivers().then(status2=>{
                                                 io.to(data.ID).emit('getAllDrivers',status2)
                                         })
