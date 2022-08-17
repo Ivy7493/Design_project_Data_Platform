@@ -164,13 +164,17 @@ createDriverButton.addEventListener('click',function(){
 })
 
 editDriverButton.addEventListener('click',function(){
-    let id = prompt("Please enter the new device ID: ","")
+    let id = ""
+    while(id.length < 3){
+        id = prompt("Please enter the new device ID: ","")
+    }
     let temp = getCurrentTableSelection()
     let temp2 = {
         ID: ReturnSocketID(),
         driverID: temp[0].DriverID,
         deviceID: id
     }
+    SendToServer("changeDriverDevice",temp2)
 })
 
 adminBackButton.addEventListener('click',function(){
