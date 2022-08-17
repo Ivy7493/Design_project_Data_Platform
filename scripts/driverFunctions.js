@@ -40,5 +40,10 @@ async function deleteDriver(data){
     return result
 }
 
+async function changeDriverDevice(data){
+    let result = await DB.changeDriverDevice(data);
+    return result
+}
 
-module.exports = {getAllDrivers, addNewDriver, deleteDriver}
+
+module.exports = {getAllDrivers, addNewDriver, deleteDriver, changeDriverDevice}
