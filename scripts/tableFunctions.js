@@ -47,6 +47,7 @@ export function setDriverTable(data){
     const columnDefs = [
         { field: "DriverID" },
         { field: "name" },
+        { field: "deviceID" },
         { field: "car" },
         { field: "employement" }
       ];
@@ -57,7 +58,7 @@ export function setDriverTable(data){
       data.map(x => {
         console.log(x)
         let temp = {
-            DriverID: x.driverID ,name: x.name, car: x.car, employement: x.employement
+            DriverID: x.driverID ,name: x.name,deviceID: x.deviceID, car: x.car, employement: x.employement
         }
         rowData.push(temp)
       })

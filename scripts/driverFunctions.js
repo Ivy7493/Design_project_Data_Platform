@@ -22,7 +22,8 @@ async function addNewDriver(data){
     let driver = new driverModel({
         driverID: data.name + "-" + test.length,
         name: data.name,
-        car: data.car
+        car: data.car,
+        deviceID: data.deviceID
 
     })
     let result = await DB.addDriver(driver)
@@ -35,9 +36,7 @@ async function addNewDriver(data){
 
 
 async function deleteDriver(data){
-    console.log("What we got in!, ", data)
     let result = await DB.deleteDriver(data)
-    console.log("What we got out!, ", result)
     return result
 }
 
