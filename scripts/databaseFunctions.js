@@ -4,7 +4,6 @@ const userModel = require("../scripts/models/userModel")
 var bcrypt = require("bcryptjs");
 const { request } = require('express');
 
-
 let connectionString = "mongodb+srv://city-energy:city-energy@cluster0.utc0s.mongodb.net/?retryWrites=true&w=majority"
 let client = new MongoClient(connectionString);
 client.connect()
@@ -27,14 +26,12 @@ async function returnSpeedData(){
         result.map(x=>{
           speedData.push(x.Speed)
         })
-        console.log(speedData)
         return speedData
     }catch(e){
-        console.log("Data retrieval failed")
+        console.log("Data retrieval failed 1")
         return -1
     }
   }
-  returnResultData()
   async function returnResultData(){
     try{
         let result = await client.db("AdminDB").collection('resultData').find()
@@ -43,10 +40,9 @@ async function returnSpeedData(){
         result.map(x=>{
           resultDataPoints.push(x.Energy) //Energy Consumption //(kWh)
         })
-        console.log('hi',resultDataPoints)
         return resultDataPoints
     }catch(e){
-        console.log("Data retrieval failed")
+        console.log("Data retrieval failed 2")
         return -1
     }
   }
@@ -59,10 +55,9 @@ async function returnSpeedData(){
         result.map(x=>{
           timeData.push(x.Time)
         })
-        console.log(timeData)
         return timeData
     }catch(e){
-        console.log("Data retrieval failed")
+        console.log("Data retrieval failed 3")
         return -1
     }
   }
@@ -74,10 +69,9 @@ async function returnSpeedData(){
         result.map(x=>{
           altitudeData.push(x.Altitude)
         })
-        console.log(altitudeData)
         return altitudeData
     }catch(e){
-        console.log("Data retrieval of Altitude failed")
+        console.log("Data retrieval of Altitude failed 4")
         return -1
     }
   }
@@ -90,10 +84,9 @@ async function returnSpeedData(){
       result.map(x=>{
         speedData.push(x.Longitude)
       })
-      console.log(speedData)
       return speedData
   }catch(e){
-      console.log("Data retrieval failed")
+      console.log("Data retrieval failed 5")
       return -1
   }
   }
@@ -105,14 +98,12 @@ async function returnSpeedData(){
       result.map(x=>{
         speedData.push(x.Latitude)
       })
-      console.log(speedData)
       return speedData
   }catch(e){
-      console.log("Data retrieval failed")
+      console.log("Data retrieval failed 6")
       return -1
   }
   }
-
   async function returnCoordinateData(){
     try{
       let result = await client.db("AdminDB").collection('testData').find()
@@ -122,10 +113,9 @@ async function returnSpeedData(){
         temp = x.Latitude + "," + x.Longitude
         speedData.push(temp)
       })
-      console.log(speedData)
       return speedData
   }catch(e){
-      console.log("Data retrieval failed")
+      console.log("Data retrieval failed 7")
       return -1
   }
   }
@@ -135,7 +125,7 @@ async function returnSpeedData(){
            user
           })
     }catch(e){
-        console.log("Registration failed")
+        console.log("Registration failed 8")
         return -1
     }
     return 1
@@ -151,7 +141,7 @@ async function returnSpeedData(){
         return -1
        }
   }catch(e){
-      console.log("account confirmation failed")
+      console.log("account confirmation failed 9")
       return -1
   }
   }
@@ -221,7 +211,6 @@ async function returnSpeedData(){
       let temp = await result.toArray()
       let namesOnly = []
       temp.map(x=>{
-          console.log(x.driver)
           namesOnly.push(x.driver)
       })
       return namesOnly
@@ -294,7 +283,6 @@ async function returnSpeedData(){
       temp.map(x=>{
           massArray.push(x.Car.mass)
       })
-      console.log('kii',massArray)
       return massArray
     }catch(e){
       console.log("Eish Error")
@@ -311,7 +299,6 @@ async function returnSpeedData(){
       temp.map(x=>{
           areaArray.push(x.Car.area)
       })
-      console.log('kii area',areaArray)
       return areaArray
     }catch(e){
       console.log("Eish Error")
