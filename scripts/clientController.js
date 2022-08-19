@@ -2,6 +2,7 @@ import { ChangePage, InitPages, ToggleLogout, ChangeAdminPage, ChangeDataPage } 
 import { SendToServer, ReturnSocketID } from "./socketLogic.js"
 import { getCurrentTableSelection } from "./tableFunctions.js"
 
+
 let ReguserField = document.getElementById("Regusername");
 let RegpassField = document.getElementById("Regpassword");
 let RegemailField = document.getElementById("Regemail")
@@ -29,13 +30,6 @@ let deleteButton = document.getElementById('deleteAccount')
 let setAdminButton = document.getElementById("setAdminButton")
 let accountButton = document.getElementById("accountButton")
 
-//driver binds
-let driverButton = document.getElementById("driverButton")
-let deleteDriver = document.getElementById("deleteDriverButton")
-let addDriverButton = document.getElementById('addDriverButton')
-let createDriverButton = document.getElementById('createDriverButton')
-
-
 InitPages(document)
 //Car binds
 let carButton = document.getElementById('carButton')
@@ -47,11 +41,13 @@ createCarButton.addEventListener('click',function(){
     let tempName = document.getElementById("carName").value
     let tempMass = document.getElementById("massCar").value
     let tempArea = document.getElementById('areaCar').value
+    let tempType = document.getElementById('carType').options[document.getElementById('carType').selectedIndex].value
     let tempID = ReturnSocketID()
     let temp = {
         name: tempName,
         mass: tempMass,
         area: tempArea,
+        fuelType: tempType,
         ID: tempID
     }
     SendToServer("createNewCar",temp)
@@ -116,6 +112,15 @@ accountButton.addEventListener('click', function (){
     ChangeAdminPage('account')
 })
 
+
+///DRIVER SECTION
+
+let driverButton = document.getElementById("driverButton")
+let deleteDriver = document.getElementById("deleteDriverButton")
+let addDriverButton = document.getElementById('addDriverButton')
+let createDriverButton = document.getElementById('createDriverButton')
+let editDriverButton = document.getElementById('editDriverButton')
+
 driverButton.addEventListener('click',function(){
     let temp2 = {
         ID: ReturnSocketID()
@@ -145,15 +150,31 @@ addDriverButton.addEventListener('click',function(){
 createDriverButton.addEventListener('click',function(){
     let tempName = document.getElementById('driverName').value
     let holder = document.getElementById('driverCar')
+    let tempDeviceID = document.getElementById('deviceID').value
     let tempCar = holder.options[holder.selectedIndex].value
     let tempID = ReturnSocketID()
     let temp = {
         name: tempName,
         car: tempCar,
-        ID: tempID
+        ID: tempID,
+        deviceID: tempDeviceID
     }
     SendToServer('createNewDriver',temp)
     ChangeAdminPage('driver')
+})
+
+editDriverButton.addEventListener('click',function(){
+    let id = ""
+    while(id.length < 3){
+        id = prompt("Please enter the new device ID: ","")
+    }
+    let temp = getCurrentTableSelection()
+    let temp2 = {
+        ID: ReturnSocketID(),
+        driverID: temp[0].DriverID,
+        deviceID: id
+    }
+    SendToServer("changeDriverDevice",temp2)
 })
 
 adminBackButton.addEventListener('click',function(){
@@ -210,25 +231,38 @@ loginButton.addEventListener('click',function (){
 ///////Data Section//////
 let DisplayBarGButton = document.getElementById('DisplayBarGButton')
 let DisplayLineGButton = document.getElementById('DisplayLineGButton')
+let getGraphButton = document.getElementById('getGraph')
 
 DisplayBarGButton.addEventListener('click',function(){
+    
     let temp = {
         username: userField.value,
         password: passField.value,
         ID: ReturnSocketID()
     }
-    SendToServer('login',temp)
+
     SendToServer('getBarGraphData',temp)
     ChangeDataPage("totalEnergy")
 })
 
 DisplayLineGButton.addEventListener('click',function(){
+    
+    let temp2 = {
+        ID: ReturnSocketID()
+    }
+    SendToServer("getAllDrivers",temp2)
+
+    ChangeDataPage("InitializeGraphRef")
+})
+
+
+getGraphButton.addEventListener('click',function(){
     let temp = {
         username: userField.value,
         password: passField.value,
         ID: ReturnSocketID()
     }
-    SendToServer('login',temp)
+    
     SendToServer('getGraphData',temp)
     ChangeDataPage("perSecondEnergy")
 })

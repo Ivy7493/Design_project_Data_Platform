@@ -11,6 +11,10 @@ const Driver = mongoose.model(
         type: String,
         requied: true
     },
+    deviceID:{
+      type: String,
+      unique: true
+    },
     car: {
       type: String,
       required: true

@@ -247,6 +247,16 @@ async function returnSpeedData(){
   return 1
   }
 
+  async function changeDriverDevice(driver){
+    const query = {'driver.driverID': driver.driverID };
+    let result = await client.db("Driver").collection('Drivers').findOneAndUpdate(query, { $set: { 'driver.deviceID': driver.deviceID }})
+    if(result){
+      return true
+    }else{
+      return false
+    }
+  }
+
   //Car section
   async function getAllCars(){
     try{
@@ -348,4 +358,4 @@ async function closeConnection(db) {
 
 
   module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
-  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea};
+  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea, changeDriverDevice};

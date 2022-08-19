@@ -1,6 +1,6 @@
 
 export async function displayEnergyForTrip(input,element){
-    element.innerHTML=""
+    
     let ctx = element.getContext('2d');
     console.log("Hello? ",input)
     const myChart = new Chart(ctx, {
@@ -8,7 +8,7 @@ export async function displayEnergyForTrip(input,element){
     data: {
         labels: input.Time,
         datasets: [{
-            label: 'Speed',
+            label: 'Energy used in a single trip',
             data: input.EnergyPerSecond,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -40,7 +40,7 @@ export async function displayEnergyForTrip(input,element){
 };
 
 export async function displayTotalEnergyForTrip(input,element){
-    element.innerHTML=""
+    
     let ctx = element.getContext('2d');
     console.log("Hello? ")
     const myChart2 = new Chart(ctx, {
@@ -48,7 +48,7 @@ export async function displayTotalEnergyForTrip(input,element){
     data: {
         labels: [input.Driver],
         datasets: [{
-            label: 'AveSpeed',
+            label: 'Total Energy per Driver',
             data: [input.TotalEnergy],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',

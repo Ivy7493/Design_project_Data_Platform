@@ -47,6 +47,7 @@ export function setDriverTable(data){
     const columnDefs = [
         { field: "DriverID" },
         { field: "name" },
+        { field: "deviceID" },
         { field: "car" },
         { field: "employement" }
       ];
@@ -57,7 +58,7 @@ export function setDriverTable(data){
       data.map(x => {
         console.log(x)
         let temp = {
-            DriverID: x.driverID ,name: x.name, car: x.car, employement: x.employement
+            DriverID: x.driverID ,name: x.name,deviceID: x.deviceID, car: x.car, employement: x.employement
         }
         rowData.push(temp)
       })
@@ -84,6 +85,7 @@ export function setCarTable(data){
         { field: "name" },
         { field: "mass" },
         { field: 'area'},
+        {field: 'fuelType'},
         { field: "operation" }
       ];
       console.log("WE here and we winning!")
@@ -93,7 +95,7 @@ export function setCarTable(data){
       data.map(x => {
         console.log(x)
         let temp = {
-            CarID: x.carID , name: x.name, mass: x.mass, area: x.area, operation: x.operation
+            CarID: x.carID , name: x.name, mass: x.mass, area: x.area, fuelType: x.fuelType,  operation: x.operation
         }
         rowData.push(temp)
       })
