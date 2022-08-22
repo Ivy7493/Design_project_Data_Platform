@@ -2,6 +2,11 @@ let DB = require('./databaseFunctions')
 let driverModel = require("../scripts/models/driverModel")
 const dataService = require('./dataFunctions')
 
+// If required to re-enter data uncomment:
+// getAllDrivers().then(data => {
+//     dataService.getAllDeviceData(data)
+// })
+
 
 async function getAllDrivers(){
     let result = await DB.getallDrivers()
