@@ -83,7 +83,29 @@ function startSocket(app){
                                         io.to(data.ID).emit('makeAdmin',status)
                                 })
                         })
+                        //DATA
 
+                        socket.on('calculateDriverData',(data)=>{
+                                DriverService.getDriverData(data.driverID).then(driverData =>{
+                                        DriverService.getDriverCar(data.driverID).then(carData =>{
+                                                //Call cal service here
+                                                //INTERGRATE WITH VIAN WHEN HE IS DONE
+                                                console.log("driver data: ",driverData)
+                                                let waypoints = []
+                                                driverData.map(x=>{
+                                                        if(x.data.Latitude && x.data.Longitude){
+                                                                waypoints.push(`${x.data.Latitude},${x.data.Longitude}`)
+                                                        }
+                                                })
+                                                console.log("car data",carData)
+                                                console.log("waypoints", waypoints)
+                                                let result = []
+                                                result.push(waypoints)
+                                                //result.push() calcualtion data
+                                                io.to(data.ID).emit('calculateDriverData',result)
+                                        })
+                                })
+                        })
                         socket.on("getSpeedData",(data)=>{
                                 CalcService.returnSpeedForRoute().then(status=>{
                                         io.to(data.ID).emit('getSpeedData',status)

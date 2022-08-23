@@ -416,7 +416,19 @@ async function returnSpeedData(){
     }
   }
 
+
 // add modified data from devices to collection
+  async function getDriverCar(ID){
+    try{
+      let result = await getDriverProfile(ID)
+      const query = {'Car.carID':  result.driver.car};
+      let result2 = await client.db('Car').collection('Cars').findOne(query)
+      return result2
+    }catch(e){
+
+    }
+  }
+
 async function addData(data) {
   try {
     let result = await client.db("data").collection('modifiedData').insertOne({
@@ -466,6 +478,7 @@ async function closeConnection(db) {
 
 
   module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
-  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea, changeDriverDevice, addDeviceData, getDeviceData, getDriverProfile,returnCarsId, Writeresults, WritePerSecondresults, returnMafData, returnFuelTypeData};
+  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea, changeDriverDevice, addDeviceData, getDeviceData, getDriverProfile,returnCarsId, Writeresults, WritePerSecondresults, returnMafData, returnFuelTypeData,getDriverCar};
+
 
 
