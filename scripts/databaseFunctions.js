@@ -383,6 +383,30 @@ async function getDeviceData(deviceID){
 }
 
 
+async function addConfigData(data) {
+  try {
+    let result = await client.db("data").collection('Configs').insertOne({
+      data
+    })
+    return result
+  } catch (e) {
+    console.log("Data creation failed")
+    return -1
+  }
+}
+
+async function getConfigData() {
+  try {
+    let result = await client.db("data").collection('Configs').find()
+    let temp = await result.toArray()
+    return temp
+  } catch (e) {
+    console.log("Eish Error")
+    console.log(e)
+    return -1
+  }
+}
+
 async function closeConnection(db) {
     try{
         await db.close()
@@ -394,4 +418,4 @@ async function closeConnection(db) {
 
 
   module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
-  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea, changeDriverDevice, addDeviceData, getDeviceData, getDriverProfile};
+  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea, changeDriverDevice, addDeviceData, getDeviceData, getDriverProfile, addConfigData, getConfigData};

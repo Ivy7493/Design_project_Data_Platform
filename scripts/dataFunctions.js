@@ -13,8 +13,6 @@ async function getDeviceData(deviceID){
        dataStream = data
     })
     
-    //let data = 2; //write code here to retreive from API
-   // let result = await DB.addDeviceData(data,deviceID);
     return dataStream;
 }
 
@@ -51,8 +49,7 @@ async function getAllDeviceData(data){
 async function addDeviceData(data,deviceID){
     //Create model here
     let result = await DB.addDeviceData(data,deviceID);
-    return result;
-    
+    return result;   
 }
 
 
@@ -60,7 +57,40 @@ async function addDeviceData(data,deviceID){
 async function getDeviceStorage(deviceID){
     let result = await DB.getDeviceData(deviceID);
     console.log("We winning", result)
-    return result//result;
+    return result;
 }
 
-module.exports = { getDeviceStorage, getAllDeviceData }
+
+async function getDeviceConfig(deviceID) {
+    let headers = {
+        'Authorization': 'FlespiToken pzu9I9BWl8meVol0DUzehLW0FAj21TSejcdR9ECkBOnk0y8rgvtl6gbzEjrt29x9'
+    }
+    let dataStream
+    await fetch(`https://flespi.io/gw/devices/${deviceID}`, { headers: headers }).then(data => {
+        return data.json()
+    }).then(data => {
+        dataStream = data
+    })
+
+    return dataStream;
+}
+
+
+async function getConfigData(deviceID) {
+    let temp = await getDeviceConfig(deviceID)
+    const entries = Object.entries(temp);
+    console.log(entries[0][1])
+    entries[0][1].forEach(async x => {
+        let result = await addConfigData(x)
+        // console.log(result)
+    });
+}
+
+
+//Adds device data to persistent storage
+async function addConfigData(data) {
+    let result = await DB.addConfigData(data);
+    return result;
+}
+
+module.exports = { getDeviceStorage, getAllDeviceData, getConfigData }
