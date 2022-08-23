@@ -2,7 +2,7 @@ const RegisterRef = "registrationPage"
 const LoginRef = "loginPage"
 const mainRef = "mainPage"
 const adminRef = 'adminPage'
-
+const InitialRef="initial-display"
 
 //
 const logoutButton = 'logoutButton'
@@ -16,6 +16,7 @@ export function InitPages(document){
     document.getElementById(adminRef).style.display = "none";
     document.getElementById(logoutButton).style.display = "none";
     document.getElementById(adminButton).style.display = "none"
+    document.getElementById(InitialRef).style.display = "none"
     document.getElementById(LoginRef).style.display = "initial";
     initAdminPage()
     initDataPage()
@@ -43,6 +44,7 @@ export function ChangePage(page){
             document.getElementById(adminRef).style.display = "none";
             document.getElementById(adminButton).style.display = "initial"
             document.getElementById(mainRef).style.display = "initial";
+            document.getElementById(InitialRef).style.display = "initial";
             break;
 
         case "adminPage":
@@ -158,6 +160,7 @@ export function ChangeDataPage(page){
     switch(page){
         case "totalEnergy":
             document.getElementById(totalEnergyRef).style.display = "initial"
+            document.getElementById(InitialRef).style.display = "none"
             document.getElementById(perSecondEnergyRef).style.display = "none"
             document.getElementById(InitializeGraphRef).style.display = "none";
             
@@ -165,6 +168,7 @@ export function ChangeDataPage(page){
 
         case "perSecondEnergy":
             document.getElementById(totalEnergyRef).style.display = "none"
+            document.getElementById(InitialRef).style.display = "none"
             document.getElementById(InitializeGraphRef).style.display = "none"
             document.getElementById(perSecondEnergyRef).style.display = "Initial"
             
@@ -172,6 +176,7 @@ export function ChangeDataPage(page){
 
         case "InitializeGraphRef":
             document.getElementById(totalEnergyRef).style.display = "none"
+            document.getElementById(InitialRef).style.display = "none"
             document.getElementById(perSecondEnergyRef).style.display = "none"
             document.getElementById(InitializeGraphRef).style.display = "Initial"
             
