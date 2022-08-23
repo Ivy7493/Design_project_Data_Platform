@@ -416,10 +416,10 @@ async function returnSpeedData(){
     }
   }
 
-
+// add modified data from devices to collection
 async function addData(data) {
   try {
-    let result = await client.db("data").collection('CollectionData').insertOne({
+    let result = await client.db("data").collection('modifiedData').insertOne({
       data
     })
     return result
@@ -427,7 +427,6 @@ async function addData(data) {
     console.log("Data creation failed")
     return -1
   }
-
 }
 
 ///Device Section
