@@ -22,7 +22,7 @@ async function getDeviceData(deviceID){
 function getWeeklyData(){
     setInterval(function(){ // Set interval for checking
         var date = new Date(); // Create a Date object to find out what time it is
-        if(date.getHours() === 8 && date.getMinutes() === 0 && date.getDay() === 1){ // Check the time
+        if(date.getHours() === 8 && date.getMinutes() === 0 && date.getDay() === 1){ // Check for Monday 8:00
             // Do stuff
             getAllDeviceData()
             
@@ -56,7 +56,7 @@ async function addDeviceData(data,deviceID){
 }
 
 
-//gets device data from persistent stroage
+//gets device data from persistent storage
 async function getDeviceStorage(deviceID){
     let result = await DB.getDeviceData(deviceID);
     console.log("We winning", result)

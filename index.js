@@ -50,13 +50,13 @@ const options = {
 if(port == process.env.PORT){
   let server = http.createServer(app);
   server.listen(port, () => {
-    console.log(`listening on http://localhost:${port}`);
+    console.log(`listening on https://localhost:${port}`);
   });
   websocket.startSocket(server)
 }else if(port == 3000){
   let server = http2.createSecureServer(options,app);
   server.listen(port, () => {
-    console.log(`listening on http://localhost:${port}`);
+    console.log(`listening on https://localhost:${port}`);
   });
   websocket.startSocket(server)
 }
