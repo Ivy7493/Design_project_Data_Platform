@@ -1,5 +1,11 @@
 let DB = require('./databaseFunctions')
 let driverModel = require("../scripts/models/driverModel")
+const dataService = require('./dataFunctions')
+
+// If required to re-enter data uncomment:
+// getAllDrivers().then(data => {
+//     dataService.getAllDeviceData(data)
+// })
 
 
 async function getAllDrivers(){
@@ -34,6 +40,14 @@ async function addNewDriver(data){
     }
 }
 
+async function getDriverData(driverID){
+    let deviceID = await DB.getDriverProfile(driverID)
+    deviceID = deviceID.driver.deviceID
+    console.log(deviceID)
+    let result = await dataService.getDeviceStorage(deviceID)
+    return result
+}
+
 
 async function deleteDriver(data){
     let result = await DB.deleteDriver(data)
@@ -46,4 +60,4 @@ async function changeDriverDevice(data){
 }
 
 
-module.exports = {getAllDrivers, addNewDriver, deleteDriver, changeDriverDevice}
+module.exports = {getAllDrivers, addNewDriver, deleteDriver, changeDriverDevice, getDriverData}

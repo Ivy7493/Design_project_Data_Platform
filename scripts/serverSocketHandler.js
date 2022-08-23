@@ -4,6 +4,7 @@ let AuthService = require('./AuthenticationFunctions');
 let CalcService = require('./calculationFunctions');
 let DriverService = require('./driverFunctions')
 let CarService = require('./carFunctions')
+const dataService = require('./dataFunctions')
 const authConfig = require('./configs/authConfig');
 const Car = require('./models/carModel');
 var io;
