@@ -1,6 +1,8 @@
 const DB = require('./databaseFunctions')
 const fetch=require('node-fetch')
-
+const energyModel = require("../scripts/models/energyModel")
+const energySecModel = require("../scripts/models/energySecModel")
+let dataModel = require("../scripts/models/dataModel");
 
 async function calculateSpeedAverage(){
     let result=await DB.returnSpeedData()
@@ -29,7 +31,17 @@ async function returnSpeedForRoute(){
 
 async function returnTimeForRoute(){
     let result = await DB.returnTimeData()
-    return result;
+    var myDate = new Date(result*1000);
+    console.log(result[0])
+    let resultTime=0
+    let allResultTime=[]
+    for(let i=0; i< result.length-1;i++){
+        var myDate = new Date(result[i]*1000);
+        let resultTime=myDate.toLocaleString();
+        allResultTime[i]=resultTime
+    }
+    console.log(allResultTime)
+    return resultTime;
 }
 
 async function ReturnSpeedTimeForRoute(){
@@ -44,7 +56,7 @@ async function ReturnSpeedTimeForRoute(){
 async function calcresultEnergy(){
     let result=await DB.returnResultData()
     let sum = 0;
-    // result.forEach(x=>{
+    // resultw.forEach(x=>{
     //     sum += parseFloat (x);
     // })
     for(let i=0;i<result.length -2;i++){
@@ -53,75 +65,133 @@ async function calcresultEnergy(){
     return sum
 }
 // calculate energy usage using fuel consumption
-// async function calcIceEnergy(){
-//     let resultMaf=await DB.returnMafData()
-//     let resultAlt = await DB.returnAltitude()
-//     let resultLat = await DB.returnLatitude() 
-//     let resultLong = await DB.returnLongitude()
-//     let velocity=await DB.returnSpeedData()
-//     let fuelType=await DB.returnFuelTypeData()
-//     // convert data from strings to floats
-//     let finalLat = resultLat.map(x=>{
-//         return parseFloat(x)
-//     })
-//     let finalLong = resultLong.map(x=>{
-//         return parseFloat(x)
-//     })
-//     let finalAlt = resultAlt.map(x=>{
-//         return parseFloat(x)
-//     })
-//        // convert data from strings to floats
-//        let finalMaf = resultMaf.map(x=>{
-//         return parseFloat(x)
-//     })
-//     //initialise vars
-//     let Afr=0
-//     let fd=0
-//     let fuelConsump=0
-//     let energyConv=0
-//     let fuelEfficiency = 0 // how much converted into kinetic energy
-//     let energyUsagePerKm = 0
-//     let energyUsagePerSec = []
-//     totalEnergy=0
+async function calcIceEnergy(){//(data,car){
+    //car.fuelType
+    let resultMaf = await DB.returnMafData()
+    let resultAlt =  await DB.returnAltitude()//DB.getDeviceData(4599633)//dataModel.Altitude//await DB.returnAltitude()
+    //console.log('hier')
+    let resultLat = await DB.returnLatitude() 
+    let resultLong = await DB.returnLongitude()
+    let velocity=await DB.returnSpeedData()
+    console.log('vel',velocity)
+    let fuelType=await DB.returnFuelTypeData()
+    console.log('ft',fuelType)
+    // convert data from strings to floats
+    let finalLat = resultLat.map(x=>{
+        return parseFloat(x)
+    })
+    let finalLong = resultLong.map(x=>{
+        return parseFloat(x)
+    })
+    let finalAlt = resultAlt.map(x=>{
+        return parseFloat(x)
+    })
+       // convert data from strings to floats
+       let finalMaf = resultMaf.map(x=>{
+        return parseFloat(x)
+    })
+    //initialise vars
+    let Afr=0
+    let fd=0
+    let fuelConsump=0
+    let energyConv=0
+    let fuelEfficiency = 0 // how much converted into kinetic energy
+    let energyUsagePerKm = 0
+    let energyUsagePerSec = []
+    let totalEnergy=0
+    let allTotalEnergy=[]
+    let allEnergyUsagePerSec=[[]]
+    let fuelFlow=0
+    let radius = 6371; // km
+    for(let k=0;k<fuelType.length;k++){
+    //check which fuel car use: assigne constants
+    if(fuelType[k]===1){ //gasoline
+        Afr = 14.7
+        fd=820 //g/dm3
+        energyConv =  9.61 //1 l: 9.6 kwh
+        fuelEfficiency = 0.25
+        console.log('gasoline')
+     }
+     if(fuelType[k]===4){ //diesel
+       Afr=14.5
+       fd= 750 //g/dm3
+       energyConv = 10.96 //1 l:10.96 kwh
+       fuelEfficiency = 0.3
+       console.log('diesel')
 
-//     //check which fuel car use: assigne constants
-//     if(fuelType===1){ //gasoline
-//         Afr = 14.7
-//         fd=820 //g/dm3
-//         energyConv =  9.61 //1 l: 9.6 kwh
-//         fuelEfficiency = 0.25
-//      }
-//      if(fuelType===4){ //diesel
-//        Afr=14.5
-//        fd= 750 //g/dm3
-//        energyConv = 10.96 //1 l:10.96 kwh
-//        fuelEfficiency = 0.3
-
-//        }
-//     for(let i=0;i<result.length-1;i++){ 
+       }
+    for(let i=0;i<finalAlt.length-1;i++){ 
        
-//         fuelFlow=finalMaf*3600 / Afr*fd // l/hr
-//         fuelConsump=fuelFlow/velocity[i] //l/km
-//         energyUsagePerKm=fuelConsump * energyConv * fuelEfficiency //kwh/km
-//         let changeInElev=calcElevchange(finalAlt,i)
-//         energyUsagePerSec[i]=energyUsagePerKm * displacement(finalLat,finalLong,changeInElev)
-//         totalEnergy +=energyUsagePerSec[i]  
+        if (velocity[i]>0.3){
+        
+        // let s=(parseFloat(finalMaf[i]*3600)).toFixed(2)
+        // let f=(parseFloat((Afr*fd)).toFixed(2))
+        // fuelFlow= parseFloat(s/f).toFixed(2) // 
+        fuelFlow=(finalMaf[i]*3600)/(Afr*fd) //l/hr
+        fuelConsump=fuelFlow/velocity[i] //l/km
+        energyUsagePerKm=fuelConsump * energyConv * fuelEfficiency //kwh/km
+        let changeInElev=calcElevchange(finalAlt,i)
+        let s=displacement(finalLat,finalLong,changeInElev,radius,i)
+        energyUsagePerSec[i]=energyUsagePerKm * s
+        // totalEnergy +=energyUsagePerSec[i]
+        //console.log('energyUsagePerSec[i]',energyUsagePerSec[i])
+        fuelFlow=0  
+        fuelConsump=0
+        energyUsagePerKm=0
+        }
+        else {
+            //totalEnergy=0
+            energyUsagePerSec[i]=0
+        }
+        totalEnergy += energyUsagePerSec[i]
+        
+        // console.log(elev,'energyusage persec')
+        
+        console.log(totalEnergy,'totalenergy')
+    
+    }
+    allEnergyUsagePerSec[k]=energyUsagePerSec  
+    allTotalEnergy[k]=totalEnergy
+    console.log('alltotalenerngy',allTotalEnergy[k],k)
 
-//     }
-//     return totalEnergy, energyUsagePerSec
+    energyUsagePerSec=[]
+    totalEnergy=0
+}
+    return totalEnergy, energyUsagePerSec
    
-// }
+}
+const mode = arr => {
+    const mode = {};
+    let max = 0, count = 0;
+  
+    for(let i = 0; i < arr.length; i++) {
+      const item = arr[i];
+      
+      if(mode[item]) {
+        mode[item]++;
+      } else {
+        mode[item] = 1;
+      }
+      
+      if(count < mode[item]) {
+        max = item;
+        count = mode[item];
+      }
+    }
+     
+    return max;
+  };
 async function calcEnergyUsageKinModel(){
     // import data from databaseFunctions
     let resultAlt = await DB.returnAltitude()
     let resultLat = await DB.returnLatitude() 
     let resultLong = await DB.returnLongitude()
-    let velocity=await DB.returnSpeedData()
+    let velocity = await DB.returnSpeedData()
     let mass = await DB.returnCarsMass()
     let area = await DB.returnCarsArea()
-    // save start position
-    let startLong=resultLong[0] 
-    let startLat=resultLat[0] 
+    let vehicleId=await DB.returnCarsId()
+
+  
     //initialise variables
     let totalDistance=[]
     let slope=[]
@@ -139,6 +209,7 @@ async function calcEnergyUsageKinModel(){
     let powerOfftake=100 //W (why? = 100)
     let totalEnergy = 0
     let allEnergyPerSecondData=[[]]
+    let energyPerSecondData=[]
     let durationTrip = 0
     let brakingEnergy=0
     let deltaVelocity=0
@@ -146,10 +217,20 @@ async function calcEnergyUsageKinModel(){
     let fS=0
     let fA=0
     let totalEnergyAllCars=[]
+    let countMissingVel=0
+    let countMissingAlt=0
+    let countMissingLat=0
+    let countMissingLong=0
+    let countWrongVel=0
+    let energyResults=[[]]
+    let energyPersecondResults=[[]]
     // convert data from strings to floats
     let finalLat = resultLat.map(x=>{
         return parseFloat(x)
     })
+    // let velocity = resultVelocity.map(x=>{
+    //     return parseFloat(x)
+    // })
     let finalLong = resultLong.map(x=>{
         return parseFloat(x)
     })
@@ -157,10 +238,81 @@ async function calcEnergyUsageKinModel(){
         return parseFloat(x)
     })
     // calculations:
+   
     let radius = 6371; // km
-    for (let k=0; k<mass.length;k++){   
+    for(let i=0;i<velocity.length-1;i++){
+    
+    if(i===0 && velocity[0]===-1){ // if first value is missing replace with mode
+        velocity[0]= 0//mode(velocity) assume vehcile is always at rest when start transmitting
+        console.log('first value missing', velocity[0])
+        countMissingVel++
+    }
+    if(i===0&&final[0]===-1){ // if first value is missing replace with mode
+        final[0]= mode(final)
+        console.log('finalalt',final[0])
+        countMissingAlt++
+    
+    }
+    if(i===0&&finalLat[0]===-1){ // if first value is missing replace with mode
+        //finalLat[0]= mode(finalLat)
+        console.log('finallat',finalLat[0])
+        countMissingLat++
+    }
+    if(i===0&&finalLong[0]===-1){ // if first value is missing replace with mode
+        finalLong[0]= mode(finalLong)
+        console.log('finallong',finalLong[0])
+        countMissingLong++
+    
+    }
+    if(velocity[i]===-1){
+        velocity[i]=velocity[i-1]
+        console.log('hi vel',i, velocity[i])
+        countMissingVel++
+    }
+    // if(velocity[i]===undefined && (velocity[i+1]/3.6-velocity[i-1]/3.6)/timeDiff<6){
+    //     velocity[i]=velocity[i-1]
+    //     console.log('hi vel',i)
+    //     countMissingVel++
+    // }
+    // if(velocity[i]===undefined && (velocity[i+1]/3.6-velocity[i-1]/3.6)/timeDiff>6){
+    //     velocity[i]=velocity[i-1] //velocity[i]+(velocity[i+1]-velocity[i-1])/2
+    //     console.log('hi vel else',i)
+    //     countMissingVel++
+    // }
+    if(final[i]===-1){
+        final[i]=final[i-1]
+        console.log('hi alt',i)
+        countMissingAlt++
+    }
+    if(finalLat[i]===-1){
+        finalLat[i]=finalLat[i-1]
+        console.log('hi lat',i, finalLat[i])
+        countMissingLat++
+    }
+    if(finalLong[i]===-1){
+        finalLong[i]=finalLong[i-1]
+        console.log('hi long',i)
+        countMissingLong++
+    }
+
+}
+//console.log(countMissingVel,countMissingAlt,countMissingLat,countMissingLong)    
+for (let k=0; k<mass.length;k++){   
         for(let i=0;i<final.length-1;i++){ //final.length-1;i++){
-        
+        if(velocity[i]>200){
+            velocity[i]=velocity[i]+(velocity[i+1]-velocity[i])/2
+            console.log('large')
+            countWrongVel++
+            }
+        if(i!==0 && (Math.abs(velocity[i+1]/3.6-velocity[i]/3.6)/timeDiff)>6){  // still test: seems to be working
+        velocity[i]=velocity[i]+((velocity[i+1]-velocity[i])/2)
+        console.log('hi vel else',i,velocity[i])
+        if(i!==0 && (velocity[i+1]/3.6-velocity[i]/3.6)/timeDiff>6){
+            console.log('again', velocity[i])
+        }
+        countMissingVel++
+    }
+
         // compute change in elevation
         changeInElev = calcElevchange(final,i);
         // compute geodesic distance
@@ -179,6 +331,7 @@ async function calcEnergyUsageKinModel(){
             slope[i]=0
         }
         // if velocity is below 0.3 equal to 0, small velocities are considered negligible
+       
         if (velocity[i]<0.3){
             velocity[i] = 0
         }
@@ -191,7 +344,7 @@ async function calcEnergyUsageKinModel(){
         fA=AerodynamicDragForce(coeffAdf,area[k],velocity[i]/3.6)
         fS=RoadSlopeDrag(mass[k],slope[i])
         }
-
+     
         deltaVelocity=(velocity[i+1]/3.6) - (velocity[i]/3.6)
         totalForce= fR + fA + fS
         expectDspeed=(totalForce * timeDiff) / mass[k]
@@ -206,36 +359,65 @@ async function calcEnergyUsageKinModel(){
           brakingEnergy= temp3*brakingEfficiency//brakingEfficiency * vehicleForce * velocity[i] * timeDiff  //propEnergy
         }
         offtakeEnergy= powerOfftake* timeDiff
-        
         let temp2 = (propEnergy + offtakeEnergy+brakingEnergy)/(3.6 * 10**6)
         totalEnergy += temp2 //(propEnergy + offtakeEnergy)/3.6 * 10**6
-        allEnergyPerSecondData[k,i] = temp2 
+        energyPerSecondData[i] = temp2 //allEnergyPerSecondData[k,i] = temp2 
         lateralDistance=0
         //set vars to 0
         propEnergy = 0
         brakingEnergy = 0
         durationTrip++
+        temp2=0
     
     }
+    allEnergyPerSecondData[k]=energyPerSecondData
+    energyPerSecondData=[]
     allCarsTripDur[k]=durationTrip
     durationTrip=0 
     totalEnergyAllCars[k]=totalEnergy
     totalEnergy=0 
+    energyPersecondResults[k] = new energySecModel({
+        carID:vehicleId[k],
+        EnergyConsumption:allEnergyPerSecondData[k]    
+    }) 
     
-
+    energyResults[k] = new energyModel({
+        carID:vehicleId[k],
+        EnergyConsumption:totalEnergyAllCars[k] 
+    }) 
 }
 console.log('Duration of trip for all cars',allCarsTripDur)
 console.log('kinmodel energy',totalEnergyAllCars)
-    let driver="DriverA"
-    let _time = await returnTimeForRoute()
-    let temp = {
-       EnergyPerSecond: allEnergyPerSecondData[0],// allEnergyPerSecondData[0]
-       TotalEnergy: totalEnergy, //totalEnergyAllCars[0]
-       Time: _time,
-       Driver: driver
-    }
-    return temp  
+console.log('kinmodel energy 0',allEnergyPerSecondData[0])
+console.log('kinmodel energy 1',allEnergyPerSecondData[1])
+console.log('vehID',vehicleId[0])
+// energyResults = new energyModel({
+//     carID:vehicleId[0],
+//     EnergyConsumption:totalEnergyAllCars[0] 
+// })  
+return [energyResults,energyPersecondResults]
+    // let driver="DriverA"
+    // let _time = await returnTimeForRoute()
+    // let temp = {
+    //    EnergyPerSecond: allEnergyPerSecondData[0], //allEnergyPerSecondData[0]
+    //    TotalEnergy: totalEnergyAllCars[0],
+    //    Time: _time,
+    //    Driver: driver
+    // }
+    // return temp  
 }
+// let energyResults = new dataModel({
+//     ID: userInfo.username,
+//     Date: userInfo.email,
+//     Time: bcrypt.hashSync(userInfo.password, 8),
+//     Latitude: token,
+//     Longitude: d,
+//     Altitude:
+//     Speed: s,
+//     EnergyConsumption:s ,
+//     Displacement:
+//     carID:
+// })
 
 // kineticmodel using elevation api
 async function calcEnergyUsageKinModelApiElev(){
@@ -396,6 +578,8 @@ function calcElevchange(final,i){
     if ((Math.abs(changeInElev)) < 0.2){
         changeInElev = 0
     }
+
+
     return changeInElev
 }
 // calculate displacement
@@ -489,4 +673,4 @@ function convertToRad(a){
 return a*Math.PI /180;
 }
 
-module.exports={calculateSpeedAverage, returnSpeedForRoute, returnTimeForRoute, ReturnSpeedTimeForRoute,calcEnergyUsageKinModel,calcEnergyUsageKinModelApiElev,calcresultEnergy};
+module.exports={calculateSpeedAverage, returnSpeedForRoute, returnTimeForRoute, ReturnSpeedTimeForRoute,calcEnergyUsageKinModel,calcEnergyUsageKinModelApiElev,calcresultEnergy, calcIceEnergy};
