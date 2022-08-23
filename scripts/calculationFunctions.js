@@ -139,6 +139,7 @@ async function calcEnergyUsageKinModel(){
     let powerOfftake=100 //W (why? = 100)
     let totalEnergy = 0
     let allEnergyPerSecondData=[[]]
+    let energyPerSecondData=[]
     let durationTrip = 0
     let brakingEnergy=0
     let deltaVelocity=0
@@ -209,7 +210,7 @@ async function calcEnergyUsageKinModel(){
         
         let temp2 = (propEnergy + offtakeEnergy+brakingEnergy)/(3.6 * 10**6)
         totalEnergy += temp2 //(propEnergy + offtakeEnergy)/3.6 * 10**6
-        allEnergyPerSecondData[k,i] = temp2 
+        energyPerSecondData[i] = temp2 
         lateralDistance=0
         //set vars to 0
         propEnergy = 0
@@ -217,6 +218,8 @@ async function calcEnergyUsageKinModel(){
         durationTrip++
     
     }
+    allEnergyPerSecondData[k]=energyPerSecondData
+    energyPerSecondData=[]
     allCarsTripDur[k]=durationTrip
     durationTrip=0 
     totalEnergyAllCars[k]=totalEnergy
@@ -225,12 +228,15 @@ async function calcEnergyUsageKinModel(){
 
 }
 console.log('Duration of trip for all cars',allCarsTripDur)
-console.log('kinmodel energy',totalEnergyAllCars)
+console.log('kinmodel energy',allEnergyPerSecondData[0])
+console.log('kinmodel energy2',allEnergyPerSecondData[1])
     let driver="DriverA"
     let _time = await returnTimeForRoute()
     let temp = {
-       EnergyPerSecond: allEnergyPerSecondData[0],// allEnergyPerSecondData[0]
-       TotalEnergy: totalEnergy, //totalEnergyAllCars[0]
+        EnergyPerSecond: allEnergyPerSecondData[0], 
+        EnergyPerSecond2: allEnergyPerSecondData[1],
+       TotalEnergy: totalEnergyAllCars[0],
+       TotalEnergy2: totalEnergyAllCars[1],
        Time: _time,
        Driver: driver
     }

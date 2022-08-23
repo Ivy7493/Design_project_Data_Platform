@@ -9,14 +9,11 @@
 </head>
 <body>
 
-<div style="margin-bottom: 30px; margin-top: 20px;" class="flex-center">
-    <img src="../Logo.png" alt="City power logo" width="200" height="200">
-    
-</div>
-<div class="login-box-btns">
-    <button class="logout-btn" type="button" id="logoutButton">Logout</button> 
-</div>
 <div id="loginPage">
+    <div style="margin-bottom: 30px; margin-top: 20px;" class="flex-center">
+        <img src="../Logo.png" alt="City power logo" width="200" height="200">
+        
+    </div>
     <div class="flex-center login-box">
         <div class="login-box-child">
             <div class="input-struct">
@@ -39,6 +36,10 @@
 </div>
 
 <div  id="registrationPage">
+    <div style="margin-bottom: 30px; margin-top: 20px;" class="flex-center">
+        <img src="../Logo.png" alt="City power logo" width="200" height="200">
+        
+    </div>
     <div class="flex-center login-box">
          <div class="login-box-child">
              <div class="input-struct">
@@ -62,10 +63,17 @@
 
 
 <div  id="mainPage">
-    <div class="login-box-btns">
-        <button class= "Admin-btn" type="button" id="adminButton">Set Admin Access</button> 
-    </div>
   
+        <div class="topnav" style="margin-bottom: 30px; " class="flex-center">
+            <img src="../Logo.png" alt="City power logo" width="100" height="100">
+            
+            <div class="topnav a ">
+                <button  type="button" id="adminButton">Set Admin Access</button> 
+                <button  type="button" id="logoutButton">Logout</button> 
+            </div>
+            
+           
+        </div>
 
     <div class="map-btns">
         <button type="button" class="map-btn ft-roboto-cd" id="DisplayBarGButton">Display Total Energy per Driver</button>
@@ -86,12 +94,6 @@
                 <label class="ft-quick" for="driver">Enter Driver's Name: </label>
                 <select id="driver" name="driver"></select>
 
-                <label class="ft-quick" for="driver">Enter Time of Day: </label>
-                <select id="Time" >
-                    <a href="#">Morning</a>
-                    <a href="#">Afternoon</a>
-                    <a href="#">Evening</a>
-                </select>
                
                 
                 <button type="button" class="map-btn ft-roboto-cd" id="getGraph">Get Graph</button>
