@@ -4,16 +4,12 @@ const dataModel = mongoose.model(
     "dataModel",
     new mongoose.Schema({
         ID: {
-            type: Number,
-            unique: true
-        },
-        Date: {
             type: String,
             unique: true
         },
-        Time: {
+        dateAndTime: {
             type: String,
-            requied: true
+            unique: true
         },
         Latitude: {
             type: Number,
@@ -22,64 +18,28 @@ const dataModel = mongoose.model(
         Longitude: {
             type: Number,
             required: true,
-            // enum: ['In-use', 'Retired'],
-            // default: 'In-use'
         },
         Altitude: {
             type: Number,
             required: true
         },
+        RPM: {
+            type: Number,
+            required: true,
+            //enum: [0],
+            default: 0
+        },
+        MAF: {
+            type: Number,
+            required: true,
+            //enum: [0],
+            default: 0
+        },
         Speed: {
             type: Number,
-            required: true
-        },
-        Heading: {
-            type: Number,
-            required: true
-        },
-        SignalQuality: {
-            type: Number,
-            required: true
-        },
-        NumberofSatalitesConnected: {
-            type: Number,
-            required: true
-        },
-        XAxisAcceleration: {
-            type: Number,
-            required: true
-        },
-        YAxisAcceleration: {
-            type: Number,
-            required: true
-        },
-        ZAxisAcceleration: {
-            type: Number,
-            required: true
-        },
-        PropulsionWork: {
-            type: Number,
-            required: true
-        },
-        BrakingWork: {
-            type: Number,
-            required: true
-        },
-        OffloadWork: {
-            type: Number,
-            required: true
-        },
-        EnergyConsumption: {
-            type: Number,
-            required: true
-        },
-        Displacement: {
-            type: Number,
-            required: true
-        },
-        SlopeAngle: {
-            type: Number,
-            required: true
+            required: true,
+            //enum: [0],
+            default: 0
         }
     })
 );
