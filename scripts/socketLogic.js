@@ -21,6 +21,13 @@ socket.on('login',(data)=>{
         sessionStorage.setItem("Token", data);
         ChangePage('MainPage')
         ToggleLogout(document)
+
+        let temp2 = {
+            token: sessionStorage.getItem("Token"),
+            ID: ReturnSocketID(),
+            driverID: 'Ivan-0'
+        }
+        SendToServer('calculateDriverData',temp2)
         //addRoute(data)
     }
 })
@@ -81,6 +88,13 @@ socket.on('getAllCars',(data)=>{
         selectElement.options.add(option);
    })
     setCarTable(data)
+})
+
+
+//DATA section
+socket.on('calculateDriverData',(data)=>{
+    console.log("Driver waypoints: ", data[0])
+    addRoute(data[0])
 })
 
 socket.on('getRouteData',(data)=>{

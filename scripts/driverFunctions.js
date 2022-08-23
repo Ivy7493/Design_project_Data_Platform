@@ -7,7 +7,7 @@ const dataService = require('./dataFunctions')
 //     dataService.getAllDeviceData(data)
 // })
 
-
+getDriverCar('Ivan-0')
 async function getAllDrivers(){
     let result = await DB.getallDrivers()
     result = result.filter(x =>{
@@ -48,6 +48,12 @@ async function getDriverData(driverID){
     return result
 }
 
+async function getDriverCar(driverID){
+    let car = await DB.getDriverCar(driverID)
+    console.log(car)
+    return car
+}
+
 
 async function deleteDriver(data){
     let result = await DB.deleteDriver(data)
@@ -60,4 +66,4 @@ async function changeDriverDevice(data){
 }
 
 
-module.exports = {getAllDrivers, addNewDriver, deleteDriver, changeDriverDevice, getDriverData}
+module.exports = {getAllDrivers, addNewDriver, deleteDriver, changeDriverDevice, getDriverData, getDriverCar}
