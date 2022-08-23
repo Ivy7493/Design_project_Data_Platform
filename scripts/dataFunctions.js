@@ -1,7 +1,6 @@
 const DB = require('./databaseFunctions')
 const fetch = require('node-fetch')
 let dataModel = require("../scripts/models/dataModel");
-
 async function getDeviceData(deviceID){
     //Write Fetch request here
     let headers = {
