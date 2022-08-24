@@ -369,14 +369,15 @@ async function addDeviceData(data,deviceID){
     return -1
   }
 }
-
+//getDeviceData('4599633')
 async function getDeviceData(deviceID){
   try{
     let result = await client.db("data").collection(deviceID).find()
     let temp = await result.toArray()
+    //console.log('here', temp)
     return temp
   }catch(e){
-    console.log("Eish Error")
+    console.log("Eish Error in: getDeviceData")
     console.log(e)
     return -1 
   }

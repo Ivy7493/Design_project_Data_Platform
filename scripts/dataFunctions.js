@@ -82,7 +82,7 @@ async function getConfigData(deviceID) {
     console.log(entries[0][1])
     entries[0][1].forEach(async x => {
         let result = await addConfigData(x)
-        // console.log(result)
+        console.log(result)
     });
 }
 
@@ -93,4 +93,32 @@ async function addConfigData(data) {
     return result;
 }
 
-module.exports = { getDeviceStorage, getAllDeviceData, getConfigData }
+
+async function createNewDevice() {
+    // //curl -X POST  --header 'Authorization: FlespiToken pzu9I9BWl8meVol0DUzehLW0FAj21TSejcdR9ECkBOnk0y8rgvtl6gbzEjrt29x9'  -d '[{"configuration":{"ident":"357544376624356"},"device_type_id":745,"messages_ttl":31536000,"messages_rotate":0}]' 'https://flespi.io/gw/devices?fields=device_type_id%2Cname%2Cprotocol_id%2Cconfiguration'
+    // let header = {
+    //     'Authorization': 'FlespiToken pzu9I9BWl8meVol0DUzehLW0FAj21TSejcdR9ECkBOnk0y8rgvtl6gbzEjrt29x9'
+    // }
+    // await fetch('https://flespi.io/gw/devices?fields=', {
+    //     method: 'post',
+    //     headers: { header },
+    //     body: JSON.stringify({
+    //         "configuration": {
+    //             "ident": "357544376624356",
+    //             "phone": "number here",
+    //             "settings_polling": "daily"
+    //         },
+    //         "device_type_id": 745,
+    //         "name": "FMB003",
+    //         "messages_ttl": 31536000
+    //     })
+    // })
+}
+
+
+async function deviceInformation() {
+    // let ident = "357544376624355";
+    // let phone = "number here";
+}
+
+module.exports = { getDeviceStorage, getAllDeviceData, getConfigData, createNewDevice }

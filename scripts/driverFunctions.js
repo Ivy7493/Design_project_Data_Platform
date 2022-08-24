@@ -6,6 +6,10 @@ const dataService = require('./dataFunctions')
 // getAllDrivers().then(data => {
 //     dataService.getAllDeviceData(data)
 // })
+// Get configuration data of device.
+//dataService.getConfigData(4599633);
+//Create a New device
+dataService.createNewDevice();
 
 
 async function getAllDrivers(){
