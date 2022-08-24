@@ -1,6 +1,6 @@
 const DB = require('./databaseFunctions')
-const fetch=require('node-fetch')
-
+const fetch = require('node-fetch')
+let dataModel = require("../scripts/models/dataModel");
 async function getDeviceData(deviceID){
     //Write Fetch request here
     let headers = {
@@ -17,6 +17,7 @@ async function getDeviceData(deviceID){
    // let result = await DB.addDeviceData(data,deviceID);
     return dataStream;
 }
+
 
 //weekly function to update all data
 function getWeeklyData(){
@@ -35,24 +36,40 @@ async function getAllDeviceData(data){
     let drivers = data
     console.log(drivers)
     drivers.map(async x=>{
-        console.log(x.deviceID)
+        // console.log(x.deviceID)
         let temp =  await getDeviceData(x.deviceID)
         const entries = Object.entries(temp);
-        console.log(entries[0][1])
+        // console.log(entries[0][1])
         entries[0][1].forEach(async y => {
             let result = await addDeviceData(y,x.deviceID)
-            console.log(result)
+            // console.log(result)
         });
     
     })
 }
 
 //Adds device data to persistent storage
-async function addDeviceData(data,deviceID){
-    //Create model here
-    let result = await DB.addDeviceData(data,deviceID);
+async function addDeviceData(data, deviceID) {
+    // console.log(data['position.altitude'])
+    function dateAndTime(date) {
+        var myDate = new Date(date['timestamp']*1000)
+        let modified = myDate.toLocaleString()
+        return modified;
+    }
+    let processData = new dataModel({
+        ID: data['device.id'],
+        dateAndTime: dateAndTime(data),
+        Latitude: data['position.latitude'],
+        Longitude: data['position.longitude'],
+        Altitude: data['position.altitude'],
+        RPM: data['can.engine.rpm'],
+        MAF: data['can.maf.air.flow.rate'],
+        Speed: data['can.vehicle.speed'],
+        IMEI: data['ident'],
+        timestamp: data['timestamp']
+    })
+    let result = await DB.addDeviceData(processData, deviceID);
     return result;
-    
 }
 
 
