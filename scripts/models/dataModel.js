@@ -3,12 +3,16 @@ const mongoose = require("mongoose");
 const dataModel = mongoose.model(
     "dataModel",
     new mongoose.Schema({
+        Altitude: {
+            type: Number,
+            required: true
+        },
         ID: {
             type: Number,
             unique: true
         },
-        dateAndTime: {
-            type: String,
+        IMEI: {
+            type: Number,
             required: true
         },
         Latitude: {
@@ -19,30 +23,23 @@ const dataModel = mongoose.model(
             type: Number,
             required: true,
         },
-        Altitude: {
+        MAF: {
             type: Number,
-            required: true
+            required: false,
+            default: 0
         },
         RPM: {
             type: Number,
             required: false,
-            //enum: [0],
-            default: 0
-        },
-        MAF: {
-            type: Number,
-            required: false,
-            //enum: [0],
             default: 0
         },
         Speed: {
             type: Number,
             required: false,
-            //enum: [0],
             default: 0
         },
-        IMEI: {
-            type: Number,
+        dateAndTime: {
+            type: String,
             required: true
         },
         timestamp: {
