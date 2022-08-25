@@ -275,6 +275,10 @@ const mode = arr => {
   };
 async function calcEnergyUsageKinModel(data,car){
     let tempAlt = []
+    if(!data){
+        return
+    }
+    
     data.map(x=>{
         tempAlt.push(x.data.Altitude)
     })

@@ -232,6 +232,16 @@ loginButton.addEventListener('click',function (){
 let DisplayBarGButton = document.getElementById('DisplayBarGButton')
 let DisplayLineGButton = document.getElementById('DisplayLineGButton')
 let getGraphButton = document.getElementById('getGraph')
+let selectDriverButton = document.getElementById('driver')
+
+selectDriverButton.addEventListener('change',function(){
+    let tempID = selectDriverButton.options[selectDriverButton.selectedIndex].value
+    let temp = {
+        driverID: tempID,
+        ID: ReturnSocketID()
+    }
+  SendToServer('calculateDriverData',temp)
+})
 
 DisplayBarGButton.addEventListener('click',function(){
     

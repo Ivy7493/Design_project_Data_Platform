@@ -6,10 +6,10 @@ export async function displayEnergyForTrip(input,element){
     const myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: input.Time,
+        labels: input[3],
         datasets: [{
             label: 'Energy used in a single trip',
-            data: input.EnergyPerSecond,
+            data: input[2],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

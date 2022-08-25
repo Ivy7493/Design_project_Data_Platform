@@ -116,6 +116,14 @@ function startSocket(app){
                                                                 waypoints.push(`${x.data.Latitude},${x.data.Longitude}`)
                                                         }
                                                 })
+
+                                                let dataTime = []
+                                                driverData.map(x=>{
+                                                        if(x.data.dateAndTime){
+                                                                dataTime.push(x.data.dateAndTime)
+                                                        }
+                                                })
+
                                                 //console.log("car data",carData)
                                                 //console.log("waypoints", waypoints)
                                                 let result = []
@@ -124,6 +132,7 @@ function startSocket(app){
                                                 result.push(waypoints)
                                                 result.push(totalEnergy)
                                                 result.push(energyPerSecond)
+                                                result.push(dataTime)
                                                 //result.push() calcualtion data
                                                 io.to(data.ID).emit('calculateDriverData',result)
                                                 })
