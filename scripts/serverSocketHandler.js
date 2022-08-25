@@ -89,20 +89,43 @@ function startSocket(app){
                                 DriverService.getDriverData(data.driverID).then(driverData =>{
                                         DriverService.getDriverCar(data.driverID).then(carData =>{
                                                 //Call cal service here
+                                                // CalcService.calcIceEnergy(driverData,carData).then((totalEnergy,energyPerSecond)=>{
+                                                //         //INTERGRATE WITH VIAN WHEN HE IS DONE
+                                                //         //console.log("driver data: ",driverData)
+                                                //         let waypoints = []
+                                                //         driverData.map(x=>{
+                                                //                 if(x.data.Latitude && x.data.Longitude){
+                                                //                         waypoints.push(`${x.data.Latitude},${x.data.Longitude}`)
+                                                //                 }
+                                                //         })
+                                                //         //console.log("car data",carData)
+                                                //         //console.log("waypoints", waypoints)
+                                                //         let result = []
+                                                //         result.push(waypoints)
+                                                //         result.push(totalEnergy)
+                                                //         result.push(energyPerSecond)
+                                                //         //result.push() calcualtion data
+                                                //         io.to(data.ID).emit('calculateDriverData',result)
+                                                //         })
+                                                CalcService.calcEnergyUsageKinModel(driverData,carData).then((totalEnergy,energyPerSecond)=>{
                                                 //INTERGRATE WITH VIAN WHEN HE IS DONE
-                                                console.log("driver data: ",driverData)
+                                                //console.log("driver data: ",driverData)
                                                 let waypoints = []
                                                 driverData.map(x=>{
                                                         if(x.data.Latitude && x.data.Longitude){
                                                                 waypoints.push(`${x.data.Latitude},${x.data.Longitude}`)
                                                         }
                                                 })
-                                                console.log("car data",carData)
-                                                console.log("waypoints", waypoints)
+                                                //console.log("car data",carData)
+                                                //console.log("waypoints", waypoints)
                                                 let result = []
                                                 result.push(waypoints)
+                                                result.push(totalEnergy)
+                                                result.push(energyPerSecond)
                                                 //result.push() calcualtion data
                                                 io.to(data.ID).emit('calculateDriverData',result)
+                                                })
+                                                
                                         })
                                 })
                         })
