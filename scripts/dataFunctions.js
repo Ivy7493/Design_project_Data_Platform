@@ -13,8 +13,6 @@ async function getDeviceData(deviceID){
        dataStream = data
     })
     
-    //let data = 2; //write code here to retreive from API
-   // let result = await DB.addDeviceData(data,deviceID);
     return dataStream;
 }
 
@@ -77,7 +75,74 @@ async function addDeviceData(data, deviceID) {
 async function getDeviceStorage(deviceID){
     let result = await DB.getDeviceData(deviceID);
     console.log("We winning", result)
-    return result//result;
+    return result;
 }
 
-module.exports = { getDeviceStorage, getAllDeviceData }
+
+async function getDeviceConfig(deviceID) {
+    let headers = {
+        'Authorization': 'FlespiToken pzu9I9BWl8meVol0DUzehLW0FAj21TSejcdR9ECkBOnk0y8rgvtl6gbzEjrt29x9'
+    }
+    let dataStream
+    await fetch(`https://flespi.io/gw/devices/${deviceID}`, { headers: headers }).then(data => {
+        return data.json()
+    }).then(data => {
+        dataStream = data
+    })
+
+    return dataStream;
+}
+
+
+async function getConfigData(deviceID) {
+    let temp = await getDeviceConfig(deviceID)
+    const entries = Object.entries(temp);
+    console.log(entries[0][1])
+    entries[0][1].forEach(async x => {
+        let result = await addConfigData(x)
+        console.log(result)
+    });
+}
+
+
+//Adds device data to persistent storage
+async function addConfigData(data) {
+    let result = await DB.addConfigData(data);
+    return result;
+}
+
+
+async function createNewDevice() {
+    //let ident, phone, settings_poll, device_type_id, name, messages_ttl = await dummyDeviceInfo();
+    fetch("https://flespi.io/gw/devices", {
+        body: JSON.stringify([{
+            "configuration": {
+                "ident": "357544376624356",
+                "phone": "+27123456789",
+                "settings_polling": "daily"
+            },
+            "device_type_id": 745,
+            "name": "FMB003",
+            "messages_ttl": 31536000
+        }]),
+        headers: {
+            Authorization: "FlespiToken pzu9I9BWl8meVol0DUzehLW0FAj21TSejcdR9ECkBOnk0y8rgvtl6gbzEjrt29x9",
+            'Content-Type': 'application/json'
+        },
+        method: "POST"
+    })
+    console.log("Device has been created successfully.")
+}
+
+
+// async function dummyDeviceInfo() {
+//     let ident = "357544376624355";
+//     let phone = "+27123456789";
+//     let settings_poll = "daily";
+//     let device_type_id = 745;
+//     let name = "FMB003";
+//     let messages_ttl = 31536000;
+//     return {ident, phone, settings_poll, device_type_id, name, messages_ttl}
+// }
+
+module.exports = { getDeviceStorage, getAllDeviceData, getConfigData, createNewDevice }

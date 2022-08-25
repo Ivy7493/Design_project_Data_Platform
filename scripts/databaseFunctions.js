@@ -453,19 +453,43 @@ async function addDeviceData(data,deviceID){
     return -1
   }
 }
-
+//getDeviceData('4599633')
 async function getDeviceData(deviceID){
   try{
     let result = await client.db("data").collection(deviceID).find().sort( { "data.timestamp" : 1} )  // let result = await client.db("data").collection(deciveID).find() 
     let temp = await result.toArray()
-    //console.log(temp)
+    //console.log('here', temp)
     return temp
   }catch(e){
-    console.log("Eish Error")
+    console.log("Eish Error in: getDeviceData")
     console.log(e)
     return -1 
   }
 }
+async function addConfigData(data) {
+  try {
+    let result = await client.db("data").collection('Configs').insertOne({
+      data
+    })
+    return result
+  } catch (e) {
+    console.log("Data creation failed")
+    return -1
+  }
+}
+
+async function getConfigData() {
+  try {
+    let result = await client.db("data").collection('Configs').find()
+    let temp = await result.toArray()
+    return temp
+  } catch (e) {
+    console.log("Eish Error")
+    console.log(e)
+    return -1
+  }
+}
+
 
 async function closeConnection(db) {
     try{
@@ -478,7 +502,5 @@ async function closeConnection(db) {
 
 
   module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
-  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea, changeDriverDevice, addDeviceData, getDeviceData, getDriverProfile,returnCarsId, Writeresults, WritePerSecondresults, returnMafData, returnFuelTypeData,getDriverCar};
-
-
-
+  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea, changeDriverDevice, addDeviceData, getDeviceData, getDriverProfile,returnCarsId, Writeresults, WritePerSecondresults
+  , returnMafData, returnFuelTypeData, getDriverCar,  addConfigData, getConfigData};
