@@ -9,14 +9,11 @@
 </head>
 <body>
 
-<div style="margin-bottom: 30px; margin-top: 20px;" class="flex-center">
-    <img src="../Logo.png" alt="City power logo" width="200" height="200">
-    
-</div>
-<div class="login-box-btns">
-    <button class="logout-btn" type="button" id="logoutButton">Logout</button> 
-</div>
 <div id="loginPage">
+    <div style="margin-bottom: 30px; margin-top: 20px;" class="flex-center">
+        <img src="../Logo.png" alt="City power logo" width="200" height="200">
+        
+    </div>
     <div class="flex-center login-box">
         <div class="login-box-child">
             <div class="input-struct">
@@ -39,6 +36,10 @@
 </div>
 
 <div  id="registrationPage">
+    <div style="margin-bottom: 30px; margin-top: 20px;" class="flex-center">
+        <img src="../Logo.png" alt="City power logo" width="200" height="200">
+        
+    </div>
     <div class="flex-center login-box">
          <div class="login-box-child">
              <div class="input-struct">
@@ -62,44 +63,50 @@
 
 
 <div  id="mainPage">
-    <div class="login-box-btns">
-        <button class= "Admin-btn" type="button" id="adminButton">Set Admin Access</button> 
-    </div>
   
-
-    <div class="map-btns">
-        <button type="button" class="map-btn ft-roboto-cd" id="DisplayBarGButton">Display Total Energy per Driver</button>
-        <button type="button" class="map-btn ft-roboto-cd" id="DisplayLineGButton">Display Energy vs Time</button>
-    </div>
-    <section class="graph-box">
-        <div class="map-box">
-            <div id="map" class="map"></div>
-        </div> 
-        
-        <div id="totalEnergyTab">
-            <canvas id="myChart2" style="height:400px;"></canvas>
+        <div class="topnav"  class="flex-center">
+            <img src="../Logo.png" alt="City power logo" width="125" height="125">
+            
+            <div>
+                <button  class="navButton" type="button" id="adminButton">Admin Portal</button> 
+                <button  class="navButton" type="button" id="logoutButton">Logout</button> 
+            </div>
+           
         </div>
 
-        <section class="drop-down-box">
-            <div id="Initialize">
+        <div class="map-btns-box">
+            <button  type="button" class=" map-btn ft-roboto-cd" id="DisplayBarGButton">Display Total Energy per Driver</button>
+            <button type="button" class=" map-btn ft-roboto-cd" id="DisplayLineGButton">Display Energy vs Time</button>
+        </div>
+
+        <div id = "initial-display">
+            <label class="buffer flex-center ft-quick"> *EXAMPLE* <br/> Welcome to City Energy! <br/> 
+                Please use the navigation buttons above to toggle between Admin page, Login page and Analytics page <br/>
+            </label>
+        </div>
+
+    <section class="graph-box">
+      
+        
+        <div class="graph-style" id="totalEnergyTab">
+            <canvas id="myChart2"></canvas>
+        </div>
+
+        <section>
+            <div class="drop-down-box" id="Initialize">
             
                 <label class="ft-quick" for="driver">Enter Driver's Name: </label>
                 <select id="driver" name="driver"></select>
+                <button type="button" class="get-map-btn ft-roboto-cd" id="getGraph">Get Graph</button>
 
-                <label class="ft-quick" for="driver">Enter Time of Day: </label>
-                <select id="Time" >
-                    <a href="#">Morning</a>
-                    <a href="#">Afternoon</a>
-                    <a href="#">Evening</a>
-                </select>
-               
-                
-                <button type="button" class="map-btn ft-roboto-cd" id="getGraph">Get Graph</button>
             </div>
         </section>
-        <div class="" id="energyPerSecondTab">
+        <div class="graph-style" id="energyPerSecondTab">
 
-            <canvas  id="myChart" style="height:400px;"></canvas>
+            <canvas  id="myChart"></canvas>
+            <div class="map-box">
+             <div id="map" class="map"></div>
+            </div> 
         </div>
     </section> 
 </div>
@@ -108,18 +115,24 @@
 
 <div  id="adminPage">
 
-    <div class="login-box-btns">
-        <button class= "Admin-btn" type="button" id="adminBackButton">Data Analytics</button>
+    <div class="topnav"  class="flex-center">
+        <img src="../Logo.png" alt="City power logo" width="125" height="125">
+        
+        <div>
+            <button  class="navButton" type="button" id="adminBackButton">Data Analytics</button>
+            <button  class="navButton" type="button" id="logoutButton">Logout</button> 
+        </div>
     </div>
+       
     <div class="flex-center Admin-box">
         <div class="Admin-box-child">
             <div class="flex-center-row">
-                <div class="admin-box-btn">
-                    <button type="button" id="accountButton">Account Management</button> 
+                <div class="map-btns-box">
+                    <button class="map-btn" type="button" id="accountButton">Account Management</button> 
                     
-                    <button type="button" id="driverButton">Driver Management</button>
+                    <button class="map-btn" type="button" id="driverButton">Driver Management</button>
                     
-                    <button type="button" id="carButton">Car Management</button> 
+                    <button class="map-btn" type="button" id="carButton">Car Management</button> 
                     
                 </div>
             </div>
@@ -129,13 +142,13 @@
         <div class="Admin-box-child">
             
             <div id="accountTab">
-            <div id="myGrid" style="height: 300px; width:600px;" class="ag-theme-alpine"></div>
-            <button type="button" id="deleteAccount">Delete Account</button> 
-            <button type="button" id="setAdminButton">Set Admin Access</button> 
+                <div id="myGrid" style="height: 400px; width:800px;" class="ag-theme-alpine"></div>
+                <button type="button" id="deleteAccount">Delete Account</button> 
+                <button type="button" id="setAdminButton">Set Admin Access</button> 
             </div>
 
             <div id ="driverTab">
-                <div id="driverTable" style="height: 300px; width:600px;" class="ag-theme-alpine"></div>
+                <div id="driverTable" style="height: 400px; width:800px;" class="ag-theme-alpine"></div>
                 <button type="button" id="deleteDriverButton">Fire Driver</button>
                 <button type="button" id="addDriverButton">Add Driver</button>
                 <button type="button" id="editDriverButton">Change Driver Device</button> 
@@ -154,7 +167,7 @@
     </div>
 
             <div id="carTab">
-                <div id="carTable" style="height: 300px; width:600px;" class="ag-theme-alpine"></div>
+                <div id="carTable" style="height: 400px; width:800px;" class="ag-theme-alpine"></div>
                 <button type="button" id="deleteCarButton">Retire Car</button>
                 <button type="button" id="addCarButton">Add Car</button>
 

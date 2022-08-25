@@ -25,6 +25,7 @@ export function addPin(coords){
   }
 
   export function addRoute(coords){
+    dirRenderer = []
     if(coords.length < 2){
         return
     }

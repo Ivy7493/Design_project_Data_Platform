@@ -21,13 +21,6 @@ socket.on('login',(data)=>{
         sessionStorage.setItem("Token", data);
         ChangePage('MainPage')
         ToggleLogout(document)
-
-        let temp2 = {
-            token: sessionStorage.getItem("Token"),
-            ID: ReturnSocketID(),
-            driverID: 'Ivan-0'
-        }
-        SendToServer('calculateDriverData',temp2)
         //addRoute(data)
     }
 })
@@ -50,7 +43,7 @@ socket.on("getAllDrivers",(data)=>{
             //Set Customer Name in Text part.
             option.innerHTML = x.name
             //Set CustomerId in Value part.
-            option.value = x.carID;
+            option.value = x.driverID;
             selectElement.options.add(option);
        })
        setDriverTable(data)
@@ -93,8 +86,9 @@ socket.on('getAllCars',(data)=>{
 
 //DATA section
 socket.on('calculateDriverData',(data)=>{
-    console.log("Driver waypoints: ", data[0])
+    console.log("We got our reponse!!! ", data)
     addRoute(data[0])
+    displayEnergyForTrip(data,document.getElementById('myChart'))
 })
 
 socket.on('getRouteData',(data)=>{
