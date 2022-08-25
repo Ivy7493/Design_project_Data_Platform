@@ -107,7 +107,7 @@ function startSocket(app){
                                                 //         //result.push() calcualtion data
                                                 //         io.to(data.ID).emit('calculateDriverData',result)
                                                 //         })
-                                                CalcService.calcEnergyUsageKinModel(driverData,carData).then((totalEnergy,energyPerSecond)=>{
+                                                CalcService.calcEnergyUsageKinModel(driverData,carData).then((calcData)=>{
                                                 //INTERGRATE WITH VIAN WHEN HE IS DONE
                                                 //console.log("driver data: ",driverData)
                                                 let waypoints = []
@@ -119,6 +119,8 @@ function startSocket(app){
                                                 //console.log("car data",carData)
                                                 //console.log("waypoints", waypoints)
                                                 let result = []
+                                                let totalEnergy=calcData[0]
+                                                let energyPerSecond=calcData[1]
                                                 result.push(waypoints)
                                                 result.push(totalEnergy)
                                                 result.push(energyPerSecond)
@@ -141,11 +143,11 @@ function startSocket(app){
                                 })
                         })
 
-                        socket.on("getBarGraphData",(data)=>{
-                                CalcService.calcEnergyUsageKinModel().then(status=>{
-                                        io.to(data.ID).emit('getBarGraphData',status)
-                                })
-                        })
+                        // socket.on("getBarGraphData",(data)=>{
+                        //         CalcService.calcEnergyUsageKinModel().then(status=>{
+                        //                 io.to(data.ID).emit('getBarGraphData',status)
+                        //         })
+                        // })
                         ///////Driver section
 
                         socket.on("getAllDrivers",(data)=>{

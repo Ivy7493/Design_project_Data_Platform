@@ -484,7 +484,7 @@ async function calcEnergyUsageKinModel(data,car){
     }
 console.log('totalEnergy',totalEnergy)
 console.log('per sec energy', energyPerSecondData)
-return totalEnergy,energyPerSecondData //[energyResults,energyPersecondResults] 
+return [totalEnergy,energyPerSecondData] //[energyResults,energyPersecondResults] 
 }
 
 // kineticmodel using elevation api

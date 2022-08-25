@@ -94,6 +94,8 @@ socket.on('getAllCars',(data)=>{
 //DATA section
 socket.on('calculateDriverData',(data)=>{
     console.log("Driver waypoints: ", data[0])
+    console.log("Driver waypoints driver1: ", data[1])
+    console.log("Driver waypoints driver 2: ", data[2])
     addRoute(data[0])
 })
 
