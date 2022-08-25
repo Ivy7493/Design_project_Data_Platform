@@ -113,30 +113,36 @@ async function addConfigData(data) {
 
 
 async function createNewDevice() {
-    // //curl -X POST  --header 'Authorization: FlespiToken pzu9I9BWl8meVol0DUzehLW0FAj21TSejcdR9ECkBOnk0y8rgvtl6gbzEjrt29x9'  -d '[{"configuration":{"ident":"357544376624356"},"device_type_id":745,"messages_ttl":31536000,"messages_rotate":0}]' 'https://flespi.io/gw/devices?fields=device_type_id%2Cname%2Cprotocol_id%2Cconfiguration'
-    // let header = {
-    //     'Authorization': 'FlespiToken pzu9I9BWl8meVol0DUzehLW0FAj21TSejcdR9ECkBOnk0y8rgvtl6gbzEjrt29x9'
-    // }
-    // await fetch('https://flespi.io/gw/devices?fields=', {
-    //     method: 'post',
-    //     headers: { header },
-    //     body: JSON.stringify({
-    //         "configuration": {
-    //             "ident": "357544376624356",
-    //             "phone": "number here",
-    //             "settings_polling": "daily"
-    //         },
-    //         "device_type_id": 745,
-    //         "name": "FMB003",
-    //         "messages_ttl": 31536000
-    //     })
-    // })
+    //let ident, phone, settings_poll, device_type_id, name, messages_ttl = await dummyDeviceInfo();
+    fetch("https://flespi.io/gw/devices", {
+        body: JSON.stringify([{
+            "configuration": {
+                "ident": "357544376624356",
+                "phone": "+27123456789",
+                "settings_polling": "daily"
+            },
+            "device_type_id": 745,
+            "name": "FMB003",
+            "messages_ttl": 31536000
+        }]),
+        headers: {
+            Authorization: "FlespiToken pzu9I9BWl8meVol0DUzehLW0FAj21TSejcdR9ECkBOnk0y8rgvtl6gbzEjrt29x9",
+            'Content-Type': 'application/json'
+        },
+        method: "POST"
+    })
+    console.log("Device has been created successfully.")
 }
 
 
-async function deviceInformation() {
-    // let ident = "357544376624355";
-    // let phone = "number here";
-}
+// async function dummyDeviceInfo() {
+//     let ident = "357544376624355";
+//     let phone = "+27123456789";
+//     let settings_poll = "daily";
+//     let device_type_id = 745;
+//     let name = "FMB003";
+//     let messages_ttl = 31536000;
+//     return {ident, phone, settings_poll, device_type_id, name, messages_ttl}
+// }
 
 module.exports = { getDeviceStorage, getAllDeviceData, getConfigData, createNewDevice }

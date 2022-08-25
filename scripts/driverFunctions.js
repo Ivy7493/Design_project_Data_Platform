@@ -9,7 +9,7 @@ const dataService = require('./dataFunctions')
 // Get configuration data of device.
 //dataService.getConfigData(4599633);
 //Create a New device
-dataService.createNewDevice();
+//dataService.createNewDevice();
 
 getDriverCar('Ivan-0')
 async function getAllDrivers(){
