@@ -330,7 +330,9 @@ async function calcEnergyUsageKinModel(data,car){
     let offtakeEnergy=0
     let powerOfftake=100 //W (why? = 100)
     let totalEnergy = 0
-    // let allEnergyPerSecondData=[[]]
+
+    let allEnergyPerSecondData=[[]]
+
     let energyPerSecondData=[]
     let durationTrip = 0
     let brakingEnergy=0
@@ -473,7 +475,9 @@ async function calcEnergyUsageKinModel(data,car){
         offtakeEnergy= powerOfftake* timeDiff
         let temp2 = (propEnergy + offtakeEnergy+brakingEnergy)/(3.6 * 10**6)
         totalEnergy += temp2 //(propEnergy + offtakeEnergy)/3.6 * 10**6
-        energyPerSecondData[i] = temp2 //allEnergyPerSecondData[k,i] = temp2 
+
+        energyPerSecondData[i] = temp2 
+
         lateralDistance=0
         //set vars to 0
         propEnergy = 0
@@ -482,9 +486,11 @@ async function calcEnergyUsageKinModel(data,car){
         temp2=0
         //console.log('totalEnergy',totalEnergy)
     }
+
 console.log('totalEnergy',totalEnergy)
 console.log('per sec energy', energyPerSecondData)
 return [totalEnergy,energyPerSecondData] //[energyResults,energyPersecondResults] 
+
 }
 
 // kineticmodel using elevation api
