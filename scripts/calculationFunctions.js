@@ -274,11 +274,11 @@ const mode = arr => {
     return max;
   };
 async function calcEnergyUsageKinModel(data,car){
+    //read in variables
     let tempAlt = []
     if(!data){
         return
     }
-    
     data.map(x=>{
         tempAlt.push(x.data.Altitude)
     })
@@ -310,7 +310,6 @@ async function calcEnergyUsageKinModel(data,car){
     
     })    
     let dateTime = tempDate
-    //let myArr=dateTime.split(',')
     console.log("ResultTime: ", dateTime)
 
     let mass = car.Car.mass
@@ -480,7 +479,7 @@ async function calcEnergyUsageKinModel(data,car){
         let temp2 = (propEnergy + offtakeEnergy+brakingEnergy)/(3.6 * 10**6)
         totalEnergy += temp2 //(propEnergy + offtakeEnergy)/3.6 * 10**6
 
-        energyPerSecondData[i] = temp2 
+        energyPerSecondData[i] = temp2 // /hypotDistance
 
         lateralDistance=0
         //set vars to 0
@@ -491,7 +490,7 @@ async function calcEnergyUsageKinModel(data,car){
         //console.log('totalEnergy',totalEnergy)
     }
 
-console.log('totalEnergy',totalEnergy)
+console.log('totalEnergy',totalEnergy) //   /216
 console.log('per sec energy', energyPerSecondData)
 return [totalEnergy,energyPerSecondData] //[energyResults,energyPersecondResults] 
 
@@ -499,7 +498,9 @@ return [totalEnergy,energyPerSecondData] //[energyResults,energyPersecondResults
 
 // kineticmodel using elevation api
 async function calcEnergyUsageKinModelApiElev(){
+    console.log('hi')
     // import data from databaseFunctions
+    //let finalApi= await DB.returnAltitude()
     let resultLat = await DB.returnLatitude() 
     let resultLong = await DB.returnLongitude()
     let velocity=await DB.returnSpeedData()
@@ -632,7 +633,7 @@ async function calcEnergyUsageKinModelApiElev(){
     durationTrip=0 
     totalEnergyAllCars[k]=totalEnergy
     totalEnergy=0 
-    
+
 
 }
 console.log('Duration of trip for all cars',allCarsTripDur)
