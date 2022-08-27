@@ -37,18 +37,17 @@ socket.on("getAllDrivers",(data)=>{
           selectElement.remove(i);
         }
        console.log("eyyyyyyyyyyyy")
-       console.log(data)   
+    //    console.log(data)   
        data.map(x=>{
             let option = document.createElement("OPTION");
             //Set Customer Name in Text part.
             option.innerHTML = x.name
             //Set CustomerId in Value part.
-            option.value = x.carID;
+            option.value = x.driverID;
             selectElement.options.add(option);
        })
        setDriverTable(data)
-
-        
+      
 })
 
 socket.on("deleteDriver", (data)=>{
@@ -70,8 +69,8 @@ socket.on('getAllCars',(data)=>{
    for(i = L; i >= 0; i--) {
       selectElement.remove(i);
    }
-   console.log("YEEEEE")
-   console.log(data)   
+//    console.log("YEEEEE")
+//    console.log(data)   
    data.map(x=>{
         let option = document.createElement("OPTION");
         //Set Customer Name in Text part.
@@ -83,29 +82,23 @@ socket.on('getAllCars',(data)=>{
     setCarTable(data)
 })
 
-socket.on('getRouteData',(data)=>{
-    //addPin(data)
-    //addPin(data)
-    addRoute(data)
+
+//DATA section
+socket.on('calculateDriverData',(data)=>{
+    console.log("We got our reponse!!! ", data)
+    addRoute(data[0])
+    displayEnergyForTrip(data,'myChart')
 })
 
-socket.on('getSpeedData',(data)=>{
-    console.log("speed: ")
+socket.on("calculateTotalEnergy",(data)=>{
+    console.log("Hello")
     console.log(data)
-    displaySpeedForTrip(data,document.getElementById("myChart"))
+    displayTotalEnergyForTrip(data,'myChart2')
 })
 
-socket.on('getGraphData',(data)=>{
-    console.log("speedTime: ")
-    console.log(data)
-    displayEnergyForTrip(data,document.getElementById('myChart'))
-})
 
-socket.on('getBarGraphData',(data)=>{
-    console.log("AverageSpeed: ")
-    console.log(data)
-    displayTotalEnergyForTrip(data,document.getElementById('myChart2'))
-})
+
+
 
 socket.on('hasAdminAccess', (data)=>{
     if(data == true){
@@ -124,7 +117,7 @@ socket.on('hasAdminAccess', (data)=>{
 })
 
 socket.on('deleteUser',(data)=>{
-    console.log(data)
+    // console.log(data)
     RemoveAdminEntry()
 })
 

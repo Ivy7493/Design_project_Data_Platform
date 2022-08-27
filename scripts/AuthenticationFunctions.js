@@ -7,8 +7,7 @@ let Mailer = require("./configs/mailerConfig");
 const { user } = require('./configs/authConfig');
 let calc=require('./calculationFunctions')
 
-calc.calcEnergyUsageKinModel() // remove later, just for testing purposes
-calc.calcEnergyUsageKinModelApiElev()
+
 //calc.calcresultEnergy()
 async function registerNewUser(userInfo){
     const token = jwt.sign({email: userInfo.email}, config.secret)

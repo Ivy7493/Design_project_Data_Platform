@@ -222,26 +222,39 @@ loginButton.addEventListener('click',function (){
         ID: ReturnSocketID()
     }
     SendToServer('login',temp)
-    //SendToServer('getRouteData',temp)
+    SendToServer('calculateTotalEnergy',temp)
     //SendToServer("getAverageSpeed",temp)
     
 })
 
 
 ///////Data Section//////
+
+
 let DisplayBarGButton = document.getElementById('DisplayBarGButton')
 let DisplayLineGButton = document.getElementById('DisplayLineGButton')
-let getGraphButton = document.getElementById('getGraph')
+let selectDriverButton = document.getElementById('driver')
+
+selectDriverButton.addEventListener('change',function(){
+    let tempID = selectDriverButton.options[selectDriverButton.selectedIndex].value 
+    let tempName = selectDriverButton.options[selectDriverButton.selectedIndex].text
+
+    let temp = {
+        driverID: tempID,
+        ID: ReturnSocketID(),
+        driverName: tempName
+    }
+    SendToServer('calculateDriverData',temp)
+    ChangeDataPage("perSecondEnergy")
+})
 
 DisplayBarGButton.addEventListener('click',function(){
     
-    let temp = {
-        username: userField.value,
-        password: passField.value,
-        ID: ReturnSocketID()
+    
+    let temp2 = {
+        ID: ReturnSocketID()  
     }
-
-    SendToServer('getBarGraphData',temp)
+    
     ChangeDataPage("totalEnergy")
 })
 
@@ -252,17 +265,6 @@ DisplayLineGButton.addEventListener('click',function(){
     }
     SendToServer("getAllDrivers",temp2)
 
-    ChangeDataPage("InitializeGraphRef")
-})
-
-
-getGraphButton.addEventListener('click',function(){
-    let temp = {
-        username: userField.value,
-        password: passField.value,
-        ID: ReturnSocketID()
-    }
-    
-    SendToServer('getGraphData',temp)
     ChangeDataPage("perSecondEnergy")
 })
+

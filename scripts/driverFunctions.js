@@ -1,16 +1,26 @@
 let DB = require('./databaseFunctions')
 let driverModel = require("../scripts/models/driverModel")
+const dataService = require('./dataFunctions')
+
+// If required to re-enter data uncomment:
+// getAllDrivers().then(data => {
+//     dataService.getAllDeviceData(data)
+// })
+// Get configuration data of device.
+//dataService.getConfigData(4599633);
+//Create a New device
+//dataService.createNewDevice();
 
 
 async function getAllDrivers(){
     let result = await DB.getallDrivers()
     result = result.filter(x =>{
-        if(x.employement == "employed"){
+        if(x.employement === "employed"){
             return x
         }
     })
     for(i=0; i<result.length; i++){
-            console.log("RESULT HERE!" + result[i]);
+            console.log("RESULT HERE!" + result[i].driverID);
         }
     return result;
 }
@@ -34,6 +44,23 @@ async function addNewDriver(data){
     }
 }
 
+async function getDriverData(driverID){
+    let deviceID = await DB.getDriverProfile(driverID)
+
+    deviceID = deviceID.driver.deviceID
+    let result = await dataService.getDeviceStorage(deviceID)
+
+    
+    
+    return result
+}
+
+async function getDriverCar(driverID){
+    let car = await DB.getDriverCar(driverID)
+    console.log(car)
+    return car
+}
+
 
 async function deleteDriver(data){
     let result = await DB.deleteDriver(data)
@@ -46,4 +73,4 @@ async function changeDriverDevice(data){
 }
 
 
-module.exports = {getAllDrivers, addNewDriver, deleteDriver, changeDriverDevice}
+module.exports = {getAllDrivers, addNewDriver, deleteDriver, changeDriverDevice, getDriverData, getDriverCar}

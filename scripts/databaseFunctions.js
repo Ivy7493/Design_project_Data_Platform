@@ -1,8 +1,9 @@
 const e = require('express');
 const {MongoClient} = require('mongodb');
 const userModel = require("../scripts/models/userModel")
+// const energyModel = require("../scripts/models/energyModel")
 var bcrypt = require("bcryptjs");
-const { request } = require('express');
+const {request} = require('express');
 
 let connectionString = "mongodb+srv://city-energy:city-energy@cluster0.utc0s.mongodb.net/?retryWrites=true&w=majority"
 let client = new MongoClient(connectionString);
@@ -49,12 +50,14 @@ async function returnSpeedData(){
 
   async function returnTimeData(){
     try{
-        let result = await client.db("AdminDB").collection('testData').find()
+        // let result = await client.db("AdminDB").collection('testData').find()
+        let result = await client.db("data").collection('4599633').find()
         result=await result.toArray()
         let timeData=[]
         result.map(x=>{
-          timeData.push(x.Time)
+          timeData.push(x.data.timestamp)
         })
+        console.log(timeData)
         return timeData
     }catch(e){
         console.log("Data retrieval failed 3")
@@ -118,6 +121,59 @@ async function returnSpeedData(){
       console.log("Data retrieval failed 7")
       return -1
   }
+  }
+  async function returnFuelTypeData(){
+    try{
+      let result = await client.db("Car").collection('Cars').find()
+      result=await result.toArray()
+      let speedData=[]
+      result.map(x=>{
+        speedData.push(x.Car.fuelType)
+      })
+      console.log('fuel',speedData)
+      return speedData
+  }catch(e){
+      console.log("Data retrieval failed 8")
+      return -1
+  }
+  }
+  async function returnMafData(){
+    try{
+      let result = await client.db("data").collection('CollectionData').find()
+      result=await result.toArray()
+      let speedData=[]
+      result.map(x=>{
+        speedData.push(x.data.MAF)
+      })
+      console.log('maf',speedData)
+      return speedData
+  }catch(e){
+      console.log("Data retrieval failed 8")
+      return -1
+  }
+  }
+
+  async function Writeresults(energyResults){
+    try{
+        client.db("AdminDB").collection('vehiclesEnergyUsage').insertOne({
+           energyResults
+          })
+    }catch(e){
+        console.log("Failed Writing to databse")
+        return -1
+    }
+    return 1
+  }
+  async function WritePerSecondresults(energyResults){
+    try{
+        client.db("AdminDB").collection('vehiclesEnergyUsagePerSecond').insertOne({
+           energyResults
+          })
+    }catch(e){
+        console.log("Failed Writing to databse")
+        return -1
+    }
+    return 1
   }
   async function registerNewUser(user){
     try{
@@ -222,6 +278,17 @@ async function returnSpeedData(){
     
   }
 
+  async function getDriverProfile(driverID){
+    try{
+      const query = {'driver.driverID': driverID};
+      let result = await client.db('Driver').collection('Drivers').findOne(query)
+      return result
+    }catch(e){
+      console.log(e)
+      return -1 
+    }
+  }
+
 
   async function deleteDriver(ID){
     try{
@@ -291,6 +358,23 @@ async function returnSpeedData(){
     }
 
   }
+  async function returnCarsId(){
+    try{
+      let result = await client.db("Car").collection("Cars").find()
+      let temp = await result.toArray()
+      let idArray = []
+      temp.map(x=>{
+          idArray.push(x.Car.carID)
+      })
+      return idArray
+    }catch(e){
+      console.log("Eish Error")
+      console.log(e)
+      return -1 
+    }
+
+  }
+
   async function returnCarsArea(){
     try{
       let result = await client.db("Car").collection("Cars").find()
@@ -333,9 +417,21 @@ async function returnSpeedData(){
   }
 
 
+// add modified data from devices to collection
+  async function getDriverCar(ID){
+    try{
+      let result = await getDriverProfile(ID)
+      const query = {'Car.carID':  result.driver.car};
+      let result2 = await client.db('Car').collection('Cars').findOne(query)
+      return result2
+    }catch(e){
+
+    }
+  }
+
 async function addData(data) {
   try {
-    let result = await client.db("data").collection('CollectionData').insertOne({
+    let result = await client.db("data").collection('modifiedData').insertOne({
       data
     })
     return result
@@ -343,7 +439,55 @@ async function addData(data) {
     console.log("Data creation failed")
     return -1
   }
+}
 
+///Device Section
+async function addDeviceData(data,deviceID){
+  try {
+    let result = await client.db("data").collection(deviceID).insertOne({
+      data
+    })
+    return result
+  } catch (e) {
+    console.log("Data creation failed")
+    return -1
+  }
+}
+//getDeviceData('4599633')
+async function getDeviceData(deviceID){
+  try{
+    let result = await client.db("data").collection(deviceID).find().sort( { "data.timestamp" : 1} )  // let result = await client.db("data").collection(deciveID).find() 
+    let temp = await result.toArray()
+    //console.log('here', temp)
+    return temp
+  }catch(e){
+    console.log("Eish Error in: getDeviceData")
+    console.log(e)
+    return -1 
+  }
+}
+async function addConfigData(data) {
+  try {
+    let result = await client.db("data").collection('Configs').insertOne({
+      data
+    })
+    return result
+  } catch (e) {
+    console.log("Data creation failed")
+    return -1
+  }
+}
+
+async function getConfigData() {
+  try {
+    let result = await client.db("data").collection('Configs').find()
+    let temp = await result.toArray()
+    return temp
+  } catch (e) {
+    console.log("Eish Error")
+    console.log(e)
+    return -1
+  }
 }
 
 
@@ -358,4 +502,5 @@ async function closeConnection(db) {
 
 
   module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
-  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea, changeDriverDevice};
+  , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea, changeDriverDevice, addDeviceData, getDeviceData, getDriverProfile,returnCarsId, Writeresults, WritePerSecondresults
+  , returnMafData, returnFuelTypeData, getDriverCar,  addConfigData, getConfigData};

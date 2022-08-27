@@ -11,7 +11,7 @@ const { readFileSync } = require('fs');
 const bodyParser = require('body-parser')
 const mainRouter = require("./routes/mainRoute");
 const confirmationRouter = require("./routes/confirmationRoute")
-const dataRouter = require("./routes/dataRoute")
+// const dataRouter = require("./routes/dataRoute")
 const websocket = require("./scripts/serverSocketHandler")
 
 
@@ -29,7 +29,7 @@ app.use(autopush(path.join(__dirname, '/Misc')))
 app.set('view engine', 'html')
 app.use("/", mainRouter);
 app.use("/confirm", confirmationRouter);
-app.use("/data", dataRouter);
+// app.use("/data", dataRouter);
 
 let tempKey
 let tempCert
@@ -50,13 +50,13 @@ const options = {
 if(port == process.env.PORT){
   let server = http.createServer(app);
   server.listen(port, () => {
-    console.log(`listening on http://localhost:${port}`);
+    console.log(`listening on https://localhost:${port}`);
   });
   websocket.startSocket(server)
 }else if(port == 3000){
   let server = http2.createSecureServer(options,app);
   server.listen(port, () => {
-    console.log(`listening on http://localhost:${port}`);
+    console.log(`listening on https://localhost:${port}`);
   });
   websocket.startSocket(server)
 }
