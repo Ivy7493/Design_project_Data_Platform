@@ -2,7 +2,7 @@ const RegisterRef = "registrationPage"
 const LoginRef = "loginPage"
 const mainRef = "mainPage"
 const adminRef = 'adminPage'
-const InitialRef="initial-display"
+
 
 //
 const logoutButton = 'logoutButton'
@@ -16,7 +16,6 @@ export function InitPages(document){
     document.getElementById(adminRef).style.display = "none";
     document.getElementById(logoutButton).style.display = "none";
     document.getElementById(adminButton).style.display = "none"
-    document.getElementById(InitialRef).style.display = "none"
     document.getElementById(LoginRef).style.display = "initial";
     initAdminPage()
     initDataPage()
@@ -146,41 +145,36 @@ adminBackButton.addEventListener("click",function(){
 
 const totalEnergyRef = "totalEnergyTab"
 const perSecondEnergyRef = "energyPerSecondTab"
-const InitializeGraphRef = "Initialize"
+//const InitializeGraphRef = "Initialize"
+ const InitialRef="initial-display"
 
 function initDataPage(){
     document.getElementById(totalEnergyRef).style.display = "none"
     document.getElementById(perSecondEnergyRef).style.display = "none"
-    document.getElementById(InitializeGraphRef).style.display = "none";
+    document.getElementById(InitialRef).style.display = "none"
 }
 
 
 export function ChangeDataPage(page){
     
     switch(page){
+
         case "totalEnergy":
             document.getElementById(totalEnergyRef).style.display = "initial"
             document.getElementById(InitialRef).style.display = "none"
             document.getElementById(perSecondEnergyRef).style.display = "none"
-            document.getElementById(InitializeGraphRef).style.display = "none";
+            
             
             break;
 
         case "perSecondEnergy":
             document.getElementById(totalEnergyRef).style.display = "none"
             document.getElementById(InitialRef).style.display = "none"
-            document.getElementById(InitializeGraphRef).style.display = "none"
             document.getElementById(perSecondEnergyRef).style.display = "Initial"
             
             break;
 
-        case "InitializeGraphRef":
-            document.getElementById(totalEnergyRef).style.display = "none"
-            document.getElementById(InitialRef).style.display = "none"
-            document.getElementById(perSecondEnergyRef).style.display = "none"
-            document.getElementById(InitializeGraphRef).style.display = "Initial"
-            
-            break;
+       
     }
 
 }

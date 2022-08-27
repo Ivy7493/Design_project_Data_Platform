@@ -11,16 +11,16 @@ const dataService = require('./dataFunctions')
 //Create a New device
 //dataService.createNewDevice();
 
-getDriverCar('Ivan-0')
+
 async function getAllDrivers(){
     let result = await DB.getallDrivers()
     result = result.filter(x =>{
-        if(x.employement == "employed"){
+        if(x.employement === "employed"){
             return x
         }
     })
     for(i=0; i<result.length; i++){
-            console.log("RESULT HERE!" + result[i]);
+            console.log("RESULT HERE!" + result[i].driverID);
         }
     return result;
 }
@@ -46,9 +46,12 @@ async function addNewDriver(data){
 
 async function getDriverData(driverID){
     let deviceID = await DB.getDriverProfile(driverID)
+
     deviceID = deviceID.driver.deviceID
-    console.log(deviceID)
     let result = await dataService.getDeviceStorage(deviceID)
+
+    
+    
     return result
 }
 
