@@ -10,6 +10,7 @@ async function addNewCar(data){
         name: data.name,
         mass: data.mass,
         area: data.area,
+        drag: data.drag,
         fuelType: data.fuelType
 
     })
