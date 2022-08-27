@@ -1,4 +1,5 @@
 body{
+--border-size: .5rem;
 padding: 0;
 margin: 0;
 
@@ -99,7 +100,10 @@ input[type=text] {
 
 .drop-down-box {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    position: sticky;
+    background-color: white;
+    top: calc(175px + var(--border-size));
 }
 
 .map-box {
@@ -133,7 +137,7 @@ input[type=text] {
     background-color:rgb(28,153,65);
     font-weight: 700;
     color: #FFF;
-    border: .5rem rgb(28,153,65);
+    border: var(--border-size) rgb(28,153,65);
     cursor: pointer;
     border-radius: .4rem;
 }
@@ -251,50 +255,6 @@ input[type=text] {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
-/* .dropbtn {
-    background-color: #3f3f3f;
-    color: white;
-    padding: .6rem;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
-  }
-  
-   The container <div> - needed to position the dropdown content 
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-   Dropdown Content (Hidden by Default) 
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-  
-  /* Links inside the dropdown 
-  .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  
-  /* Change color of dropdown links on hover 
-  .dropdown-content a:hover {background-color: #f1f1f1}
-  
-  /* Show the dropdown menu on hover 
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
-  
-  /* Change the background color of the dropdown button when the dropdown content is shown 
-  .dropdown:hover .dropbtn {
-    background-color: #3e8e41;
-  } */
+
 
  

@@ -85,30 +85,32 @@
             </label>
         </div>
 
-    <section class="graph-box">
+        <section class="graph-box">
       
         
-        <div class="graph-style" id="totalEnergyTab">
-            <canvas id="myChart2"></canvas>
-        </div>
-
-        <section>
-            <div class="drop-down-box" id="Initialize">
-            
-                <label class="ft-quick" for="driver">Enter Driver's Name: </label>
-                <select id="driver" name="driver"></select>
-                <button type="button" class="get-map-btn ft-roboto-cd" id="getGraph">Get Graph</button>
-
+            <div class="graph-style" id="totalEnergyTab">
+                <canvas id="myChart2"></canvas>
             </div>
-        </section>
-        <div class="graph-style" id="energyPerSecondTab">
 
-            <canvas  id="myChart"></canvas>
-            <div class="map-box">
-             <div id="map" class="map"></div>
-            </div> 
-        </div>
-    </section> 
+                <div  id="energyPerSecondTab">
+                    <div class="drop-down-box" >
+                
+                        <label class="ft-quick" for="driver">Enter Driver's Name:  </label>
+                        <select id="driver" name="driver"></select>
+                       
+        
+                    </div>
+                    <div class="graph-style">
+                        <canvas  id="myChart"></canvas>
+                        <div class="map-box">
+                            <div id="map" class="map"></div>
+                        </div> 
+
+                    </div>
+                    
+
+                </div>
+        </section> 
 </div>
 
 
