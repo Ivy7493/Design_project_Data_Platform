@@ -86,27 +86,10 @@ function startSocket(app){
                         //DATA
 
                         socket.on('calculateDriverData',(data)=>{
+
                                 DriverService.getDriverData(data.driverID).then(driverData =>{
                                         DriverService.getDriverCar(data.driverID).then(carData =>{
-                                                //Call cal service here
-                                                // CalcService.calcIceEnergy(driverData,carData).then((totalEnergy,energyPerSecond)=>{
-                                                //         //INTERGRATE WITH VIAN WHEN HE IS DONE
-                                                //         //console.log("driver data: ",driverData)
-                                                //         let waypoints = []
-                                                //         driverData.map(x=>{
-                                                //                 if(x.data.Latitude && x.data.Longitude){
-                                                //                         waypoints.push(`${x.data.Latitude},${x.data.Longitude}`)
-                                                //                 }
-                                                //         })
-                                                //         //console.log("car data",carData)
-                                                //         //console.log("waypoints", waypoints)
-                                                //         let result = []
-                                                //         result.push(waypoints)
-                                                //         result.push(totalEnergy)
-                                                //         result.push(energyPerSecond)
-                                                //         //result.push() calcualtion data
-                                                //         io.to(data.ID).emit('calculateDriverData',result)
-                                                //         })
+                                               
                                                 CalcService.calcEnergyUsageKinModel(driverData,carData).then((calcData)=>{
                                                 //INTERGRATE WITH VIAN WHEN HE IS DONE
                                                 //console.log("driver data: ",driverData)
@@ -133,6 +116,7 @@ function startSocket(app){
                                                 result.push(totalEnergy)
                                                 result.push(energyPerSecond)
                                                 result.push(dataTime)
+                                                result.push(data.driverName)
                                                 //result.push() calcualtion data
                                                 io.to(data.ID).emit('calculateDriverData',result)
                                                 })
@@ -140,6 +124,32 @@ function startSocket(app){
                                         })
                                 })
                         })
+
+                        socket.on('calculateTotalEnergy', async (data)=>{
+                                let drivers = await DriverService.getAllDrivers()
+                                let temp = []
+
+                                for(let i = 0; i < drivers.length;i++){
+                                        let x = drivers[i]
+                                        console.log("#####################################")
+                                        console.log(x)
+                                        let carData = await DriverService.getDriverCar(x.driverID);
+                                        let deviceData = await DriverService.getDriverData(x.driverID)
+                                        let result = await CalcService.calcEnergyUsageKinModel(deviceData,carData)
+                                        let record = {
+                                        driverName: x.name,
+                                        driverEnergy: result[0]
+                                       }
+                                       temp.push(record)
+                                }
+                                console.log("we did it!")
+                                console.log(temp)
+                                io.to(data.ID).emit('calculateTotalEnergy',temp)
+
+
+                        })
+
+
                         socket.on("getSpeedData",(data)=>{
                                 CalcService.returnSpeedForRoute().then(status=>{
                                         io.to(data.ID).emit('getSpeedData',status)
