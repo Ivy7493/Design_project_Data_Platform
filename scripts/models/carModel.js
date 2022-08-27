@@ -20,6 +20,10 @@ const Car = mongoose.model(
       required: true
       
     },
+    drag: {
+      type: Number,
+      required: true
+    },
     fuelType: {
       type: Number,
       required: true
