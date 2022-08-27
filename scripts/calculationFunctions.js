@@ -317,14 +317,21 @@ async function calcEnergyUsageKinModel(data,car){
     let area = car.Car.area
     console.log("area", car.Car.area)
 
-    //initialise variables
+    // let resultAlt= await DB.returnAltitude()
+    // let resultLat = await DB.returnLatitude() 
+    // let resultLong = await DB.returnLongitude()
+    // let resultVelocity=await DB.returnSpeedData()
+
+    // //initialise variables
+    // let mass=3900
+    // let area=4
     let totalDistance=[]
     let slope=[]
     let totalForce=0
     let expectDspeed=0
     let vehicleForce=0
-    let coeffRr = 0.02 // an estimate
-    let coeffAdf=0.36 //an estimate
+    let coeffRr = 0.01//0.02 // an estimate
+    let coeffAdf=car.Car.drag//0.36 //an estimate
     let allCarsTripDur=[]
     let timeDiff = 0  //Estimation of what tarnsmission frequency is designed to be(in s)
     let efficiency=0.9
@@ -416,8 +423,8 @@ async function calcEnergyUsageKinModel(data,car){
     for(let i=0;i<final.length-1;i++){ //final.length-1;i++){
         //console.log('date',dateTime[i+1])
         timeDiff=(dateTime[i+1]-dateTime[i] )
-        console.log('timediff', timeDiff)
-        if(velocity[i]>60){
+        //console.log('timediff', timeDiff)
+        if(velocity[i]>60){ //60 in m/s
             velocity[i]=velocity[i]+(velocity[i+1]-velocity[i])/2
             console.log('large')
             countWrongVel++
@@ -425,7 +432,7 @@ async function calcEnergyUsageKinModel(data,car){
         if(i!==0 && (Math.abs(velocity[i]-velocity[i-1])/timeDiff)>6){   //velocity[i+1]/3.6-velocity[i]/3.6)/timeDiff)>6){  // still test: seems to be working
         velocity[i]= velocity[i-1] + 4*timeDiff //velocity[i]+((velocity[i+1]-velocity[i])/2)
         // console.log('hi vel else',i,velocity[i])
-        if(i!==0 && (velocity[i+1]/3.6-velocity[i]/3.6)/timeDiff>6){
+        if(i!==0 && (velocity[i+1]-velocity[i])/timeDiff>6){
             console.log('again', velocity[i])
         }
         countMissingVel++
@@ -457,8 +464,8 @@ async function calcEnergyUsageKinModel(data,car){
         }
 
         if (velocity[i]!==0){
-        fR=rollingResistanceFriction(mass, coeffRr,slope[i],velocity[i]/3.6)
-        fA=AerodynamicDragForce(coeffAdf,area,velocity[i]/3.6)
+        fR=rollingResistanceFriction(mass, coeffRr,slope[i],velocity[i])
+        fA=AerodynamicDragForce(coeffAdf,area,velocity[i])
         fS=RoadSlopeDrag(mass,slope[i])
         }
      
@@ -477,9 +484,10 @@ async function calcEnergyUsageKinModel(data,car){
         }
         offtakeEnergy= powerOfftake* timeDiff
         let temp2 = (propEnergy + offtakeEnergy+brakingEnergy)/(3.6 * 10**6)
+
         totalEnergy += temp2 //(propEnergy + offtakeEnergy)/3.6 * 10**6
 
-        energyPerSecondData[i] = temp2 // /hypotDistance
+        energyPerSecondData[i] = temp2///(hypotDistance*10**3)
 
         lateralDistance=0
         //set vars to 0
@@ -489,8 +497,12 @@ async function calcEnergyUsageKinModel(data,car){
         temp2=0
         //console.log('totalEnergy',totalEnergy)
     }
-
-console.log('totalEnergy',totalEnergy) //   /216
+    let sum=0
+    totalDistance.forEach(x=>{
+        sum += parseFloat(x*10**-3);
+    })
+console.log('totalEnergy',totalEnergy) // also divide by 314?
+console.log('totalEnergy per km',totalEnergy/(sum)) // also divide by 314?
 console.log('per sec energy', energyPerSecondData)
 return [totalEnergy,energyPerSecondData] //[energyResults,energyPersecondResults] 
 
