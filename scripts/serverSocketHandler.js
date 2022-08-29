@@ -92,7 +92,6 @@ function startSocket(app){
                                                
                                                 CalcService.calcEnergyUsageKinModel(driverData,carData).then((calcData)=>{
                                                 //INTERGRATE WITH VIAN WHEN HE IS DONE
-                                                //console.log("driver data: ",driverData)
                                                 let waypoints = []
                                                 driverData.map(x=>{
                                                         if(x.data.Latitude && x.data.Longitude){
@@ -107,8 +106,6 @@ function startSocket(app){
                                                         }
                                                 })
 
-                                                //console.log("car data",carData)
-                                                //console.log("waypoints", waypoints)
                                                 let result = []
                                                 let totalEnergy=calcData[0]
                                                 let energyPerSecond=calcData[1]

@@ -1,8 +1,9 @@
 const DB = require('./databaseFunctions')
 const fetch = require('node-fetch')
 let dataModel = require("../scripts/models/dataModel");
+
+
 async function getDeviceData(deviceID){
-    //Write Fetch request here
     let headers = {
         'Authorization': 'FlespiToken pzu9I9BWl8meVol0DUzehLW0FAj21TSejcdR9ECkBOnk0y8rgvtl6gbzEjrt29x9'
     }
@@ -17,14 +18,12 @@ async function getDeviceData(deviceID){
 }
 
 
-//weekly function to update all data
+// Function to update all data weekly (just for proof)
 function getWeeklyData(){
     setInterval(function(){ // Set interval for checking
         var date = new Date(); // Create a Date object to find out what time it is
         if(date.getHours() === 8 && date.getMinutes() === 0 && date.getDay() === 1){ // Check for Monday 8:00
-            // Do stuff
-            getAllDeviceData()
-            
+            getAllDeviceData() 
         }
     }, 60000); // Repeat every 60000 milliseconds (1 minute)
 }
@@ -32,23 +31,17 @@ function getWeeklyData(){
 //This goes to API And refreshes all known driver device IDs
 async function getAllDeviceData(data){
     let drivers = data
-    console.log(drivers)
     drivers.map(async x=>{
-        // console.log(x.deviceID)
         let temp =  await getDeviceData(x.deviceID)
         const entries = Object.entries(temp);
-        // console.log(entries[0][1])
         entries[0][1].forEach(async y => {
             let result = await addDeviceData(y,x.deviceID)
-            // console.log(result)
         });
-    
     })
 }
 
 //Adds device data to persistent storage
 async function addDeviceData(data, deviceID) {
-    // console.log(data['position.altitude'])
     function dateAndTime(date) {
         var myDate = new Date(date['timestamp']*1000)
         let modified = myDate.toLocaleString()
@@ -74,7 +67,6 @@ async function addDeviceData(data, deviceID) {
 //gets device data from persistent storage
 async function getDeviceStorage(deviceID){
     let result = await DB.getDeviceData(deviceID);
-    console.log("We winning", result)
     return result;
 }
 
@@ -89,7 +81,6 @@ async function getDeviceConfig(deviceID) {
     }).then(data => {
         dataStream = data
     })
-
     return dataStream;
 }
 
@@ -100,7 +91,6 @@ async function getConfigData(deviceID) {
     console.log(entries[0][1])
     entries[0][1].forEach(async x => {
         let result = await addConfigData(x)
-        console.log(result)
     });
 }
 
@@ -112,8 +102,8 @@ async function addConfigData(data) {
 }
 
 
+// Testing api commands, needs more work to make useful.
 async function createNewDevice() {
-    //let ident, phone, settings_poll, device_type_id, name, messages_ttl = await dummyDeviceInfo();
     fetch("https://flespi.io/gw/devices", {
         body: JSON.stringify([{
             "configuration": {
@@ -134,15 +124,5 @@ async function createNewDevice() {
     console.log("Device has been created successfully.")
 }
 
-
-// async function dummyDeviceInfo() {
-//     let ident = "357544376624355";
-//     let phone = "+27123456789";
-//     let settings_poll = "daily";
-//     let device_type_id = 745;
-//     let name = "FMB003";
-//     let messages_ttl = 31536000;
-//     return {ident, phone, settings_poll, device_type_id, name, messages_ttl}
-// }
 
 module.exports = { getDeviceStorage, getAllDeviceData, getConfigData, createNewDevice }

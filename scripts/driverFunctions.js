@@ -2,7 +2,7 @@ let DB = require('./databaseFunctions')
 let driverModel = require("../scripts/models/driverModel")
 const dataService = require('./dataFunctions')
 
-// If required to re-enter data uncomment:
+// If required to re-enter data uncomment [would be better as toggle option but \\\\\i don't want this removed, is useful]:
 // getAllDrivers().then(data => {
 //     dataService.getAllDeviceData(data)
 // })
@@ -49,15 +49,11 @@ async function getDriverData(driverID){
 
     deviceID = deviceID.driver.deviceID
     let result = await dataService.getDeviceStorage(deviceID)
-
-    
-    
     return result
 }
 
 async function getDriverCar(driverID){
     let car = await DB.getDriverCar(driverID)
-    console.log(car)
     return car
 }
 
