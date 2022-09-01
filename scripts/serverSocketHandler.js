@@ -48,7 +48,6 @@ function startSocket(app){
                         })
 
                         socket.on('hasAdminAccess',(data)=>{
-                                console.log("WE did get here which is cool")
                                 AuthService.hasAdminAccess(data.token).then(status =>{
                                         if(status == true){
                                                 io.to(data.ID).emit("hasAdminAccess",true)
@@ -59,7 +58,6 @@ function startSocket(app){
                         })
 
                         socket.on("getRouteData",(data) =>{
-                            console.log("We got here")
                                 DB.returnCoordinateData().then(status =>{
                                         io.to(data.ID).emit("getRouteData",status)
                                 });
@@ -128,8 +126,7 @@ function startSocket(app){
 
                                 for(let i = 0; i < drivers.length;i++){
                                         let x = drivers[i]
-                                        console.log("#####################################")
-                                        console.log(x)
+                        
                                         let carData = await DriverService.getDriverCar(x.driverID);
                                         let deviceData = await DriverService.getDriverData(x.driverID)
                                         let result = await CalcService.calcEnergyUsageKinModel(deviceData,carData)
@@ -139,8 +136,7 @@ function startSocket(app){
                                        }
                                        temp.push(record)
                                 }
-                                console.log("we did it!")
-                                console.log(temp)
+                            
                                 io.to(data.ID).emit('calculateTotalEnergy',temp)
 
 
@@ -177,7 +173,6 @@ function startSocket(app){
                                 DriverService.addNewDriver(data).then(status=>{
                                         io.to(data.ID).emit('createNewDriver',status)
                                         DriverService.getAllDrivers().then(status2=>{
-                                                console.log("Checkies", status2)
                                                 io.to(data.ID).emit('getAllDrivers',status2)
                                         })
                                 })

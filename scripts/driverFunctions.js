@@ -20,7 +20,7 @@ async function getAllDrivers(){
         }
     })
     for(i=0; i<result.length; i++){
-            console.log("RESULT HERE!" + result[i].driverID);
+            //console.log("RESULT HERE!" + result[i].driverID);
         }
     return result;
 }
@@ -28,7 +28,6 @@ async function getAllDrivers(){
 
 async function addNewDriver(data){
     let test = await DB.getallDrivers()
-    console.log(test.length)
     let driver = new driverModel({
         driverID: data.name + "-" + test.length,
         name: data.name,
