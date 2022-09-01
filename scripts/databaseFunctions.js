@@ -57,13 +57,13 @@ async function returnSpeedData(){
         result.map(x=>{
           timeData.push(x.data.timestamp)
         })
-        console.log(timeData)
         return timeData
     }catch(e){
         console.log("Data retrieval failed 3")
         return -1
     }
   }
+  //calc.calcEnergyUsageKinModelApiElev()
   async function returnAltitude(){
     try{
         let result = await client.db("AdminDB").collection('testData').find()
@@ -78,7 +78,21 @@ async function returnSpeedData(){
         return -1
     }
   }
-
+ 
+  async function  returnResultDispData(){
+    try{
+        let result = await client.db("AdminDB").collection('resultData').find()
+        result=await result.toArray()
+        let resultDataPoints=[]
+        result.map(x=>{
+          resultDataPoints.push(x.Displacement) //Energy Consumption //(kWh)
+        })
+        return resultDataPoints
+    }catch(e){
+        console.log("Data retrieval failed 2")
+        return -1
+    }
+  }
   async function returnLongitude(){
     try{
       let result = await client.db("AdminDB").collection('testData').find()
@@ -130,7 +144,6 @@ async function returnSpeedData(){
       result.map(x=>{
         speedData.push(x.Car.fuelType)
       })
-      console.log('fuel',speedData)
       return speedData
   }catch(e){
       console.log("Data retrieval failed 8")
@@ -145,7 +158,6 @@ async function returnSpeedData(){
       result.map(x=>{
         speedData.push(x.data.MAF)
       })
-      console.log('maf',speedData)
       return speedData
   }catch(e){
       console.log("Data retrieval failed 8")
@@ -333,7 +345,6 @@ async function returnSpeedData(){
       temp.map(x=>{
           namesOnly.push(x.Car)
       })
-      console.log(namesOnly,'jiiii')
       return namesOnly
     }catch(e){
       console.log("Eish Error")
@@ -458,7 +469,6 @@ async function getDeviceData(deviceID){
   try{
     let result = await client.db("data").collection(deviceID).find().sort( { "data.timestamp" : 1} )  // let result = await client.db("data").collection(deciveID).find() 
     let temp = await result.toArray()
-    //console.log('here', temp)
     return temp
   }catch(e){
     console.log("Eish Error in: getDeviceData")
@@ -503,4 +513,4 @@ async function closeConnection(db) {
 
   module.exports = {connectToDB, closeConnection, registerNewUser, loginUser, confirmNewUser, retrieveAllAccounts, hasAdminAccess, deleteUserAccount,makeUserAdmin,returnSpeedData, returnCoordinateData, returnTimeData, getallDrivers, addDriver, deleteDriver
   , addCar, getAllCars, deleteCar, returnAltitude, returnLatitude, returnLongitude, addData, returnResultData, returnCarsMass, returnCarsArea, changeDriverDevice, addDeviceData, getDeviceData, getDriverProfile,returnCarsId, Writeresults, WritePerSecondresults
-  , returnMafData, returnFuelTypeData, getDriverCar,  addConfigData, getConfigData};
+  , returnMafData, returnFuelTypeData, getDriverCar,  addConfigData, getConfigData, returnResultDispData};
