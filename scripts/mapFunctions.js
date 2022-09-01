@@ -41,9 +41,6 @@ export function addPin(coords){
 
     if (dirRenderer != null) {
       
-      for (var i = 0; i < 100; i++) {
-        console.log("LOOK HERE!!!!!!!!!!!!!!!!!!!!!!!!!!")
-      }
       dirRenderer.setMap(null);
       dirRenderer = null;
       dirRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
@@ -65,7 +62,6 @@ export function addPin(coords){
     };
     dirService.route(request, function(result, status) {
         if (status == google.maps.DirectionsStatus.OK) {
-          console.log(result)
           
             dirRenderer.setDirections(result);
         }

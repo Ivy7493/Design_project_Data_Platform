@@ -20,7 +20,6 @@ export function setAdminTable(document, data){
       // specify the data
       let rowData = []
       data.map(x => {
-        console.log(x)
         let temp = {
             username: x.user.username, email: x.user.email, access: x.user.level
         }
@@ -34,7 +33,6 @@ export function setAdminTable(document, data){
         onSelectionChanged: () => {
             const selectedData = gridOptions.api.getSelectedRows();
             currentSelection = selectedData;
-            console.log('Selection Changed', currentSelection);
           },
       };
       adminTableConfig = gridOptions
@@ -51,12 +49,11 @@ export function setDriverTable(data){
         { field: "car" },
         { field: "employement" }
       ];
-      console.log("WE here and we winning!")
-      console.log(data)
+     
       // specify the data
       let rowData = []
       data.map(x => {
-        console.log(x)
+        
         let temp = {
             DriverID: x.driverID ,name: x.name,deviceID: x.deviceID, car: x.car, employement: x.employement
         }
@@ -70,7 +67,7 @@ export function setDriverTable(data){
         onSelectionChanged: () => {
             const selectedData = gridOptions.api.getSelectedRows();
             currentSelection = selectedData;
-            console.log('Selection Changed', currentSelection);
+            
           },
       };
       driverConfig = gridOptions
@@ -88,12 +85,11 @@ export function setCarTable(data){
         {field: 'fuelType'},
         { field: "operation" }
       ];
-      console.log("WE here and we winning!")
-      console.log(data)
+     
       // specify the data
       let rowData = []
       data.map(x => {
-        console.log(x)
+        
         let temp = {
             CarID: x.carID , name: x.name, mass: x.mass, area: x.area, fuelType: x.fuelType,  operation: x.operation
         }
@@ -107,7 +103,7 @@ export function setCarTable(data){
         onSelectionChanged: () => {
             const selectedData = gridOptions.api.getSelectedRows();
             currentSelection = selectedData;
-            console.log('Selection Changed', currentSelection);
+            
           },
       };
       carConfig = gridOptions

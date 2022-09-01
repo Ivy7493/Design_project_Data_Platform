@@ -80,8 +80,12 @@
         </div>
 
         <div id = "initial-display">
-            <label class="buffer flex-center ft-quick"> *EXAMPLE* <br/> Welcome to City Energy! <br/> 
-                Please use the navigation buttons above to toggle between Admin page, Login page and Analytics page <br/>
+            <label class="buffer flex-center ft-quick">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Welcome to City Energy! <br/> 
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;This is our MVP for the 2022 Capstone Design Project. <br/><br/><br/>
+                Please use the navigation buttons above to toggle between Admin page, Login page and Analytics page. <br/>
+                &emsp;&emsp;&emsp;&emsp;&emsp;To display "Energy vs Time," select a driver's name from the drop-down<br/><br/>
+                The two buttons in green above will display the energy analytics calculated for each driver's set of data. <br/><br/>
+                &emsp;In the Admin page you can view and change employee, driver and car data via the relevant tables. 
             </label>
         </div>
 
@@ -95,10 +99,12 @@
                 <div  id="energyPerSecondTab">
                     <div class="drop-down-box" >
                 
-                        <label class="ft-quick" for="driver">Enter Driver's Name:  </label>
-                        <select id="driver" name="driver"></select>
-                       
-        
+                        <label class="ft-quick" for="driver">Enter Driver's Name:&emsp;</label>
+                        <select id="driver" name="driver">
+                            <option value="" selected disabled hidden>Choose here</option>
+
+                        </select>
+
                     </div>
                     <div class="graph-style">
                         <canvas  id="myChart"></canvas>
@@ -159,12 +165,13 @@
 
 
     <div id="addDriverTab">
+        <br><br/><br><br/>
         <label class="ft-quick" for="driverName">Enter Driver Name:</label>
-        <input type="text" id="driverName" name="driverName"><br>
+        <input type="text" id="driverName" name="driverName"><br><br/>
         <label class="ft-quick" for="driverCar">Enter Driver Car: </label>
         <select id="driverCar" name="driverCar"></select>
         <label class="ft-quick" for="deviceID">Enter Driver's device ID:</label>
-        <input type="text" id="deviceID" name="driverName"><br>
+        <input type="text" id="deviceID" name="driverName"><br><br/>
         <button type="button" id="createDriverButton">Create Driver</button> 
     </div>
 
@@ -176,12 +183,13 @@
             </div>
 
     <div id="addCarTab">
+        <br><br/><br><br/>
         <label class="ft-quick" for="carName">Enter Car Name:</label>
-        <input type="text" id="carName" name="carName"><br>
+        <input type="text" id="carName" name="carName"><br><br/>
         <label class="ft-quick" for="massCar">Enter Car Mass: </label>
-        <input type="text" id="massCar" name="massCar"><br>
+        <input type="text" id="massCar" name="massCar"><br><br/>
         <label class="ft-quick" for="areaCar">Enter Car SurfaceArea: </label>
-        <input type="text" id="areaCar" name="areaCar"><br>
+        <input type="text" id="areaCar" name="areaCar"><br><br/>
         <label for="carType">Choose a Fuel Type:</label>
         <select name="carType" id="carType">
           <option value=1>Petrol</option>
