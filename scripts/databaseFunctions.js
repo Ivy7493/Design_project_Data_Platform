@@ -18,7 +18,8 @@ async function connectToDB(){
     }catch(e){
       console.log("Failed to connect to DB")
     }
-  }
+}
+
 async function returnSpeedData(){
     try{
         let result = await client.db("AdminDB").collection('testData').find()
@@ -32,21 +33,22 @@ async function returnSpeedData(){
         console.log("Data retrieval failed 1")
         return -1
     }
+}
+  
+async function returnResultData(){
+  try{
+      let result = await client.db("AdminDB").collection('resultData').find()
+      result=await result.toArray()
+      let resultDataPoints=[]
+      result.map(x=>{
+        resultDataPoints.push(x.Energy) //Energy Consumption //(kWh)
+      })
+      return resultDataPoints
+  }catch(e){
+      console.log("Data retrieval failed 2")
+      return -1
   }
-  async function returnResultData(){
-    try{
-        let result = await client.db("AdminDB").collection('resultData').find()
-        result=await result.toArray()
-        let resultDataPoints=[]
-        result.map(x=>{
-          resultDataPoints.push(x.Energy) //Energy Consumption //(kWh)
-        })
-        return resultDataPoints
-    }catch(e){
-        console.log("Data retrieval failed 2")
-        return -1
-    }
-  }
+}
 
   async function returnTimeData(){
     try{
@@ -63,7 +65,7 @@ async function returnSpeedData(){
         return -1
     }
   }
-  //calc.calcEnergyUsageKinModelApiElev()
+
   async function returnAltitude(){
     try{
         let result = await client.db("AdminDB").collection('testData').find()
@@ -136,7 +138,7 @@ async function returnSpeedData(){
       return -1
   }
   }
-  async function returnFuelTypeData(){
+async function returnFuelTypeData(){
     try{
       let result = await client.db("Car").collection('Cars').find()
       result=await result.toArray()
@@ -149,7 +151,8 @@ async function returnSpeedData(){
       console.log("Data retrieval failed 8")
       return -1
   }
-  }
+}
+  
   async function returnMafData(){
     try{
       let result = await client.db("data").collection('CollectionData').find()
@@ -163,9 +166,9 @@ async function returnSpeedData(){
       console.log("Data retrieval failed 8")
       return -1
   }
-  }
+}
 
-  async function Writeresults(energyResults){
+async function Writeresults(energyResults){
     try{
         client.db("AdminDB").collection('vehiclesEnergyUsage').insertOne({
            energyResults
@@ -175,8 +178,9 @@ async function returnSpeedData(){
         return -1
     }
     return 1
-  }
-  async function WritePerSecondresults(energyResults){
+}
+
+async function WritePerSecondresults(energyResults){
     try{
         client.db("AdminDB").collection('vehiclesEnergyUsagePerSecond').insertOne({
            energyResults
@@ -186,8 +190,9 @@ async function returnSpeedData(){
         return -1
     }
     return 1
-  }
-  async function registerNewUser(user){
+}
+
+async function registerNewUser(user){
     try{
         client.db("AdminDB").collection('userLogins').insertOne({
            user
@@ -197,9 +202,9 @@ async function returnSpeedData(){
         return -1
     }
     return 1
-  }
+}
 
-  async function confirmNewUser(confirmationCode){
+async function confirmNewUser(confirmationCode){
     const query = {'user.confirmationCode': confirmationCode };
     try{
        let result = await client.db("AdminDB").collection('userLogins').findOneAndUpdate(query, { $set: { 'user.status': 'Active' }})
@@ -212,25 +217,25 @@ async function returnSpeedData(){
       console.log("account confirmation failed 9")
       return -1
   }
-  }
+}
 
-  async function loginUser(user){
-    const query = {'user.username': user.username};
-    try{
-        let result = await client.db("AdminDB").collection('userLogins').findOne(query)
-        const validPassword = await bcrypt.compare(user.password, result.user.password);
-        if(validPassword == true && result.user.status == 'Active'){
-            return result.user.confirmationCode
-        }else{
-            return -1
-        }
-    }catch(e){
-        console.log("login failed")
-        return -1
-    }
+async function loginUser(user){
+  const query = {'user.username': user.username};
+  try{
+      let result = await client.db("AdminDB").collection('userLogins').findOne(query)
+      const validPassword = await bcrypt.compare(user.password, result.user.password);
+      if(validPassword == true && result.user.status == 'Active'){
+          return result.user.confirmationCode
+      }else{
+          return -1
+      }
+  }catch(e){
+      console.log("login failed")
+      return -1
   }
+}
 
-  async function retrieveAllAccounts(){
+async function retrieveAllAccounts(){
     try{
       let result = await client.db("AdminDB").collection('userLogins').find()
       let temp  = result.toArray()
@@ -238,9 +243,9 @@ async function returnSpeedData(){
     }catch(e){
 
     }
-  }
+}
 
-  async function hasAdminAccess(ID){
+async function hasAdminAccess(ID){
     const query = {'user.confirmationCode': ID };
     try{
        let result = await client.db("AdminDB").collection('userLogins').findOne(query)
@@ -253,16 +258,16 @@ async function returnSpeedData(){
       console.log("account access failed")
       return false
   }
-  }
+}
 
-  async function deleteUserAccount(ID){
+async function deleteUserAccount(ID){
     const query = {'user.email': ID };
     let result = await client.db("AdminDB").collection("userLogins").deleteOne(query)
     return result
-  }
+}
 
 
-  async function makeUserAdmin(ID){
+async function makeUserAdmin(ID){
     const query = {'user.username': ID };
     let result = await client.db("AdminDB").collection('userLogins').findOneAndUpdate(query, { $set: { 'user.level': 'admin' }})
     if(result){
@@ -270,10 +275,10 @@ async function returnSpeedData(){
     }else{
       return false
     }
-  }
+}
 
 
-  async function getallDrivers(){
+async function getallDrivers(){
     try{
       let result = await client.db("Driver").collection("Drivers").find()
       let temp = await result.toArray()
@@ -288,9 +293,9 @@ async function returnSpeedData(){
       return -1 
     }
     
-  }
+}
 
-  async function getDriverProfile(driverID){
+async function getDriverProfile(driverID){
     try{
       const query = {'driver.driverID': driverID};
       let result = await client.db('Driver').collection('Drivers').findOne(query)
@@ -299,10 +304,10 @@ async function returnSpeedData(){
       console.log(e)
       return -1 
     }
-  }
+}
 
 
-  async function deleteDriver(ID){
+async function deleteDriver(ID){
     try{
       const query = {'driver.driverID':  ID};
       let result = await client.db("Driver").collection("Drivers").findOneAndUpdate(query, { $set: { 'driver.employement': 'fired' }})
@@ -312,9 +317,9 @@ async function returnSpeedData(){
       return -1 
     }
     
-  }
+}
 
-  async function addDriver(driver){
+async function addDriver(driver){
     try{
       await client.db("Driver").collection('Drivers').insertOne({
          driver
@@ -324,9 +329,9 @@ async function returnSpeedData(){
       return -1
   }
   return 1
-  }
+}
 
-  async function changeDriverDevice(driver){
+async function changeDriverDevice(driver){
     const query = {'driver.driverID': driver.driverID };
     let result = await client.db("Driver").collection('Drivers').findOneAndUpdate(query, { $set: { 'driver.deviceID': driver.deviceID }})
     if(result){
@@ -334,10 +339,10 @@ async function returnSpeedData(){
     }else{
       return false
     }
-  }
+}
 
-  //Car section
-  async function getAllCars(){
+//Car section
+async function getAllCars(){
     try{
       let result = await client.db("Car").collection("Cars").find()
       let temp = await result.toArray()
@@ -352,8 +357,9 @@ async function returnSpeedData(){
       return -1 
     }
 
-  }
-  async function returnCarsMass(){
+}
+
+async function returnCarsMass(){
     try{
       let result = await client.db("Car").collection("Cars").find()
       let temp = await result.toArray()
@@ -368,8 +374,9 @@ async function returnSpeedData(){
       return -1 
     }
 
-  }
-  async function returnCarsId(){
+}
+
+async function returnCarsId(){
     try{
       let result = await client.db("Car").collection("Cars").find()
       let temp = await result.toArray()
@@ -384,9 +391,9 @@ async function returnSpeedData(){
       return -1 
     }
 
-  }
+}
 
-  async function returnCarsArea(){
+async function returnCarsArea(){
     try{
       let result = await client.db("Car").collection("Cars").find()
       let temp = await result.toArray()
@@ -401,8 +408,9 @@ async function returnSpeedData(){
       return -1 
     }
 
-  }
-  async function addCar(Car){
+}
+
+async function addCar(Car){
     try{
       let result = await client.db("Car").collection('Cars').insertOne({
          Car
@@ -412,10 +420,9 @@ async function returnSpeedData(){
       console.log("Car creation failed")
       return -1
   }
-    
-  }
+}
 
-  async function deleteCar(ID){
+async function deleteCar(ID){
     try{
       const query = {'Car.carID':  ID};
       let result = await client.db("Car").collection("Cars").findOneAndUpdate(query, { $set: { 'Car.operation': 'Retired' }})
@@ -425,20 +432,19 @@ async function returnSpeedData(){
       console.log("Error deleting driver: ", e)
       return -1 
     }
-  }
+}
 
 
 // add modified data from devices to collection
-  async function getDriverCar(ID){
-    try{
-      let result = await getDriverProfile(ID)
-      const query = {'Car.carID':  result.driver.car};
-      let result2 = await client.db('Car').collection('Cars').findOne(query)
-      return result2
-    }catch(e){
-
-    }
+async function getDriverCar(ID){
+  try{
+    let result = await getDriverProfile(ID)
+    const query = {'Car.carID':  result.driver.car};
+    let result2 = await client.db('Car').collection('Cars').findOne(query)
+    return result2
+  }catch(e){
   }
+}
 
 async function addData(data) {
   try {
@@ -464,6 +470,7 @@ async function addDeviceData(data,deviceID){
     return -1
   }
 }
+
 //getDeviceData('4599633')
 async function getDeviceData(deviceID){
   try{
@@ -476,6 +483,7 @@ async function getDeviceData(deviceID){
     return -1 
   }
 }
+
 async function addConfigData(data) {
   try {
     let result = await client.db("data").collection('Configs').insertOne({
