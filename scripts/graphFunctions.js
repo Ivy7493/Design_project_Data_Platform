@@ -13,7 +13,7 @@ export async function displayEnergyForTrip(input, element){
         data: {
             labels: input[3],
             datasets: [{
-                label: 'Energy used in a single trip',
+                label: 'Energy used over a single trip for (kWh/s)',
                 data: input[2],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -63,7 +63,7 @@ export async function displayTotalEnergyForTrip(input,element){
     data: {
         labels: labels,
         datasets: [{
-            label: 'Total Energy per Driver',
+            label: 'Total Energy per Driver (kWh)',
             data: totalEnergy,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',

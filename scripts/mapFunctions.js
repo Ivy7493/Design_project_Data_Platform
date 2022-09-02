@@ -49,7 +49,7 @@ export function addPin(coords){
         travelMode: google.maps.TravelMode.DRIVING
     };
     dirService.route(request, function(result, status) {
-        if (status == google.maps.DirectionsStatus.OK) {          
+        if (status == google.maps.DirectionsStatus.OK) {
             dirRenderer.setDirections(result);
         }
     });
