@@ -151,10 +151,23 @@ addDriverButton.addEventListener('click',function(){
 
 createDriverButton.addEventListener('click',function(){
     let tempName = document.getElementById('driverName').value
-    let holder = document.getElementById('driverCar')
+    let holder = document.getElementById('driverCar') 
     let tempDeviceID = document.getElementById('deviceID').value
     let tempCar = holder.options[holder.selectedIndex].value
     let tempID = ReturnSocketID()
+    if(tempName.length<3)
+    {
+        alert("Please enter name up to 3 digits!")
+
+    }
+    if(tempDeviceID.length!=7)
+    {
+        alert("Please enter 7 digits for device ID!")
+
+    }
+    else if(tempDeviceID.length===7 && tempName.length>=3)
+    {
+           
     let temp = {
         name: tempName,
         car: tempCar,
@@ -163,6 +176,7 @@ createDriverButton.addEventListener('click',function(){
     }
     SendToServer('createNewDriver',temp)
     ChangeAdminPage('driver')
+}
 })
 
 editDriverButton.addEventListener('click',function(){
@@ -185,6 +199,8 @@ adminBackButton.addEventListener('click',function(){
 
 ///////END OF ADMIN SECTION//////////////////////
 
+////////LOGIN AND REGISTER SECTION//////////
+
 ShowregisterButton.addEventListener('click',function (){
     ChangePage('Register')
 })
@@ -201,19 +217,104 @@ logoutButton.addEventListener('click',function (){
 
 
 registerButton.addEventListener('click',function(){
-    let account = {
-        username: ReguserField.value,
-        password: RegpassField.value,
-        email: RegemailField.value,
-        ID: ReturnSocketID()
+
+  let Password=RegpassField.value
+  let Email=RegemailField.value
+  let hasCapital
+  let hasNumber
+  let counterC=0
+  let counterN=0
+  let counterE=0
+
+    for(let i=0; i<Password.length;i++)   
+    {
+        
+         
+        if (/^[\x41-\x5A]+$/.test(Password[i])===true)
+        {
+          counterC++
+       
+            
+        }
+        if(/^[\u0030-\u0039]*$/.test(Password[i])===true)
+        {
+            counterN++
+            
+        }
+       
+
     }
-    try{
-        SendToServer('register',account)
-        window.alert("Confirmation Email sent")
-        ChangePage('Login')
-    }catch(e){
-        window.alert("Registration failed ", e)
+
+    for(let i=0; i<Email.length;i++)   
+    {
+           
+        if (/^[\x40]+$/.test(Email[i])===true)
+        {
+          counterE++ 
+        }
+       
+
     }
+
+    if (counterC>0)
+    {
+
+        hasCapital=true
+        counterC=0
+    }
+    else if(counterC===0)
+    {
+        hasCapital=false
+
+    }
+    if (counterN>0)
+    {
+        hasNumber=true
+        counterN=0
+        
+    }
+    else if(counterN===0)
+    {
+        hasNumber=false
+        
+    }
+
+    if(hasCapital===false)
+    {
+     
+        alert("Password must have at least one Capital Letter")
+       
+    }
+    if(hasNumber===false)
+    {
+        
+        alert("Password must have at least one Number")
+        
+    }
+    if(counterE===0)
+    {
+        
+        alert("Invalid Email => '@'")
+        
+    }
+    else if(hasCapital==true && hasNumber==true&&counterE===1)
+    {
+        let account = {
+            username: ReguserField.value,
+            password: Password,
+            email: Email,
+            ID: ReturnSocketID()
+        }
+        try{
+            SendToServer('register',account)
+            window.alert("Confirmation Email sent")
+            ChangePage('Login')
+        }catch(e){
+            window.alert("Registration failed ", e)
+        }
+
+    }
+   
     
 })
 
