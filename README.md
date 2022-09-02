@@ -9,11 +9,18 @@
 
 ## **Description:**
 
-This app has been developed as a minimum viable product for tracking energy consumption in transport systems. The main purpose is to provide proof of concept and highlight areas of unanticipated hurdles that may arise.
+This app has been developed as a minimum viable product for tracking energy consumption in transport systems for companies with vehicle fleets. The main purpose is to provide proof of concept and highlight areas of unanticipated hurdles that may arise.
+
+### **Admin Testing Account Login info:**
+
+Username: Simon
+Password: Dawg
 
 ### **Main functionality implemented:**
 
 - User can login/register account.
+- Admin portal to manage sensitive information.
+- Sends confirmation email for account registration.
 - Easy navigation throught web-app.
 - Input checks and prompt messages to insure correct inputs
 - Plot total energy usage for two different vehicles, on the same route.
@@ -23,6 +30,7 @@ This app has been developed as a minimum viable product for tracking energy cons
 - Device connection for real data collection.
 - Storage of this information for data analytics.
 - Control of devices through web-app (backend for MVP).
+- Processing and manipulation of data accessed from database (MongoDB).
 
 ## **App Link:**
 
