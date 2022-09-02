@@ -9,11 +9,11 @@
 
 ## **Description:**
 
-This app has been developed as a minimum viable product for tracking energy consumption in transport systems for companies with vehicle fleets. The main purpose is to provide proof of concept and highlight areas of unanticipated hurdles that may arise.
+This app has been developed as a minimum viable product for tracking energy consumption in transport systems for companies with vehicle fleets. <br> The main purpose is to provide proof of concept and highlight areas of unanticipated hurdles that may arise.
 
 ### **Admin Testing Account Login info:**
 
-Username: Simon
+Username: Simon <br>
 Password: Dawg
 
 ### **Main functionality implemented:**
@@ -43,11 +43,11 @@ Click the following link to access our application hosted on heroku!
 
 ## **Development:**
 
-Node.js is used for a web server in conjunction with the Express framework. Socket.io is used for communication.
+Node.js is used for a web server in conjunction with the Express framework. Socket.io is used for communication. <br>
 Data models were created using mongoose, which ensures data entries are precise and cannot contain irrelevant information.
 
 
 ## **Project management:**
 
-Under the project tab of the Git repo, there is a project titled *To Do*, this shows tasks as well as a basic scrum handling of the development process. Sprint 0 was a skeletal development of the app on which features could be added as desired by the development team. For all artifacts of these meetings and project progression, look under the docs file in the repository. Due to the fact that this is a design phase, the developers are aware that a project may be handled slightly differently in implementation as the documentation shows, but as previously mentioned, the main purpose was to provide proof of concept of design.
+Under the project tab of the Git repo, there is a project titled *To Do*, this shows tasks as well as a basic scrum handling of the development process. Sprint 0 was a skeletal development of the app on which features could be added as desired by the development team. For all artifacts of these meetings and project progression, look under the docs file in the repository. Due to the fact that this is a design phase, the developers are aware that a project may be handled slightly differently in implementation as the documentation shows, but as previously mentioned, the main purpose was to provide proof of concept of design. <br>
 Sprint 0 lasted much longer than the other sprints as it was the initial setup phase. Thereafter, sprints spanned a week, to ensure tasks were consistently being completed.
