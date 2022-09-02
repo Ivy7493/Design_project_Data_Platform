@@ -255,6 +255,9 @@ input[type=text] {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
-
+.tab {
+    display: inline-block;
+    margin-left: 40px;
+}
 
  

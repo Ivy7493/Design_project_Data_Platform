@@ -13,7 +13,7 @@ export async function displayEnergyForTrip(input, element){
         data: {
             labels: input[3],
             datasets: [{
-                label: 'Energy used in a single trip',
+                label: 'Energy used in a single trip for',
                 data: input[2],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',

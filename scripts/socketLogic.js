@@ -21,7 +21,7 @@ socket.on('login',(data)=>{
         sessionStorage.setItem("Token", data);
         ChangePage('MainPage')
         ToggleLogout(document)
-        //addRoute(data)
+        
     }
 })
 
@@ -36,8 +36,7 @@ socket.on("getAllDrivers",(data)=>{
        for(i = L; i >= 0; i--) {
           selectElement.remove(i);
         }
-       console.log("eyyyyyyyyyyyy")
-    //    console.log(data)   
+       
        data.map(x=>{
             let option = document.createElement("OPTION");
             //Set Customer Name in Text part.
@@ -69,8 +68,7 @@ socket.on('getAllCars',(data)=>{
    for(i = L; i >= 0; i--) {
       selectElement.remove(i);
    }
-//    console.log("YEEEEE")
-//    console.log(data)   
+ 
    data.map(x=>{
         let option = document.createElement("OPTION");
         //Set Customer Name in Text part.
@@ -85,14 +83,13 @@ socket.on('getAllCars',(data)=>{
 
 //DATA section
 socket.on('calculateDriverData',(data)=>{
-    console.log("We got our reponse!!! ", data)
+  
     addRoute(data[0])
     displayEnergyForTrip(data,'myChart')
 })
 
 socket.on("calculateTotalEnergy",(data)=>{
-    console.log("Hello")
-    console.log(data)
+   
     displayTotalEnergyForTrip(data,'myChart2')
 })
 
@@ -117,7 +114,7 @@ socket.on('hasAdminAccess', (data)=>{
 })
 
 socket.on('deleteUser',(data)=>{
-    // console.log(data)
+    
     RemoveAdminEntry()
 })
 
