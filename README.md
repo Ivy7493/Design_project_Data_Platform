@@ -13,7 +13,16 @@ This app has been developed as a minimum viable product for tracking energy cons
 
 ### **Main functionality implemented:**
 
-- 
+- User can login/register account.
+- Easy navigation throught web-app.
+- Input checks and prompt messages to insure correct inputs
+- Plot total energy usage for two different vehicles, on the same route.
+- Plot energy usage/second, for two drivers, along the same route.
+- Kinetic model is used to determine energy usage.
+- Fuel model used to determine fuel consumption (not displayed on app).
+- Device connection for real data collection.
+- Storage of this information for data analytics.
+- Control of devices through web-app (backend for MVP).
 
 ## **App Link:**
 

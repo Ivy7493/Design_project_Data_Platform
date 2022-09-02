@@ -125,4 +125,4 @@ async function createNewDevice() {
 }
 
 
-module.exports = { getDeviceStorage, getAllDeviceData, getConfigData, createNewDevice }
+module.exports = { getDeviceStorage, getAllDeviceData, getConfigData, createNewDevice, getWeeklyData }
